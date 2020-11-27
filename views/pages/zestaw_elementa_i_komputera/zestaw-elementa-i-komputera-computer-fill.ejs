@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pl-PL">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stan twojego komputera</title>
+    <link rel="stylesheet" href="../../css/style.css" />
+    <link rel="shortcut icon" href="../../images/logo.png" type="image/png" />
+    <script type="application/javascript" src="../../js/validationCommon.js"></script>
+    <script type="application/javascript" src="../../js/validationZestawElementaIKomputera.js"></script>
+</head>
+
+<body>
+    <header>
+        <h1>Stan twojego komputera</h1>
+        <img src="../../images/logo.png" alt="Stan twojego komputera logo">
+    </header>
+    <nav>
+        <ul>
+            <li><a href="/index.html">Strona główna</a></li>
+            <li><a href="/pages/element_komputera/computer-element-list.html">Elementy komputerza</a></li>
+            <li><a href="/pages/komputer/computer-list.html">Komputery</a></li>
+            <li><a href="/pages/zestaw_elementa_i_komputera/zestaw-elementow-komputera-list.html" class="active">Zestawy
+                    elementów komputera</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <h1>Nowy zestaw elementa i komputera</h1>
+        <form class="form" novalidate onsubmit="return validateForm();">
+            <label for="model">Model komputera:<abbr title="required" aria-label="required">*</abbr></abbr></label>
+            <select required name="model" id="model">
+                <option disabled>Model komputera</option>
+                <option selected value="Jaguar 3000">Jaguar 3000</option>
+                <option value="Actina by Corsair">Actina by Corsair</option>
+            </select>
+            <span id="errorModel" class="errors-text"></span>
+
+            <label for="nazwaElementu">Nazwa elementu:<abbr title="required"
+                    aria-label="required">*</abbr></abbr></label>
+            <select required name="nazwaElementu" id="nazwaElementu">
+                <option disabled>Nazwa elementu</option>
+                <option selected value="Gigabyte GeForce GTX 1660 SUPER OC 6GB GDDR6">Gigabyte GeForce GTX 1660 SUPER OC
+                    6GB
+                    GDDR6</option>
+                <option value="AMD Ryzen 5 3600 3,6GHz BOX (100-100000031BOX)">AMD Ryzen 5 3600 3,6GHz BOX
+                    (100-100000031BOX)</option>
+            </select>
+            <span id="errorNazwaElementu" class="errors-text"></span>
+
+            <label for="aktualnaTemperatura">Aktualna temperatura:<abbr title="required"
+                    aria-label="required">*</abbr></label>
+            <input type="text" name="aktualnaTemperatura" value="56 stopni" id="aktualnaTemperatura" />
+            <span id="errorAktualnaTemperatura" class="errors-text"></span>
+
+            <label for="procentWykorzystanychZasobow">Procent wykorystanych zasobów:<abbr title="required"
+                    aria-label="required">*</abbr></label>
+            <input type="text" name="procentWykorzystanychZasobow" id="procentWykorzystanychZasobow" value="15%" />
+            <span id="errorProcentWykorzystanychZasobow" class="errors-text"></span>
+
+            <label for="aktualnaSzybkoscPrzekazaniaDanych">Aktualna szybkość przekazania danych:<abbr title="required"
+                    aria-label="required">*</abbr></label>
+            <input type="text" name="aktualnaSzybkoscPrzekazaniaDanych" id="aktualnaSzybkoscPrzekazaniaDanych"
+                value="0.4 Mb/s" />
+            <span id="errorAktualnaSzybkoscPrzekazaniaDanych" class="errors-text"></span>
+
+            <label for="typPolaczenia">Typ polączenia elementa z komputerem:<abbr title="required"
+                    aria-label="required">*</abbr></abbr></label>
+
+            <!--         <input type="text" name="typComputera" id="typComputera" /> -->
+            <select required name="typPolaczenia" id="typPolaczenia">
+                <option disabled>Typ polaczenia</option>
+                <option value="Bezprzewodowy">Bezprzewodowy</option>
+                <option selected value="Przewodowy">Przewodowy</option>
+            </select>
+            <span id="errorTypPolaczenia" class="errors-text"></span>
+            <!-- </div>
+
+            < !-- </div> -- >
+            -->
+            <div class="form-buttons">
+                <p id="errorSummary" class="errors-text"></p>
+                <input type="submit" value="Dodaj" class="form-button-submit" />
+                <a href="zestaw-elementow-komputera-list.html" class="form-button-cancel">Anuluj</a>
+            </div>
+        </form>
+    </main>
+    <footer>
+        Vladyslav Domariev, S19314.
+    </footer>
+</body>
+
+</html>

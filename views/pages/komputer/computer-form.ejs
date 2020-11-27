@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pl-PL">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stan twojego komputera</title>
+    <link rel="stylesheet" href="../../css/style.css" />
+    <link rel="shortcut icon" href="../../images/logo.png" type="image/png" />
+    <script type="application/javascript" src="../../js/validationCommon.js"></script>
+    <script type="application/javascript" src="js/validationKomputerForm.js"></script>
+</head>
+
+<body>
+    <header>
+        <h1>Stan twojego komputera</h1>
+        <img src="../../images/logo.png" alt="Stan twojego komputera logo">
+    </header>
+    <nav>
+        <ul>
+            <li><a href="../../index.html">Strona główna</a></li>
+            <li><a href="../element_komputera/computer-element-list.html">Elementy komputerza</a></li>
+            <li><a href="computer-list.html" class="active">Komputery</a></li>
+            <li><a href="../zestaw_elementa_i_komputera/zestaw-elementow-komputera-list.html">Zestawy elementów
+                    komputera</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <h1>Nowy komputer</h1>
+        <form class="form" novalidate onsubmit="return validateForm();">
+
+            <label for="model">Model:<abbr title="required" aria-label="required">*</abbr></abbr></label>
+            <select name="model" id="model">
+                <option selected disabled>Model komputera</option>
+                <option value="Jaguar 3000">Jaguar 3000</option>
+                <option value="Actina by Corsair">Actina by Corsair</option>
+                <option value="Acer Aspire XC-330 AMD">Acer Aspire XC-330 AMD </option>
+            </select>
+            <span id="errorModel" class="errors-text"></span>
+
+            <label for="systemOperacyjny">Zainstalowany system operacyjny:<abbr title="required"
+                    aria-label="required">*</abbr></abbr></label>
+            <select name="systemOperacyjny" id="systemOperacyjny">
+                <option selected disabled>System operacyjny</option>
+                <option value="Tornado 6.1.0">Tornado 6.1.0</option>
+                <option value="Windows 7">Windows 7</option>
+                <option value="Windows 10">Windows 10</option>
+                <option value="Windows NT 3.5 Server">Windows NT 3.5 Server</option>
+            </select>
+            <span id="errorSystemOperacyjny" class="errors-text"></span>
+
+            <label for="typKomputera">Typ Komputera:<abbr title="required" aria-label="required">*</abbr></abbr></label>
+            <select required name="typKomputera" id="typKomputera">
+                <option selected disabled>Typ Komputera</option>
+                <option value="Komputer stacjonarny">Komputer stacjonarny</option>
+                <option value="Monoblok">Monoblok</option>
+                <option value="Laptop">Laptop</option>
+                <option value="Netbook">Netbook</option>
+                <option value="Tablet PC">Tablet PC</option>
+                <option value="Nettop">Nettop</option>
+                <option value="Komputer kieszonkowe">Komputer kieszonkowe</option>
+            </select>
+            <span id="errorTypKomputera" class="errors-text"></span>
+
+            <!-- <div> -->
+            <label for="datatime">Data stworzenia:<abbr title="required" aria-label="required">*</abbr></label>
+            <input type="datetime-local" name="datatime" id="dataStworzenia" />
+            <span id="errorDataStworzenia" class="errors-text"></span>
+            <!-- </div> -->
+            <div class="form-buttons">
+                <p id="errorsSummary" class="errors-text"></p>
+                <input type="submit" value="Dodaj" class="form-button-submit" />
+                <a href="computer-list.html" class="form-button-cancel">Anuluj</a>
+            </div>
+        </form>
+    </main>
+    <footer>
+        Vladyslav Domariev, S19314.
+    </footer>
+</body>
+
+</html>
