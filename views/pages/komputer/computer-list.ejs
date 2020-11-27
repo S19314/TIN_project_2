@@ -1,89 +1,59 @@
-<!DOCTYPE html>
-<html lang="pl-PL">
+<%- include('../../fragments/header.ejs')%>
+<main>
+    <h2>Lista komputerów</h2>
+    <table class="table-list">
+        <thead>
+            <tr>
+                <th>Model</th>
+                <th>Data stworzenia </th>
+                <th>Akcje</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Jaguar 3000</td>
+                <td>
+                    23.08.2019
+                </td>
+                <td>
+                    <ul class="list-actions">
+                        <li>
+                            <a href="computer-sczegoly.html" class="list-actions-button-details">Szczegóły</a>
+                        </li>
+                        <li>
+                            <a href="computer-form-filled.html" class="list-actions-button-edit">Edytuj</a>
+                        </li>
+                        <li>
+                            <a href="" class="list-actions-button-delete">Usuń</a>
+                        </li>
+                    </ul>
+                </td>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stan twojego komputera</title>
-    <link rel="stylesheet" href="../../css/style.css" />
-    <link rel="shortcut icon" href="../../images/logo.png" type="image/png" />
-</head>
+            </tr>
+            <tr>
+                <td>
+                    Actina by Corsair
+                </td>
+                <td>
+                    12.05.2012
+                </td>
+                <td>
+                    <ul class="list-actions">
+                        <li>
+                            <a href="" class="list-actions-button-details">Szczegóły</a>
+                        </li>
+                        <li>
+                            <a href="" class="list-actions-button-edit">Edytuj</a>
+                        </li>
+                        <li>
+                            <a href="" class="list-actions-button-delete">Usuń</a>
+                        </li>
+                    </ul>
+                </td>
 
-<body>
-    <header>
-        <h1>Stan twojego komputera</h1>
-        <img src="../../images/logo.png" alt="Stan twojego komputera logo">
-    </header>
-    <nav>
-        <ul>
-            <li><a href="../../index.html">Strona główna</a></li>
-            <li><a href="../element_komputera/computer-element-list.html">Elementy komputerza</a></li>
-            <li><a href="computer-list.html" class="active">Komputery</a></li>
-            <li><a href="../zestaw_elementa_i_komputera/zestaw-elementow-komputera-list.html">Zestawy elementów
-                    komputera</a></li>
-        </ul>
-    </nav>
-
-    <main>
-        <h2>Lista komputerów</h2>
-        <table class="table-list">
-            <thead>
-                <tr>
-                    <th>Model</th>
-                    <th>Data stworzenia </th>
-                    <th>Akcje</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Jaguar 3000</td>
-                    <td>
-                        23.08.2019
-                    </td>
-                    <td>
-                        <ul class="list-actions">
-                            <li>
-                                <a href="computer-sczegoly.html" class="list-actions-button-details">Szczegóły</a>
-                            </li>
-                            <li>
-                                <a href="computer-form-filled.html" class="list-actions-button-edit">Edytuj</a>
-                            </li>
-                            <li>
-                                <a href="" class="list-actions-button-delete">Usuń</a>
-                            </li>
-                        </ul>
-                    </td>
-
-                </tr>
-                <tr>
-                    <td>
-                        Actina by Corsair
-                    </td>
-                    <td>
-                        12.05.2012
-                    </td>
-                    <td>
-                        <ul class="list-actions">
-                            <li>
-                                <a href="" class="list-actions-button-details">Szczegóły</a>
-                            </li>
-                            <li>
-                                <a href="" class="list-actions-button-edit">Edytuj</a>
-                            </li>
-                            <li>
-                                <a href="" class="list-actions-button-delete">Usuń</a>
-                            </li>
-                        </ul>
-                    </td>
-
-                </tr>
-            </tbody>
-        </table>
-        <p><a href="./computer-form.html" class="button-add">Dodaj nowy komputer</a></p>
-    </main>
-    <footer>
-        Vladyslav Domariev, S19314.
-    </footer>
-</body>
-
-</html>
+            </tr>
+        </tbody>
+    </table>
+    <p><a href="./computer-form.html" class="button-add">Dodaj nowy komputer</a></p>
+</main>
+<%- include('../../fragments/footer.ejs')%>

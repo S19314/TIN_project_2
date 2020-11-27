@@ -1,38 +1,8 @@
-<!DOCTYPE html>
-<html lang="pl-PL">
+<%- include('./fragments/header.ejs')%>
+<main>
+    <h2>Strona główna</h2>
+    <p>Aplikacja jest skierowana do operowaniu, chronieniu i demonstrowaniu aktualnych danych o twoim komputerze.
+    </p>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stan twojego komputera</title>
-    <link rel="stylesheet" href="css/style.css" />
-    <link rel="shortcut icon" href="images/logo.png" type="image/png" />
-</head>
-
-<body>
-    <header>
-        <img src="images/logo.png" alt="Stan twojego komputera logo">
-        <h1>Stan twojego komputera</h1>
-    </header>
-    <nav>
-        <ul>
-            <li><a href="./index.html" class="active">Strona główna</a></li>
-            <li><a href="./pages/element_komputera/computer-element-list.html">Elementy komputerza</a></li>
-            <li><a href="./pages/komputer/computer-list.html">Komputery</a></li>
-            <li><a href="./pages/zestaw_elementa_i_komputera/zestaw-elementow-komputera-list.html">Zestawy elementów
-                    komputera</a></li>
-        </ul>
-    </nav>
-
-    <main>
-        <h2>Strona główna</h2>
-        <p>Aplikacja jest skierowana do operowaniu, chronieniu i demonstrowaniu aktualnych danych o twoim komputerze.
-        </p>
-
-    </main>
-    <footer>
-        Vladyslav Domariev, S19314.
-    </footer>
-</body>
-
-</html>
+</main>
+<%- include('./fragments/footer.ejs') %>

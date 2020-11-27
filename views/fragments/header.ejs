@@ -16,11 +16,12 @@
     </header>
     <nav>
         <ul>
-            <li><a href="./index.html" class="active">Strona główna</a></li>
-            <li><a href="./pages/element_komputera/computer-element-list.html">Elementy komputerza</a></li>
-            <li><a href="./pages/komputer/computer-list.html">Komputery</a></li>
-            <li><a href="./pages/zestaw_elementa_i_komputera/zestaw-elementow-komputera-list.html">Zestawy elementów
+            <li><a href="/" class="<%= navLocation == 'main' ? 'active' : ''%>">Strona główna</a></li>
+            <li><a href="/element_komputera" class="<%= navLocation == 'elementKomputer' ? 'active' : ''%>">Elementy
+                    komputerza</a></li>
+            <li><a href="/komputers" class="<%= navLocation == 'komputer' ? 'active' : ''%>">Komputery</a></li>
+            <li><a href=" /zestaw_elementa_i_komputera"
+                    class="<%= navLocation == 'zestawElementaKomputera' ? 'active' : ''%>">Zestawy elementów
                     komputera</a></li>
         </ul>
     </nav>
-</body>
