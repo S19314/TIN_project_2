@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-const komputerController = require('../controllers/zestawElementaKomputeraController');
+const zestawElementaKomputeraController = require('../controllers/zestawElementaKomputeraController');
 
-router.get('/', komputerController.showKomputerList);
-router.get('/add', komputerController.showAddKomputerForm);
-router.get('/details/:komputerId', komputerController.showKomputerDetails);
+router.get('/', zestawElementaKomputeraController.showZestawElementKomputerList);
+router.get('/add', zestawElementaKomputeraController.showAddZestawElementKomputerForm);
+router.get('/details/:komputerId', zestawElementaKomputeraController.showZestawElementKomputerDetails);
 
 module.exports = router;

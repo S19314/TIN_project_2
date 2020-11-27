@@ -1,42 +1,15 @@
-<!DOCTYPE html>
-<html lang="pl-PL">
+<%- include('../../fragments/header.ejs')%>
+<main>
+    <h1>Nowy element komputerowy</h1>
+    <form class="form" novalidate onsubmit="return validateForm();">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stan twojego komputera</title>
-    <link rel="stylesheet" href="../../css/style.css" />
-    <link rel="shortcut icon" href="../../images/logo.png" type="image/png" />
-    <script type="application/javascript" src="../../js/validationCommon.js"></script>
-    <script type="application/javascript" src="../../js/validationKomputerElement.js"></script>
-</head>
+        <label for="nazwa">Nazwa:<abbr title="required" aria-label="required">*</abbr></abbr></label>
+        <input type="text" name="nazwa" id="nazwa" value="Gigabyte GeForce GTX 1660 SUPER OC 6GB GDDR6" />
+        <span id="errorNazwa" class="errors-text"></span>
 
-<body>
-    <header>
-        <h1>Stan twojego komputera</h1>
-        <img src="../../images/logo.png" alt="Stan twojego komputera logo">
-    </header>
-    <nav>
-        <ul>
-            <li><a href="../../index.html">Strona główna</a></li>
-            <li><a href="./computer-element-list.html" class="active">Elementy komputerza</a></li>
-            <li><a href="../komputer/computer-list.html">Komputery</a></li>
-            <li><a href="../zestaw_elementa_i_komputera/zestaw-elementow-komputera-list.html">
-                    Zestawy elementów komputera</a></li>
-        </ul>
-    </nav>
-
-    <main>
-        <h1>Nowy element komputerowy</h1>
-        <form class="form" novalidate onsubmit="return validateForm();">
-
-            <label for="nazwa">Nazwa:<abbr title="required" aria-label="required">*</abbr></abbr></label>
-            <input type="text" name="nazwa" id="nazwa" value="Gigabyte GeForce GTX 1660 SUPER OC 6GB GDDR6" />
-            <span id="errorNazwa" class="errors-text"></span>
-
-            <label for="opis">Opis:<abbr title="required" aria-label="required">*</abbr></abbr></label>
-            <textarea cols="40" rows="8" name="opis"
-                id="opis">Przygotuj się na szybki i niezawodny gaming o wyjątkowych efektach graficznych, z nowymi
+        <label for="opis">Opis:<abbr title="required" aria-label="required">*</abbr></abbr></label>
+        <textarea cols="40" rows="8" name="opis"
+            id="opis">Przygotuj się na szybki i niezawodny gaming o wyjątkowych efektach graficznych, z nowymi
                     układami w architekturze NVIDIA Turing. Gigabyte GeForce GTX 1660 SUPER OC to fabrycznie
                     podkręcania konstrukcja wyposażona w 6GB pamięci GDDR6 oraz 192-bitowy interfejs pamięci.
                     Wydajne chłodzenie Windforce 2X zadba o optymalne temperatury, jednocześnie wyłączając się
@@ -46,24 +19,19 @@
                     Sprawdź, jak Gigabyte GeForce GTX 1660 SUPER OC wygląda w rzeczywistości. Chwyć zdjęcie poniżej
                     i przeciągnij je w lewo lub prawo aby obrócić produkt lub skorzystaj z przycisków nawigacyjnych.</textarea>
 
-            <span id="errorOpis" class="errors-text"></span>
+        <span id="errorOpis" class="errors-text"></span>
 
-            <label for="foto">Foto:<abbr title="required" aria-label="required">*</abbr></abbr></label>
-            <img src="https://cdn.x-kom.pl/i/setup/images/prod/big/product-new-big,,2019/10/pr_2019_10_25_13_53_0_788_06.jpg"
-                alt="foto Gigabyte GeForce GTX 1660 SUPER OC 6GB GDDR6.jpg" class="form-opis-foto" id="fotoOutput">
-            <input type="file" name="foto" id="fotoInput" />
-            <span id="errorFotoInput" class="errors-text"></span>
+        <label for="foto">Foto:<abbr title="required" aria-label="required">*</abbr></abbr></label>
+        <img src="https://cdn.x-kom.pl/i/setup/images/prod/big/product-new-big,,2019/10/pr_2019_10_25_13_53_0_788_06.jpg"
+            alt="foto Gigabyte GeForce GTX 1660 SUPER OC 6GB GDDR6.jpg" class="form-opis-foto" id="fotoOutput">
+        <input type="file" name="foto" id="fotoInput" />
+        <span id="errorFotoInput" class="errors-text"></span>
 
-            <div class="form-buttons">
-                <p id="errorSummary" class="errors-text"></p>
-                <input type="submit" value="Dodaj" class="form-button-submit" />
-                <a href="computer-element-list.html" class="form-button-cancel">Anuluj</a>
-            </div>
-        </form>
-    </main>
-    <footer>
-        Vladyslav Domariev, S19314.
-    </footer>
-</body>
-
-</html>
+        <div class="form-buttons">
+            <p id="errorSummary" class="errors-text"></p>
+            <input type="submit" value="Dodaj" class="form-button-submit" />
+            <a href="computer-element-list.html" class="form-button-cancel">Anuluj</a>
+        </div>
+    </form>
+</main>
+<%- include('../../fragments/footer.ejs')%>

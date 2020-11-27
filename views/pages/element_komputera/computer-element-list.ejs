@@ -1,42 +1,17 @@
-<!DOCTYPE html>
-<html lang="pl-PL">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stan twojego komputera</title>
-    <link rel="stylesheet" href="../../css/style.css" />
-    <link rel="shortcut icon" href="../../images/logo.png" type="image/png" />
-</head>
-
-<body>
-    <header>
-        <h1>Stan twojego komputera</h1>
-        <img src="../../images/logo.png" alt="Stan twojego komputera logo">
-    </header>
-    <nav>
-        <ul>
-            <li><a href="../../index.html">Strona główna</a></li>
-            <li><a href="computer-element-list.html" class="active">Elementy komputerza</a></li>
-            <li><a href="../komputer/computer-list.html">Komputery</a></li>
-            <li><a href="../zestaw_elementa_i_komputera/zestaw-elementow-komputera-list.html">Zestawy elementów
-                    komputera</a></li>
-        </ul>
-    </nav>
-
-    <main>
-        <h2>Lista elementów komputera</h2>
-        <table class="table-list">
-            <thead>
-                <tr>
-                    <th>Nazwa</th>
-                    <th>Akcje</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Gigabyte GeForce GTX 1660 SUPER OC 6GB GDDR6</td>
-                    <!-- 
+<%- include('../../fragments/header.ejs')%>
+<main>
+    <h2>Lista elementów komputera</h2>
+    <table class="table-list">
+        <thead>
+            <tr>
+                <th>Nazwa</th>
+                <th>Akcje</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Gigabyte GeForce GTX 1660 SUPER OC 6GB GDDR6</td>
+                <!-- 
                     <td class="list-opis">Przygotuj się na szybki i niezawodny gaming o wyjątkowych efektach
                         graficznych, z nowymi
                         układami w architekturze NVIDIA Turing. Gigabyte GeForce GTX 1660 SUPER OC to fabrycznie
@@ -54,26 +29,25 @@
                             alt="foto Gigabyte GeForce GTX 1660 SUPER OC 6GB GDDR6.jpg" class="list-foto">
                     </td>
                     -->
-                    <td>
-                        <ul class="list-actions">
-                            <li>
-                                <a href="./computer-element-sczegoly.html"
-                                    class="list-actions-button-details">Szczegóły</a>
-                            </li>
-                            <li>
-                                <a href="computer-element-fill.html" class="list-actions-button-edit">Edytuj</a>
-                            </li>
-                            <li>
-                                <a href="" class="list-actions-button-delete">Usuń</a>
-                            </li>
-                        </ul>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        AMD Ryzen 5 3600 3,6GHz BOX (100-100000031BOX)
-                    </td>
-                    <!--
+                <td>
+                    <ul class="list-actions">
+                        <li>
+                            <a href="./computer-element-sczegoly.html" class="list-actions-button-details">Szczegóły</a>
+                        </li>
+                        <li>
+                            <a href="computer-element-fill.html" class="list-actions-button-edit">Edytuj</a>
+                        </li>
+                        <li>
+                            <a href="" class="list-actions-button-delete">Usuń</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    AMD Ryzen 5 3600 3,6GHz BOX (100-100000031BOX)
+                </td>
+                <!--
                     <td class="list-opis">Typ i model procesora AMD Ryzen 5 3600
                         Typ gniazda (socket) socket - AM4
                         Liczba rdzeni 6
@@ -93,29 +67,24 @@
                             alt="i-amd-ryzen-5-3600-3-6ghz-box-100-100000031box.jpg" class="list-foto">
                     </td>
                         -->
-                    <td>
+                <td>
 
-                        <ul class="list-actions">
-                            <li>
-                                <a href="" class="list-actions-button-details">Szczegóły</a>
-                            </li>
-                            <li>
-                                <a href="" class="list-actions-button-edit">Edytuj</a>
-                            </li>
-                            <li>
-                                <a href="" class="list-actions-button-delete">Usuń</a>
-                            </li>
-                        </ul>
-                    </td>
+                    <ul class="list-actions">
+                        <li>
+                            <a href="" class="list-actions-button-details">Szczegóły</a>
+                        </li>
+                        <li>
+                            <a href="" class="list-actions-button-edit">Edytuj</a>
+                        </li>
+                        <li>
+                            <a href="" class="list-actions-button-delete">Usuń</a>
+                        </li>
+                    </ul>
+                </td>
 
-                </tr>
-            </tbody>
-        </table>
-        <p><a href="computer-element-form.html" class="button-add">Dodaj nowy element komputera</a></p>
-    </main>
-    <footer>
-        Vladyslav Domariev, S19314.
-    </footer>
-</body>
-
-</html>
+            </tr>
+        </tbody>
+    </table>
+    <p><a href="computer-element-form.html" class="button-add">Dodaj nowy element komputera</a></p>
+</main>
+<%- include('../../fragments/footer.ejs')%>

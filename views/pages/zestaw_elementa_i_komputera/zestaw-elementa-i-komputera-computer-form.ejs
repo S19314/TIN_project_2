@@ -1,91 +1,59 @@
-<!DOCTYPE html>
-<html lang="pl-PL">
+<%- include('../../fragments/header.ejs')%>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stan twojego komputera</title>
-    <link rel="stylesheet" href="../../css/style.css" />
-    <link rel="shortcut icon" href="../../images/logo.png" type="image/png" />
-    <script type="application/javascript" src="../../js/validationCommon.js"></script>
-    <script type="application/javascript" src="../../js/validationZestawElementaIKomputera.js"></script>
-</head>
+<main>
+    <h1>Nowy zestaw elementa i komputera</h1>
+    <form class="form" novalidate onsubmit="return validateForm();">
 
-<body>
-    <header>
-        <h1>Stan twojego komputera</h1>
-        <img src="../../images/logo.png" alt="Stan twojego komputera logo">
-    </header>
-    <nav>
-        <ul>
-            <li><a href="/index.html">Strona główna</a></li>
-            <li><a href="/pages/element_komputera/computer-element-list.html">Elementy komputerza</a></li>
-            <li><a href="/pages/komputer/computer-list.html">Komputery</a></li>
-            <li><a href="/pages/zestaw_elementa_i_komputera/zestaw-elementow-komputera-list.html" class="active">Zestawy
-                    elementów komputera</a></li>
-        </ul>
-    </nav>
+        <label for="model">Model komputera:<abbr title="required" aria-label="required">*</abbr></abbr></label>
+        <select required name="model" id="model">
+            <option selected disabled>Model komputera</option>
+            <option value="Jaguar 3000">Jaguar 3000</option>
+            <option value="Actina by Corsair">Actina by Corsair</option>
+        </select>
+        <span id="errorModel" class="errors-text"></span> <!-- Не был выбран -->
 
-    <main>
-        <h1>Nowy zestaw elementa i komputera</h1>
-        <form class="form" novalidate onsubmit="return validateForm();">
+        <label for="nazwaElementu">Nazwa elementu:<abbr title="required" aria-label="required">*</abbr></abbr></label>
 
-            <label for="model">Model komputera:<abbr title="required" aria-label="required">*</abbr></abbr></label>
-            <select required name="model" id="model">
-                <option selected disabled>Model komputera</option>
-                <option value="Jaguar 3000">Jaguar 3000</option>
-                <option value="Actina by Corsair">Actina by Corsair</option>
-            </select>
-            <span id="errorModel" class="errors-text"></span> <!-- Не был выбран -->
-
-            <label for="nazwaElementu">Nazwa elementu:<abbr title="required"
-                    aria-label="required">*</abbr></abbr></label>
-
-            <select required name="nazwaElementu" id="nazwaElementu">
-                <option selected disabled>Nazwa elementu</option>
-                <option value="Gigabyte GeForce GTX 1660 SUPER OC 6GB GDDR6">Gigabyte GeForce GTX 1660 SUPER OC 6GB
-                    GDDR6</option>
-                <option value="AMD Ryzen 5 3600 3,6GHz BOX (100-100000031BOX)">AMD Ryzen 5 3600 3,6GHz BOX
-                    (100-100000031BOX)</option>
-            </select>
-            <span id="errorNazwaElementu" class="errors-text"></span> <!-- Типа, не был выбран-->
+        <select required name="nazwaElementu" id="nazwaElementu">
+            <option selected disabled>Nazwa elementu</option>
+            <option value="Gigabyte GeForce GTX 1660 SUPER OC 6GB GDDR6">Gigabyte GeForce GTX 1660 SUPER OC 6GB
+                GDDR6</option>
+            <option value="AMD Ryzen 5 3600 3,6GHz BOX (100-100000031BOX)">AMD Ryzen 5 3600 3,6GHz BOX
+                (100-100000031BOX)</option>
+        </select>
+        <span id="errorNazwaElementu" class="errors-text"></span> <!-- Типа, не был выбран-->
 
 
 
-            </select><label for="aktualnaTemperatura">Aktualna temperatura:<abbr title="required"
-                    aria-label="required">*</abbr></label>
-            <input type="text" name="aktualnaTemperatura" id="aktualnaTemperatura" />
-            <span id="errorAktualnaTemperatura" class="errors-text"></span>
+        </select><label for="aktualnaTemperatura">Aktualna temperatura:<abbr title="required"
+                aria-label="required">*</abbr></label>
+        <input type="text" name="aktualnaTemperatura" id="aktualnaTemperatura" />
+        <span id="errorAktualnaTemperatura" class="errors-text"></span>
 
-            <label for="procentWykorzystanychZasobow">Procent wykorystanych zasobów:<abbr title="required"
-                    aria-label="required">*</abbr></label>
-            <input type="text" name="procentWykorzystanychZasobow" id="procentWykorzystanychZasobow" />
-            <span id="errorProcentWykorzystanychZasobow" class="errors-text"></span>
+        <label for="procentWykorzystanychZasobow">Procent wykorystanych zasobów:<abbr title="required"
+                aria-label="required">*</abbr></label>
+        <input type="text" name="procentWykorzystanychZasobow" id="procentWykorzystanychZasobow" />
+        <span id="errorProcentWykorzystanychZasobow" class="errors-text"></span>
 
-            <label for="aktualnaSzybkoscPrzekazaniaDanych">Aktualna szybkość przekazania danych:<abbr title="required"
-                    aria-label="required">*</abbr></label>
-            <input type="text" name="aktualnaSzybkoscPrzekazaniaDanych" id="aktualnaSzybkoscPrzekazaniaDanych" />
-            <span id="errorAktualnaSzybkoscPrzekazaniaDanych" class="errors-text"></span>
+        <label for="aktualnaSzybkoscPrzekazaniaDanych">Aktualna szybkość przekazania danych:<abbr title="required"
+                aria-label="required">*</abbr></label>
+        <input type="text" name="aktualnaSzybkoscPrzekazaniaDanych" id="aktualnaSzybkoscPrzekazaniaDanych" />
+        <span id="errorAktualnaSzybkoscPrzekazaniaDanych" class="errors-text"></span>
 
-            <label for="typPolaczenia">Typ polączenia elementa z komputerem:<abbr title="required"
-                    aria-label="required">*</abbr></abbr></label>
-            <select required name="typPolaczenia" id="typPolaczenia">
-                <option selected disabled>Typ polaczenia</option>
-                <option value="Bezprzewodowy">Bezprzewodowy</option>
-                <option value="Przewodowy">Przewodowy</option>
-            </select>
-            <span id="errorTypPolaczenia" class="errors-text"></span>
+        <label for="typPolaczenia">Typ polączenia elementa z komputerem:<abbr title="required"
+                aria-label="required">*</abbr></abbr></label>
+        <select required name="typPolaczenia" id="typPolaczenia">
+            <option selected disabled>Typ polaczenia</option>
+            <option value="Bezprzewodowy">Bezprzewodowy</option>
+            <option value="Przewodowy">Przewodowy</option>
+        </select>
+        <span id="errorTypPolaczenia" class="errors-text"></span>
 
-            <div class="form-buttons">
-                <p id="errorsSummary" class="errors-text"></p>
-                <input type="submit" value="Dodaj" class="form-button-submit" />
-                <a href="zestaw-elementow-komputera-list.html" class="form-button-cancel">Anuluj</a>
-            </div>
-        </form>
-    </main>
-    <footer>
-        Vladyslav Domariev, S19314.
-    </footer>
-</body>
-
-</html>
+        <div class="form-buttons">
+            <p id="errorsSummary" class="errors-text"></p>
+            <input type="submit" value="Dodaj" class="form-button-submit" />
+            <a href="zestaw-elementow-komputera-list.html" class="form-button-cancel">Anuluj</a>
+        </div>
+    </form>
+</main>
+<%- include('../../fragments/footer.ejs')%>

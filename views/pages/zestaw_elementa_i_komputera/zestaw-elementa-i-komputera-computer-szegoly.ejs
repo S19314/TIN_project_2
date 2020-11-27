@@ -1,88 +1,58 @@
-<!DOCTYPE html>
-<html lang="pl-PL">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stan twojego komputera</title>
-    <link rel="stylesheet" href="../../css/style.css" />
-    <link rel="shortcut icon" href="../../images/logo.png" type="image/png" />
-</head>
-
-<body>
-    <header>
-        <h1>Stan twojego komputera</h1>
-        <img src="../../images/logo.png" alt="Stan twojego komputera logo">
-    </header>
-    <nav>
-        <ul>
-            <li><a href="/index.html">Strona główna</a></li>
-            <li><a href="/pages/element_komputera/computer-element-list.html">Elementy komputerza</a></li>
-            <li><a href="/pages/komputer/computer-list.html">Komputery</a></li>
-            <li><a href="/pages/zestaw_elementa_i_komputera/zestaw-elementow-komputera-list.html" class="active">Zestawy
-                    elementów komputera</a></li>
-        </ul>
-    </nav>
-
-    <main>
-        <h1>Nowy zestaw elementa i komputera</h1>
-        <form class="form">
-            <!-- Добавить класс и в CSS добавить растояние между элементами-->
-            <div class="form-group">
-                <label for="model">Model:<abbr title="required" aria-label="required">*</abbr></abbr></label>
-                <!-- <input type="text" name="model" id="model" value="Jaguar 3000" disabled />
+<%- include('../../fragments/header.ejs')%>
+<main>
+    <h1>Nowy zestaw elementa i komputera</h1>
+    <form class="form">
+        <!-- Добавить класс и в CSS добавить растояние между элементами-->
+        <div class="form-group">
+            <label for="model">Model:<abbr title="required" aria-label="required">*</abbr></abbr></label>
+            <!-- <input type="text" name="model" id="model" value="Jaguar 3000" disabled />
                 -->
-                <p>Jaguar 3000</p>
-            </div>
-            <div class="form-group">
-                <label for="nazwaElementu">Nazwa elementu:<abbr title="required"
-                        aria-label="required">*</abbr></abbr></label>
-                <!-- <input type="text" name="opis" id="opis" /> -->
-                <!-- <input type="text" name="nazwaElementu" id="nazwaElementu"
+            <p>Jaguar 3000</p>
+        </div>
+        <div class="form-group">
+            <label for="nazwaElementu">Nazwa elementu:<abbr title="required"
+                    aria-label="required">*</abbr></abbr></label>
+            <!-- <input type="text" name="opis" id="opis" /> -->
+            <!-- <input type="text" name="nazwaElementu" id="nazwaElementu"
                     value="Gigabyte GeForce GTX 1660 SUPER OC 6GB GDDR6" disabled></textarea>
                 -->
-                <p>Gigabyte GeForce GTX 1660 SUPER OC 6GB GDDR6</p>
-            </div>
-            <!-- <div> -->
-            <!-- class="container-data-stworzenia"-->
-            <div class="form-group">
-                <label for="aktualnaTemperatura">Aktualna temperatura:<abbr title="required"
-                        aria-label="required"></abbr></label>
-                <input type="text" name="aktualnaTemperatura" value="56 stopni" disabled />
-            </div>
-            <div class="form-group">
-                <label for="procentWykorzystanychZasobow">Procent wykorystanych zasobów:<abbr title="required"
-                        aria-label="required"></abbr></label>
-                <input type="text" name="procentWykorzystanychZasobow" value="15%" disabled />
-            </div>
-            <div class="form-group">
-                <label for="aktualnaSzybkoscPrzekazaniaDanych">Aktualna szybkość przekazania danych:<abbr
-                        title="required" aria-label="required"></abbr></label>
-                <input type="text" name="aktualnaSzybkoscPrzekazaniaDanych" value="0.4 Mb/s" disabled />
-            </div>
-            <div class="form-group">
-                <label for="typPolaczenia">Typ polączenia elementa z komputerem:<abbr title="required"
-                        aria-label="required">*</abbr></abbr></label>
+            <p>Gigabyte GeForce GTX 1660 SUPER OC 6GB GDDR6</p>
+        </div>
+        <!-- <div> -->
+        <!-- class="container-data-stworzenia"-->
+        <div class="form-group">
+            <label for="aktualnaTemperatura">Aktualna temperatura:<abbr title="required"
+                    aria-label="required"></abbr></label>
+            <input type="text" name="aktualnaTemperatura" value="56 stopni" disabled />
+        </div>
+        <div class="form-group">
+            <label for="procentWykorzystanychZasobow">Procent wykorystanych zasobów:<abbr title="required"
+                    aria-label="required"></abbr></label>
+            <input type="text" name="procentWykorzystanychZasobow" value="15%" disabled />
+        </div>
+        <div class="form-group">
+            <label for="aktualnaSzybkoscPrzekazaniaDanych">Aktualna szybkość przekazania danych:<abbr title="required"
+                    aria-label="required"></abbr></label>
+            <input type="text" name="aktualnaSzybkoscPrzekazaniaDanych" value="0.4 Mb/s" disabled />
+        </div>
+        <div class="form-group">
+            <label for="typPolaczenia">Typ polączenia elementa z komputerem:<abbr title="required"
+                    aria-label="required">*</abbr></abbr></label>
 
-                <!--         <input type="text" name="typComputera" id="typComputera" /> -->
-                <select required disabled name="typPolaczenia">
-                    <option disabled>Typ polaczenia</option>
-                    <option value="Bezprzewodowy">Bezprzewodowy</option>
-                    <option selected value="Przewodowy">Przewodowy</option>
-                </select>
-            </div>
-            <!-- </div> -->
+            <!--         <input type="text" name="typComputera" id="typComputera" /> -->
+            <select required disabled name="typPolaczenia">
+                <option disabled>Typ polaczenia</option>
+                <option value="Bezprzewodowy">Bezprzewodowy</option>
+                <option selected value="Przewodowy">Przewodowy</option>
+            </select>
+        </div>
+        <!-- </div> -->
 
-            <div class="form-buttons">
-                <a href="zestaw-elementa-i-komputera-computer-fill.html" class="list-actions-button-edit">Edytuj</a>
-                <a href="zestaw-elementow-komputera-list.html" class="list-actions-button-details">Powrót</a>
-            </div>
-        </form>
+        <div class="form-buttons">
+            <a href="zestaw-elementa-i-komputera-computer-fill.html" class="list-actions-button-edit">Edytuj</a>
+            <a href="zestaw-elementow-komputera-list.html" class="list-actions-button-details">Powrót</a>
+        </div>
+    </form>
 
-    </main>
-    <footer>
-        Vladyslav Domariev, S19314.
-    </footer>
-</body>
-
-</html>
+</main>
+<%- include('../../fragments/footer.ejs')%>
