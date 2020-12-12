@@ -12,7 +12,7 @@ function validateForm() {
     const errorAktualnaTemperatura = document.getElementById('errorAktualnaTemperatura');
     const errorProcentWykorzystanychZasobow = document.getElementById('errorProcentWykorzystanychZasobow');
     const errorAktualnaSzybkoscPrzekazaniaDanych = document.getElementById('errorAktualnaSzybkoscPrzekazaniaDanych');
-    const errorTypPolaczenia = document.getElementById('typPolaczenia');
+    const errorTypPolaczenia = document.getElementById('errorTypPolaczenia');
 
     const errorSummary = document.getElementById('errorSummary');
     /*

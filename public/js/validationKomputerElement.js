@@ -27,19 +27,19 @@ function validateForm() {
     if (!checkRequired(opisInput.value)) {
         valid = false;
         opisInput.classList.add("error-input");
-        errorSystemOperacyjny.innerText = "Pole jest wymagane";
-    } else if (!checkTextLengthRange(opisInput.value, 2, 300)) {
+        errorOpis.innerText = "Pole jest wymagane";
+    } else if (!checkTextLengthRange(opisInput.value, 2, 1000)) {
         valid = false;
         opisInput.classList.add("error-input");
-        errorOpis.innerText = "Pole powinno zawierać od 2 do 300 znaków";
+        errorOpis.innerText = "Pole powinno zawierać od 2 do 1000 znaków";
     }
-
+    /*
     if (!checkRequired(fotoInputInput.value)) {
         valid = false;
         fotoInputInput.classList.add("error-input");
         errorFotoInput.innerText = "Pole jest wymagane";
     }
-
+*/
     if (!valid) {
         errorSummary.innerText = "Formularz zawiera błędy";
     }
