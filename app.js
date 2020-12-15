@@ -8,8 +8,10 @@ var indexRouter = require('./routes/index');
 var komputerRouter = require('./routes/komputerRoute');
 var elementKomputerRouter = require('./routes/elementKomputerRoute');
 var zestawElementaKomputerRouter = require('./routes/zestawElementaKomputerRoute');
-const elementKomputerowyApiRouter = require('./routes/api/Element_KomputerowyApiRoute');
 
+const elementKomputerowyApiRouter = require('./routes/api/Element_KomputerowyApiRoute');
+const komputerApiRoute = require('./routes/api/KomputerApiRoute');
+const zestaw_Elementa_i_KomputeraApiRoute = require('./routes/api/Zestaw_Elementa_i_KomputeraApiRoute');
 var app = express();
 
 // view engine setup
@@ -29,6 +31,8 @@ app.use('/zestaw-komputera-element', zestawElementaKomputerRouter);
 
 
 app.use('/api/komputer-elements', elementKomputerowyApiRouter);
+app.use('/api/komputers', komputerApiRoute);
+app.use('/api/zestaws', zestaw_Elementa_i_KomputeraApiRoute);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

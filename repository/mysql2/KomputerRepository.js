@@ -15,8 +15,11 @@ exports.getKomputers = () => {
 exports.getKomputerById = (computerId) => {
     const query = ` 
     SELECT komp._id as komp_id, 
-        komp.model, komp.zaintstalowany_System_Operacyjny, komp.data_Stworzenia, 
-        e._id as _id, e.nazwa, e.opis, e.foto_path,
+        komp.model,
+        komp.zaintstalowany_System_Operacyjny,
+        komp.data_Stworzenia,
+        komp.typ_Komputera,
+        e._id as element_id, e.nazwa, e.opis, e.foto_path,
 		z_e_k._id as z_e_k_id,
         z_e_k.aktuakna_Temperatura, 
         z_e_k.procent_Wykorzystanych_Zasobow, 
@@ -34,10 +37,10 @@ exports.getKomputerById = (computerId) => {
             }
             const computer = {
                 _id: parseInt(computerId),
-                model: row.model,
-                zaintstalowany_System_Operacyjny: row.zaintstalowany_System_Operacyjny,
-                typ_Komputera: row.typ_Komputera,
-                data_Stworzenia: row.data_Stworzenia,
+                model: firstRow.model,
+                zaintstalowany_System_Operacyjny: firstRow.zaintstalowany_System_Operacyjny,
+                typ_Komputera: firstRow.typ_Komputera,
+                data_Stworzenia: firstRow.data_Stworzenia,
                 zestaw_elementow_komputera: []
             };
 

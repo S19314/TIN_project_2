@@ -11,6 +11,7 @@ exports.getZestawyElementowKomputera = () => {
     komp.model,
     komp.zaintstalowany_System_Operacyjny, 		
     komp.data_Stworzenia,
+    komp.typ_Komputera,
     e._id as element_id, e.nazwa, e.opis, e.foto_path
     FROM Zestaw_Elementow_Komputera z_e_k 
     left join Element_komputera e on z_e_k.element_id = e._id
@@ -34,7 +35,7 @@ exports.getZestawyElementowKomputera = () => {
                         typ_Komputera: row.typ_Komputera,
                         data_Stworzenia: row.data_Stworzenia
                     },
-                    element_komputera = {
+                    element_komputera: {
                         _id: parseInt(elementId),
                         nazwa: firstRow.nazwa,
                         opis: firstRow.opis,
@@ -62,6 +63,7 @@ exports.getZestawElementaKomputeraById = (zestawId) => {
                     komp.model,
                     komp.zaintstalowany_System_Operacyjny, 		
                     komp.data_Stworzenia,
+                    komp.typ_Komputera,
                     e._id as element_id, e.nazwa, e.opis, e.foto_path
                     FROM Zestaw_Elementow_Komputera z_e_k 
                     left join Element_komputera e on z_e_k.element_id = e._id
@@ -86,7 +88,7 @@ exports.getZestawElementaKomputeraById = (zestawId) => {
                     typ_Komputera: row.typ_Komputera,
                     data_Stworzenia: row.data_Stworzenia
                 },
-                element_komputera = {
+                element_komputera: {
                     _id: parseInt(elementId),
                     nazwa: firstRow.nazwa,
                     opis: firstRow.opis,
