@@ -8,6 +8,7 @@ var indexRouter = require('./routes/index');
 var komputerRouter = require('./routes/komputerRoute');
 var elementKomputerRouter = require('./routes/elementKomputerRoute');
 var zestawElementaKomputerRouter = require('./routes/zestawElementaKomputerRoute');
+const elementKomputerowyApiRouter = require('./routes/api/Element_KomputerowyApiRoute');
 
 var app = express();
 
@@ -25,6 +26,9 @@ app.use('/', indexRouter);
 app.use('/komputers', komputerRouter);
 app.use('/komputer-element', elementKomputerRouter);
 app.use('/zestaw-komputera-element', zestawElementaKomputerRouter);
+
+
+app.use('/api/komputer-elements', elementKomputerowyApiRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
