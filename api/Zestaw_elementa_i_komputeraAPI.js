@@ -12,7 +12,7 @@ exports.getZestawyElementowKomputera = (req, res, next) => {
 
 exports.getZestawyElementowKomputeraById = (req, res, next) => {
     const zestawId = req.params.zestawId;
-    ZestawRepository.getZestawyElementowKomputeraById(zestawId)
+    ZestawRepository.getZestawElementaKomputeraById(zestawId)
         .then(zestaw => {
             if (!zestaw) {
                 res.status(404).json({
@@ -54,7 +54,7 @@ exports.updateZestawElementaKomputera = (req, res, next) => {
 
 exports.deleteZestawElementaKomputera = (req, res, next) => {
     const zestawId = req.params.zestawId;
-    KomputerRepository.deleteZestawElementaKomputera(zestawId)
+    ZestawRepository.deleteZestawElementaKomputera(zestawId)
         .then(result => {
             res.status(200).json({ message: 'Removed zestaw elementa komputer z komputerą', zestaw_elementa_i_komputera: result });
         })
@@ -65,3 +65,22 @@ exports.deleteZestawElementaKomputera = (req, res, next) => {
             next(err);
         });
 };
+
+/*
+exports.deleteManyZestawsElementaKomputera = (req, res, next) => {
+    console.log("req.body.arrayZestawId");
+    console.log(req.body.arrayZestawId);
+
+    ZestawRepository.deleteManyZestawyElmentaKomputera(req.body.arrayZestawId)
+        .then(result => {
+            res.status(200).json({ message: 'Removed zestaw elementa komputer z komputerą', zestaw_elementa_i_komputera: result });
+        })
+        .catch(err => {
+            if (!err.statusCode) {
+                err.statusCode = 500;
+            }
+            next(err);
+        });
+};
+
+*/

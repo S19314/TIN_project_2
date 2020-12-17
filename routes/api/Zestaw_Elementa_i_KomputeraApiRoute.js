@@ -8,5 +8,5 @@ router.get('/:zestawId', zestawApiController.getZestawyElementowKomputeraById);
 router.post('/', zestawApiController.createZestawElementaKomputera);
 router.put('/:zestawId', zestawApiController.updateZestawElementaKomputera);
 router.delete('/:zestawId', zestawApiController.deleteZestawElementaKomputera);
-
+// router.delete('/many', zestawApiController.deleteManyZestawsElementaKomputera);;
 module.exports = router;

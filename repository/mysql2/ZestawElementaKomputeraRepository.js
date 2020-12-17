@@ -36,10 +36,10 @@ exports.getZestawyElementowKomputera = () => {
                         data_Stworzenia: row.data_Stworzenia
                     },
                     element_komputera: {
-                        _id: parseInt(elementId),
-                        nazwa: firstRow.nazwa,
-                        opis: firstRow.opis,
-                        foto_path: firstRow.foto_path
+                        _id: row.element_id,
+                        nazwa: row.nazwa,
+                        opis: row.opis,
+                        foto_path: row.foto_path
                     }
                 };
                 zestawy_elementa_komputera.push(zestaw_elementa_komputera);
@@ -76,7 +76,7 @@ exports.getZestawElementaKomputeraById = (zestawId) => {
                 return {};
             }
             const zestaw_elementa_komputera = {
-                _id: row.z_e_k_id,
+                _id: parseInt(zestawId),
                 aktuakna_Temperatura: row.aktuakna_Temperatura,
                 procent_Wykorzystanych_Zasobow: row.procent_Wykorzystanych_Zasobow,
                 aktualna_Szybkosc_Przekazania_Danych: row.aktualna_Szybkosc_Przekazania_Danych,
@@ -89,10 +89,10 @@ exports.getZestawElementaKomputeraById = (zestawId) => {
                     data_Stworzenia: row.data_Stworzenia
                 },
                 element_komputera: {
-                    _id: parseInt(elementId),
-                    nazwa: firstRow.nazwa,
-                    opis: firstRow.opis,
-                    foto_path: firstRow.foto_path
+                    _id: row.element_id,
+                    nazwa: row.nazwa,
+                    opis: row.opis,
+                    foto_path: row.foto_path
                 }
             };
 
@@ -111,10 +111,10 @@ exports.createZestawElementaKomputera = (data) => {
     const sql = 'INSERT into ' +
         ' Zestaw_Elementow_Komputera ' +
         ' (element_id, computer_id, aktuakna_Temperatura, procent_Wykorzystanych_Zasobow, aktualna_Szybkosc_Przekazania_Danych, typPolaczenia) ' +
-        ' VALUES (?, ?, ?, ?, ?)';
+        ' VALUES (?, ?, ?, ?, ?, ?)';
     return db.promise().execute(
         sql,
-        [data.elementId, data.computerId, data.aktuakna_Temperatura, data.procent_Wykorzystanych_Zasobow, data.aktualna_Szybkosc_Przekazania_Danych, typPolaczenia]
+        [data.element_id, data.computer_id, data.aktuakna_Temperatura, data.procent_Wykorzystanych_Zasobow, data.aktualna_Szybkosc_Przekazania_Danych, data.typPolaczenia]
     );
 };
 
@@ -129,16 +129,16 @@ exports.updateZestawElmentaKomputera = (zestawId, data) => {
                 where _id = ?`;
     return db.promise().execute(
         sql,
-        [data.elementId, data.computerId, data.aktuakna_Temperatura, data.procent_Wykorzystanych_Zasobow, data.aktualna_Szybkosc_Przekazania_Danych, typPolaczenia, zestawId]
+        [data.element_id, data.computer_id, data.aktuakna_Temperatura, data.procent_Wykorzystanych_Zasobow, data.aktualna_Szybkosc_Przekazania_Danych, data.typPolaczenia, zestawId]
     );
 }
 
-exports.deleteZestawElmentaKomputera = (zestawId) => {
+exports.deleteZestawElementaKomputera = (zestawId) => {
     const sql = 'DELETE FROM Zestaw_Elementow_Komputera where _id = ?'
     return db.promise().execute(sql, [zestawId]);
 }
 
-exports.deleteZestawElmentaKomputera = (zetawIds) => {
+exports.deleteManyZestawyElmentaKomputera = (zetawIds) => {
     const sql = 'DELETE FROM Zestaw_Elementow_Komputera where _id IN (?)'
     return db.promise().execute(sql, [zetawIds]);
 }
