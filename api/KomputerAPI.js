@@ -54,7 +54,7 @@ exports.updateKomputer = (req, res, next) => {
 
 exports.deleteKomputer = (req, res, next) => {
     const computerId = req.params.computerId;
-    KomputerRepository.deleteElement_Komputera(computerId)
+    KomputerRepository.deleteKomputer(computerId)
         .then(result => {
             res.status(200).json({ message: 'Removed komputer', komputer: result });
         })

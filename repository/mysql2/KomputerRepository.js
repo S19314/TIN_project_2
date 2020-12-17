@@ -76,8 +76,7 @@ exports.createKomputer = (newKomputerData) => {
     const zaintstalowany_System_Operacyjny = newKomputerData.zaintstalowany_System_Operacyjny;
     const typ_Komputera = newKomputerData.typ_Komputera;
     const data_Stworzenia = newKomputerData.data_Stworzenia;
-
-    const sql = 'INSERT INTO Komputer (model, zaintstalowany_System_Operacyjny, typ_Komputera, data_Stworzenia) VALUES (?, ?, ?)';
+    const sql = 'INSERT INTO Komputer (model, zaintstalowany_System_Operacyjny, typ_Komputera, data_Stworzenia) VALUES (?, ?, ?, ?)';
     return db.promise().execute(
         sql,
         [model, zaintstalowany_System_Operacyjny, typ_Komputera, data_Stworzenia]
@@ -101,13 +100,17 @@ exports.updateKomputer = (komputerId, komputerData) => {
     );
 };
 
-exports.deleteKomputer = (komputerId) => {
+exports.deleteKomputer = (computerId) => {
+    console.log("Where is null?");
+    console.log("computerID");
+    console.log(computerId);
+
     const sql1 = 'DELETE FROM Zestaw_Elementow_Komputera where computer_id = ?';
     const sql2 = 'DELETE FROM Komputer where _id = ?';
 
-    return db.promise().execute(sql1, [komputerId])
+    return db.promise().execute(sql1, [computerId])
         .then(() => {
-            return db.promise().execute(sql2, [komputerId])
+            return db.promise().execute(sql2, [computerId])
         });
 
 };
