@@ -1,6 +1,7 @@
 <%- include('../../fragments/header.ejs')%>
     <main>
-        <script type="application/javascript" src="/public/js/validationKomputerElement.js"></script>
+        <script type="application/javascript;charset=utf-8" src="/public/js/validationKomputerElement.js"></script>
+
         <h1>
             <%=pageTitle%>
         </h1>
@@ -14,17 +15,21 @@
 
             <label for="opis">Opis:<abbr title="required" aria-label="required">*</abbr></abbr></label>
             <textarea cols="40" rows="8" name="opis" id="opis" <%=(formMode=='showDetails' ) ? 'disabled' : ''
-                %>><%=element.nazwa%></textarea>
+                %>><%=element.opis%></textarea>
             <span id="errorOpis" class="errors-text"></span>
 
-            <label for="foto">Foto:<abbr title="required" aria-label="required">*</abbr></abbr></label>
+            <label for="foto_path">Foto:<abbr title="required" aria-label="required">*</abbr></abbr></label>
             <%if (formMode=='showDetails' || formMode=='edit' ) {%>
                 <div>
-                    <img src="<%=element.foto_path %>" alt="foto <%=element.foto_path %>" class="form-opis-foto">
+                    <img src="<%=element.foto_path %>" alt="foto <%=element.foto_path%>" class="form-opis-foto">
                 </div>
                 <% } %>
-
-                    <input type="file" name="foto" id="fotoInput" value="<%= element.foto_path %>"
+                    <!-- name="foto" изменить на "foto_path"? -->
+                    <!-- 
+                    <input type="file" name="foto" id="fotoInput" value="<%=element.foto_path%>"
+                        <%=(formMode=='showDetails' ) ? 'disabled' : '' %>/>
+                        -->
+                    <input type="text" name="foto_path" id="fotoInput" value="<%=element.foto_path%>"
                         <%=(formMode=='showDetails' ) ? 'disabled' : '' %>/>
                     <span id="errorFotoInput" class="errors-text"></span>
                     <% if (formMode=='showDetails' ) { %>
@@ -40,6 +45,15 @@
                                 <a href="computer-element-list.html" class="form-button-cancel">Anuluj</a>
                             </div>
                         -->
+                            <div class="form-buttons">
+                                <p id="errorsSummary" class="errors-text"></p>
+                                <% if (formMode !='showDetails' ) { %>
+                                    <input class="form-button-submit" type="submit" value="<%=btnLabel%>" />
+                                    <a class="form-button-cancel" href="/komputer-element">Anuluj</a>
+                                    <% } else { %>
+                                        <a class="form-button-cancel" href="/komputer-element">Powrót</a>
+                                        <% } %>
+                            </div>
         </form>
         <% if (formMode=='showDetails' || formMode=='edit' ) { %>
             <h2>
@@ -89,14 +103,6 @@
                 </tbody>
             </table>
             <% } %>
-                <div class="form-buttons">
-                    <p id="errorsSummary" class="errors-text"></p>
-                    <% if (formMode !='showDetails' ) { %>
-                        <input class="form-button-submit" type="submit" value="<%=btnLabel%>" />
-                        <a class="form-button-cancel" href="/komputer-element">Anuluj</a>
-                        <% } else { %>
-                            <a class="form-button-cancel" href="/komputer-element">Powrót</a>
-                            <% } %>
-                </div>
+
     </main>
     <%- include('../../fragments/footer.ejs')%>

@@ -237,7 +237,8 @@ textarea{
 .form input[type="text"],
 .form input[type="number"],
 .form input[type="date"],
-.form input[type="email"]{
+.form input[type="email"],
+.form textarea{
     border: 1px solid #7f8c8d;
     color: #2c3e50;
     border-radius: 5px;

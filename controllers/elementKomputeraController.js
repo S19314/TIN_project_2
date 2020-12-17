@@ -68,6 +68,8 @@ exports.addElementKomputera = (req, res, next) => {
 exports.updateElementKomputera = (req, res, next) => {
     const elementId = req.body._id;
     const elementData = { ...req.body };
+    console.log("elementData");
+    console.log(elementData);
     ElementKomputeraRepository.updateElement_Komputera(elementId, elementData)
         .then(result => {
             res.redirect('/komputer-element');
