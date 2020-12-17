@@ -1,90 +1,61 @@
 <%- include('../../fragments/header.ejs')%>
-<main>
-    <h2>Lista elementów komputera</h2>
-    <table class="table-list">
-        <thead>
-            <tr>
-                <th>Nazwa</th>
-                <th>Akcje</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Gigabyte GeForce GTX 1660 SUPER OC 6GB GDDR6</td>
-                <!-- 
-                    <td class="list-opis">Przygotuj się na szybki i niezawodny gaming o wyjątkowych efektach
-                        graficznych, z nowymi
-                        układami w architekturze NVIDIA Turing. Gigabyte GeForce GTX 1660 SUPER OC to fabrycznie
-                        podkręcania konstrukcja wyposażona w 6GB pamięci GDDR6 oraz 192-bitowy interfejs pamięci.
-                        Wydajne chłodzenie Windforce 2X zadba o optymalne temperatury, jednocześnie wyłączając się
-                        podczas mniej obciążających GPU zadań. Całą konstrukcję dodatkowo usztywnia od spodu stylowy
-                        backplate.
+    <main>
+        <h2>Lista elementów komputera</h2>
+        <table class="table-list">
+            <thead>
+                <tr>
+                    <th>Nazwa</th>
+                    <th>Akcje</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for ( let element of elements ){ %>
+                    <tr>
+                        <td>
+                            <%= element.nazwa %>
+                        </td>
 
-                        Sprawdź, jak Gigabyte GeForce GTX 1660 SUPER OC wygląda w rzeczywistości. Chwyć zdjęcie poniżej
-                        i przeciągnij je w lewo lub prawo aby obrócić produkt lub skorzystaj z przycisków nawigacyjnych.
-                    </td>
-                    
-                    <td>
-                        <img src="https://cdn.x-kom.pl/i/setup/images/prod/big/product-new-big,,2019/10/pr_2019_10_25_13_53_0_788_06.jpg"
-                            alt="foto Gigabyte GeForce GTX 1660 SUPER OC 6GB GDDR6.jpg" class="list-foto">
-                    </td>
-                    -->
-                <td>
-                    <ul class="list-actions">
-                        <li>
-                            <a href="./computer-element-sczegoly.html" class="list-actions-button-details">Szczegóły</a>
-                        </li>
-                        <li>
-                            <a href="computer-element-fill.html" class="list-actions-button-edit">Edytuj</a>
-                        </li>
-                        <li>
-                            <a href="" class="list-actions-button-delete">Usuń</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    AMD Ryzen 5 3600 3,6GHz BOX (100-100000031BOX)
-                </td>
-                <!--
-                    <td class="list-opis">Typ i model procesora AMD Ryzen 5 3600
-                        Typ gniazda (socket) socket - AM4
-                        Liczba rdzeni 6
-                        Liczba wątków 12
-                        Częstotliwość t aktowania 3,6 - 4,2 GHz
-                        Zintegrowany układ graficzny nie posiada
-                        Odblokowany mnożnik tak
-                        Pamięć podręczna Cache L2 3 MB
-                        Pamięć podręczna Cache L3 32 MB
-                        Proces technologiczny 7 nm
-                        Architektura 64-bit tak
-                        Pobór mocy 65 W
-                    </td>
-                    
-                    <td>
-                        <img src="https://image.ceneostatic.pl/data/products/83359603/i-amd-ryzen-5-3600-3-6ghz-box-100-100000031box.jpg"
-                            alt="i-amd-ryzen-5-3600-3-6ghz-box-100-100000031box.jpg" class="list-foto">
-                    </td>
-                        -->
-                <td>
+                        <td>
+                            <ul class="list-actions">
+                                <li>
+                                    <a href="/komputer-element/details/<%=elements._id%>"
+                                        class="list-actions-button-details">Szczegóły</a>
+                                </li>
+                                <li>
+                                    <a href="/komputer-element/details/<%=elements._id%>"
+                                        class="list-actions-button-edit">Edytuj</a>
+                                </li>
+                                <li>
+                                    <a href="/komputer-element/delete/<%=elements._id%>"
+                                        class="list-actions-button-delete">Usuń</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <% } %>
+                        <tr>
+                            <td>
+                                AMD Ryzen 5 3600 3,6GHz BOX (100-100000031BOX)
+                            </td>
 
-                    <ul class="list-actions">
-                        <li>
-                            <a href="" class="list-actions-button-details">Szczegóły</a>
-                        </li>
-                        <li>
-                            <a href="" class="list-actions-button-edit">Edytuj</a>
-                        </li>
-                        <li>
-                            <a href="" class="list-actions-button-delete">Usuń</a>
-                        </li>
-                    </ul>
-                </td>
+                            <td>
 
-            </tr>
-        </tbody>
-    </table>
-    <p><a href="computer-element-form.html" class="button-add">Dodaj nowy element komputera</a></p>
-</main>
-<%- include('../../fragments/footer.ejs')%>
+                                <ul class="list-actions">
+                                    <li>
+                                        <a href="" class="list-actions-button-details">Szczegóły</a>
+                                    </li>
+                                    <li>
+                                        <a href="" class="list-actions-button-edit">Edytuj</a>
+                                    </li>
+                                    <li>
+                                        <a href="" class="list-actions-button-delete">Usuń</a>
+                                    </li>
+                                </ul>
+                            </td>
+
+                        </tr>
+            </tbody>
+        </table>
+        <p><a href="computer-element-form.html" class="button-add">Dodaj nowy element komputera</a></p>
+    </main>
+    <%- include('../../fragments/footer.ejs')%>
