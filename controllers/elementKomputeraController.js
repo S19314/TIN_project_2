@@ -27,7 +27,7 @@ exports.showEditElementKomputerowyForm = (req, res, next) => {
     const elementId = req.params.elementId;
     ElementKomputeraRepository.getElement_KomputeraById(elementId)
         .then(emp => {
-            res.render('pages/komputer-element/form', {
+            res.render('pages/element_komputera/computer-element-form', {
                 emp: emp,
                 formMode: 'edit',
                 pageTitle: 'Edycja elementa kopmutera',
@@ -39,12 +39,12 @@ exports.showEditElementKomputerowyForm = (req, res, next) => {
 };
 
 
-
+// 
 exports.showElementKomputerDetails = (req, res, next) => {
     const elementId = req.params.elementId;
     ElementKomputeraRepository.getElement_KomputeraById(elementId)
         .then(element => {
-            res.render('pages/element_komputera/computer-element-szegoly', {
+            res.render('pages/element_komputera/computer-element-form', {
                 element: element,
                 formMode: 'showDetails',
                 pageTitle: 'Szczegóły elementa komputera',

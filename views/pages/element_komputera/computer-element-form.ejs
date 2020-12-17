@@ -19,14 +19,14 @@
 
             <label for="foto">Foto:<abbr title="required" aria-label="required">*</abbr></abbr></label>
             <%if (formMode=='showDetails' ) {%>
-                <img src="<% element.foto_path %>" alt="foto <% element.foto_path %>" class="form-opis-foto">
+                <img src="<%=element.foto_path %>" alt="foto <%=element.foto_path %>" class="form-opis-foto">
                 <% } %>
                     <input type="file" name="foto" id="fotoInput" value="<%= element.foto_path %>"
                         <%=(formMode=='showDetails' ) ? 'disabled' : '' %>/>
                     <span id="errorFotoInput" class="errors-text"></span>
                     <% if (formMode=='showDetails' ) { %>
                         <div class="section-buttons">
-                            <a href="/komputer-element/edit/<%= element._id %>" class="button-edit">Edyruj</a>
+                            <a href="/komputer-element/edit/<%=element._id%>" class="button-edit">Edyruj</a>
                         </div>
                         <% } %>
                             <!-- Это типа не нужно? 
@@ -65,20 +65,20 @@
                     <% for (let z_e_k of element.zestaw_elementow_komputera) { %>
                         <tr>
                             <!-- zestaw-komputera-element -->
-                            <td><a href="/komputers/details/<%= z_e_k.komputer._id %>">
-                                    <%= z_e_k.komputer.name %>
+                            <td><a href="/komputers/details/<%=z_e_k.komputer._id%>">
+                                    <%=z_e_k.komputer.model%>
                                 </a></td>
                             <td>
-                                <%= z_e_k.aktuakna_Temperatura %>
+                                <%=z_e_k.aktuakna_Temperatura%>
                             </td>
                             <td>
-                                <%= z_e_k.procent_Wykorzystanych_Zasobow %>
+                                <%=z_e_k.procent_Wykorzystanych_Zasobow%>
                             </td>
                             <td>
-                                <%= z_e_k.aktualna_Szybkosc_Przekazania_Danych %>
+                                <%=z_e_k.aktualna_Szybkosc_Przekazania_Danych%>
                             </td>
                             <td>
-                                <%= z_e_k.typPolaczenia %>
+                                <%=z_e_k.typPolaczenia%>
                             </td>
                         </tr>
                         <% } %>

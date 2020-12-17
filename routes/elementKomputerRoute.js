@@ -5,7 +5,7 @@ const elementKomputeraController = require('../controllers/elementKomputeraContr
 
 router.get('/', elementKomputeraController.showElementKomputerList);
 router.get('/add', elementKomputeraController.showAddElementKomputerForm);
-router.get('/edit/:elemnetId', elementKomputeraController.showEditElementKomputerowyForm);
+router.get('/edit/:elementId', elementKomputeraController.showEditElementKomputerowyForm);
 router.get('/details/:elementId', elementKomputeraController.showElementKomputerDetails);
 
 module.exports = router;
