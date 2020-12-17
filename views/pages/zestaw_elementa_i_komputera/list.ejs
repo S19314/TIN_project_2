@@ -1,0 +1,45 @@
+<%- include('../../fragments/header.ejs')%>
+
+    <main>
+        <h2>Lista zestawów elementów komputera</h2>
+        <table class="table-list">
+            <thead>
+                <tr>
+                    <th>Model komputera</th>
+                    <th>Nazwa elementu</th>
+                    <th>Akcje</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (let zestaw of zestaw_elementa_i_komputera) { %>
+                    <tr>
+                        <td>
+                            <%= zestaw.komputer.model %>
+                        </td>
+                        <td>
+                            <%= zestaw.element_komputera.nazwa %>
+                        </td>
+                        <td>
+                            <ul class="list-actions">
+                                <li>
+                                    <a href="/zestaw-komputera-element/details/<%=zestaw._id%>"
+                                        class="list-actions-button-details">Szczegóły</a>
+                                </li>
+                                <li>
+                                    <a href="/zestaw-komputera-element/edit/<%=zestaw._id%>"
+                                        class="list-actions-button-edit">Edytuj</a>
+                                </li>
+                                <li>
+                                    <a href="/zestaw-komputera-element/delete/<%=zestaw._id%>"
+                                        class="list-actions-button-delete">Usuń</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <%} %>
+            </tbody>
+        </table>
+        <p><a href="/zestaw-komputera-element/add" class="button-add">Dodaj nowy zestaw elementa i
+                komputera</a></p>
+    </main>
+    <%- include('../../fragments/footer.ejs')%>

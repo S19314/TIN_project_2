@@ -142,3 +142,4 @@ exports.deleteManyZestawyElmentaKomputera = (zetawIds) => {
     const sql = 'DELETE FROM Zestaw_Elementow_Komputera where _id IN (?)'
     return db.promise().execute(sql, [zetawIds]);
 }
+
