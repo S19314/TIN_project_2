@@ -1,25 +1,98 @@
 <%- include('../../fragments/header.ejs')%>
-<main>
-    <h1>Nowy element komputerowy</h1>
-    <form class="form" novalidate onsubmit="return validateForm();">
-        <label for="nazwa">Nazwa:<abbr title="required" aria-label="required"
-                class="errors-text">*</abbr></abbr></label>
-        <input type="text" name="nazwa" id="nazwa" />
-        <span id="errorNazwa" class="errors-text"></span>
+    <main>
+        <script type="application/javascript" src="/public/js/validationKomputerElement.js"></script>
+        <h1>
+            <%=pageTitle%>
+        </h1>
+        <form class="form" method="post" action="<%=formAction%>" novalidate onsubmit="return validateForm();">
+            <input type="hidden" name="_id" value="<%= element._id %>">
+            <label for="nazwa">Nazwa:<abbr title="required" aria-label="required"
+                    class="errors-text">*</abbr></abbr></label>
+            <input type="text" name="nazwa" id="nazwa" value="<%= element.nazwa %>" <%=(formMode=='showDetails'
+                )? 'disabled' :''%> />
+            <span id="errorNazwa" class="errors-text"></span>
 
-        <label for="opis">Opis:<abbr title="required" aria-label="required">*</abbr></abbr></label>
-        <textarea cols="40" rows="8" name="opis" id="opis"></textarea>
-        <span id="errorOpis" class="errors-text"></span>
+            <label for="opis">Opis:<abbr title="required" aria-label="required">*</abbr></abbr></label>
+            <textarea cols="40" rows="8" name="opis" id="opis" <%=(formMode=='showDetails' ) ? 'disabled' : ''
+                %>><%=element.nazwa%></textarea>
+            <span id="errorOpis" class="errors-text"></span>
 
-        <label for="foto">Foto:<abbr title="required" aria-label="required">*</abbr></abbr></label>
-        <input type="file" name="foto" id="fotoInput" />
-        <span id="errorFotoInput" class="errors-text"></span>
-
-        <div class="form-buttons">
-            <p id="errorSummary" class="errors-text"></p>
-            <input type="submit" value="Dodaj" class="form-button-submit" />
-            <a href="computer-element-list.html" class="form-button-cancel">Anuluj</a>
-        </div>
-    </form>
-</main>
-<%- include('../../fragments/footer.ejs')%>
+            <label for="foto">Foto:<abbr title="required" aria-label="required">*</abbr></abbr></label>
+            <%if (formMode=='showDetails' ) {%>
+                <img src="<% element.foto_path %>" alt="foto <% element.foto_path %>" class="form-opis-foto">
+                <% } %>
+                    <input type="file" name="foto" id="fotoInput" value="<%= element.foto_path %>"
+                        <%=(formMode=='showDetails' ) ? 'disabled' : '' %>/>
+                    <span id="errorFotoInput" class="errors-text"></span>
+                    <% if (formMode=='showDetails' ) { %>
+                        <div class="section-buttons">
+                            <a href="/komputer-element/edit/<%= element._id %>" class="button-edit">Edyruj</a>
+                        </div>
+                        <% } %>
+                            <!-- Это типа не нужно? 
+                            <div class="form-buttons">
+                                <p id="errorSummary" class="errors-text"></p>
+                                <input type="submit" value="Dodaj" class="form-button-submit" />
+                                <a href="computer-element-list.html" class="form-button-cancel">Anuluj</a>
+                            </div>
+                        -->
+        </form>
+        <% if (formMode=='showDetails' || formMode=='edit' ) { %>
+            <h2>
+                Szczegóły zestawa elementa i komputera
+            </h2>
+            <table class="table-list">
+                <thead>
+                    <tr>
+                        <th>
+                            Model Komputera
+                        </th>
+                        <th>
+                            Aktualna temperatura elementa w kopmputerze
+                        </th>
+                        <th>
+                            Procent wykorzystanych komputerzem zasobów elementa
+                        </th>
+                        <th>
+                            Aktualna szybkość przekazania dannych między elementem komputera a komputerą
+                        </th>
+                        <th>
+                            Typ połączenia
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (let z_e_k of element.zestaw_elementow_komputera) { %>
+                        <tr>
+                            <!-- zestaw-komputera-element -->
+                            <td><a href="/komputers/details/<%= z_e_k.komputer._id %>">
+                                    <%= z_e_k.komputer.name %>
+                                </a></td>
+                            <td>
+                                <%= z_e_k.aktuakna_Temperatura %>
+                            </td>
+                            <td>
+                                <%= z_e_k.procent_Wykorzystanych_Zasobow %>
+                            </td>
+                            <td>
+                                <%= z_e_k.aktualna_Szybkosc_Przekazania_Danych %>
+                            </td>
+                            <td>
+                                <%= z_e_k.typPolaczenia %>
+                            </td>
+                        </tr>
+                        <% } %>
+                </tbody>
+            </table>
+            <% } %>
+                <div class="form-buttons">
+                    <p id="errorsSummary" class="errors-text"></p>
+                    <% if (formMode !='showDetails' ) { %>
+                        <input class="form-button-submit" type="submit" value="<%=btnLabel%>" />
+                        <a class="form-button-cancel" href="/komputer-element">Anuluj</a>
+                        <% } else { %>
+                            <a class="form-button-cancel" href="/komputer-element">Powrót</a>
+                            <% } %>
+                </div>
+    </main>
+    <%- include('../../fragments/footer.ejs')%>
