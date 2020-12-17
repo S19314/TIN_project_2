@@ -18,15 +18,19 @@
             <span id="errorOpis" class="errors-text"></span>
 
             <label for="foto">Foto:<abbr title="required" aria-label="required">*</abbr></abbr></label>
-            <%if (formMode=='showDetails' ) {%>
-                <img src="<%=element.foto_path %>" alt="foto <%=element.foto_path %>" class="form-opis-foto">
+            <%if (formMode=='showDetails' || formMode=='edit' ) {%>
+                <div>
+                    <img src="<%=element.foto_path %>" alt="foto <%=element.foto_path %>" class="form-opis-foto">
+                </div>
                 <% } %>
+
                     <input type="file" name="foto" id="fotoInput" value="<%= element.foto_path %>"
                         <%=(formMode=='showDetails' ) ? 'disabled' : '' %>/>
                     <span id="errorFotoInput" class="errors-text"></span>
                     <% if (formMode=='showDetails' ) { %>
-                        <div class="section-buttons">
-                            <a href="/komputer-element/edit/<%=element._id%>" class="button-edit">Edyruj</a>
+                        <div class="form-buttons">
+                            <a href="/komputer-element/edit/<%=element._id%>"
+                                class="list-actions-button-edit">Edytuj</a>
                         </div>
                         <% } %>
                             <!-- Это типа не нужно? 
