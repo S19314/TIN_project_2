@@ -1,60 +1,90 @@
 <%- include('../../fragments/header.ejs')%>
 
     <main>
-        <h1>Nowy zestaw elementa i komputera</h1>
-        <form class="form" novalidate onsubmit="return validateForm();">
+        <script type="application/javascript;charset=utf-8"
+            src="/public/js/validationZestawElementaIKomputera"> </script>
 
-            <label for="model">Model komputera:<abbr title="required" aria-label="required">*</abbr></abbr></label>
-            <select required name="model" id="model">
-                <option selected disabled>Model komputera</option>
-                <option value="Jaguar 3000">Jaguar 3000</option>
-                <option value="Actina by Corsair">Actina by Corsair</option>
+        <h1>
+            <%= pageTitle %>
+        </h1>
+        <form class="form" method="post" actoin="<%=formAction%>" novalidate onsubmit="return validateForm();">
+            <input type="hidden" name="_id" value="<%= zestaw_elementa_i_komputera._id %>">
+            <label for="model">Model komputera:<abbr title="required" aria-label="required">*</abbr></label>
+            <!-- Здесь нужно ищменить name="model" на name="komputerId" ?? Изменяю-->
+
+            <select required name="komputerId" id="model" required <%=(formMode=='showDetails' ) ? 'disabled' : '' %>>
+                <option value="" selected disabled>-- Model komputera --</option>
+                <% for ( let i=0; i < allKomputers.length; i++){ let komputer=allKomputers[i]; %>
+                    <option value="<%=komputer._id%>" label="<%= komputer.model %>" <%=(z_e_k._id &&
+                        komputer._id.toString()==z_e_k.komputer._id.toString() ? 'selected' : '' %> )>
+                    </option>
+                    <% } %>
             </select>
             <span id="errorModel" class="errors-text"></span> <!-- Не был выбран -->
 
-            <label for="nazwaElementu">Nazwa elementu:<abbr title="required"
-                    aria-label="required">*</abbr></abbr></label>
+            <label for="nazwaElementu">Nazwa elementu:<abbr title="required" aria-label="required">*</abbr></label>
 
-            <select required name="nazwaElementu" id="nazwaElementu">
-                <option selected disabled>Nazwa elementu</option>
-                <option value="Gigabyte GeForce GTX 1660 SUPER OC 6GB GDDR6">Gigabyte GeForce GTX 1660 SUPER OC 6GB
-                    GDDR6</option>
-                <option value="AMD Ryzen 5 3600 3,6GHz BOX (100-100000031BOX)">AMD Ryzen 5 3600 3,6GHz BOX
-                    (100-100000031BOX)</option>
+            <select name="elementId" id="nazwaElementu" required <%=(formMode=='showDetails' ) ? 'disabled' : '' %>>
+                <option value="" selected disabled>-- Nazwa elementu -- </option>
+                <% for ( let i=0; i < allElements.length; i++){ let element=allElements[i]; %>
+                    <option value="<%=element._id%>" label="<%= element.nazwa %>" <%=(z_e_k._id &&
+                        element._id.toString()==z_e_k.element._id.toString() ? 'selected' : '' %> )>
+                    </option>
+                    <% } %>
             </select>
             <span id="errorNazwaElementu" class="errors-text"></span> <!-- Типа, не был выбран-->
 
-
-
-            </select><label for="aktualnaTemperatura">Aktualna temperatura:<abbr title="required"
+            <label for="aktualnaTemperatura">Aktualna temperatura:<abbr title="required"
                     aria-label="required">*</abbr></label>
-            <input type="text" name="aktualnaTemperatura" id="aktualnaTemperatura" />
+            <input type="text" name="aktualnaTemperatura" id="aktualnaTemperatura"
+                value="<%z_e_k.aktuakna_Temperatura%>" <%=(formMode=='showDetails' ) ? 'disabled' : '' %>/>
             <span id="errorAktualnaTemperatura" class="errors-text"></span>
+
 
             <label for="procentWykorzystanychZasobow">Procent wykorystanych zasobów:<abbr title="required"
                     aria-label="required">*</abbr></label>
-            <input type="text" name="procentWykorzystanychZasobow" id="procentWykorzystanychZasobow" />
+            <input type="text" name="procentWykorzystanychZasobow" id="procentWykorzystanychZasobow"
+                value="<%z_e_k.procent_Wykorzystanych_Zasobow%>" <%=(formMode=='showDetails' ) ? 'disabled' : '' %>/>
             <span id="errorProcentWykorzystanychZasobow" class="errors-text"></span>
 
             <label for="aktualnaSzybkoscPrzekazaniaDanych">Aktualna szybkość przekazania danych:<abbr title="required"
                     aria-label="required">*</abbr></label>
-            <input type="text" name="aktualnaSzybkoscPrzekazaniaDanych" id="aktualnaSzybkoscPrzekazaniaDanych" />
+            <input type="text" name="aktualnaSzybkoscPrzekazaniaDanych" id="aktualnaSzybkoscPrzekazaniaDanych"
+                value="<%z_e_k.aktualna_Szybkosc_Przekazania_Danych%>" <%=(formMode=='showDetails' ) ? 'disabled' : ''
+                %>/>
             <span id="errorAktualnaSzybkoscPrzekazaniaDanych" class="errors-text"></span>
 
-            <label for="typPolaczenia">Typ polączenia elementa z komputerem:<abbr title="required"
-                    aria-label="required">*</abbr></abbr></label>
-            <select required name="typPolaczenia" id="typPolaczenia">
-                <option selected disabled>Typ polaczenia</option>
-                <option value="Bezprzewodowy">Bezprzewodowy</option>
-                <option value="Przewodowy">Przewodowy</option>
-            </select>
+            <label for="typPolaczeniaInput">Typ polączenia elementa z komputerem:<abbr title="required"
+                    aria-label="required">*</abbr></label>
+
+            <input type="text" list="typPolaczenia" placeholder="Typ Polaczenia" id="typPolaczeniaInput"
+                value="<%z_e_k.typPolaczenia%>" <%=(formMode=='showDetails' ) ? 'disabled' : '' %> required />
+            <datalist id="typPolaczenia">
+                <% for ( let i=0; i < allElements.length; i++){ let element=allElements[i]; %>
+                    <option value="<%=element.typPolaczenia%>" label="<%=element.typPolaczenia%>" <%=(z_e_k._id &&
+                        element._id.toString()==z_e_k.element._id.toString() ? 'selected' : '' %> )>
+                    </option>
+                    <% } %>
+            </datalist>
+
             <span id="errorTypPolaczenia" class="errors-text"></span>
 
-            <div class="form-buttons">
-                <p id="errorsSummary" class="errors-text"></p>
-                <input type="submit" value="Dodaj" class="form-button-submit" />
-                <a href="zestaw-elementow-komputera-list.html" class="form-button-cancel">Anuluj</a>
-            </div>
+            <% if (formMode=='showDetails' ) { %>
+                <div class="section-buttons">
+                    <a href="/zestaw-komputera-element/edit/<%= z_e_k._id %>" class="button-edit">Edytuj</a>
+                </div>
+                <% } %>
+
+                    <div class="form-buttons">
+                        <p id="errorsSummary" class="errors-text"></p>
+                        <% if (formMode !='showDetails' ) { %>
+                            <input class="form-button-submit" type="submit" value="<%=btnLabel%>" />
+                            <a class="form-button-cancel" href="/zestaw-komputera-element">Anuluj</a>
+                            <% } else { %>
+                                <a class="form-button-cancel" href="/zestaw-komputera-element">Powrót</a>
+                                <% } %>
+                    </div>
+
         </form>
     </main>
     <%- include('../../fragments/footer.ejs')%>

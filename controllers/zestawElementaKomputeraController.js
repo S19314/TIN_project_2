@@ -17,21 +17,48 @@ exports.showZestawElementKomputerList = (req, res, next) => {
 }
 
 exports.showAddZestawElementKomputerForm = (req, res, next) => {
-    res.render('pages/zestaw_elementa_i_komputera/form', {});
-
-    /* 
-    zestaw_elementa_i_komputera: {},
-            pageTitle: 'Nowy pracownik',
+    res.render('pages/zestaw_elementa_i_komputera/form',
+        {
+            zestaw_elementa_i_komputera: {},
+            pageTitle: 'Nowy zestaw z elementa i komputera',
             formMode: 'createNew',
-            btnLabel: 'Dodaj pracownika',
-            formAction: '/employees/add',
+            btnLabel: 'Dodaj zestaw z elementa i komputera',
+            formAction: '/zestaw_elementa_i_komputera/add',
             navLocation: 'zestawElementaKomputera'
-    */
+        });
+
+
 }
 
+exports.showEditEmployeeForm = (req, res, next) => {
+    const zestawId = req.params.zestawId;
+    ZestawElementaKomputeraRepository.getZestawElementaKomputeraById(zestawId)
+        .then(z_e_k => {
+            res.render('pages/zestaw_elementa_i_komputera/form', {
+                zestaw_elementa_i_komputera: z_e_k,
+                pageTitle: 'Edycja zestaw z elementa i komputera',
+                formMode: 'edit',
+                btnLabel: 'Edytuj zestaw z elementa i komputera',
+                formAction: '/zestaw_elementa_i_komputera/edit',
+                navLocation: 'zestawElementaKomputera'
+            });
+        });
+};
 
 exports.showZestawElementKomputerDetails = (req, res, next) => {
-    res.render('pages/zestaw_elementa_i_komputera/zestaw-elementow-komputera-szegoly', {});
+    const zestawId = req.params.zestawId;
+    ZestawElementaKomputeraRepository.getZestawElementaKomputeraById(zestawId)
+        .then(z_e_k => {
+            res.render('pages/zestaw_elementa_i_komputera/form',
+                {
+                    zestaw_elementa_i_komputera: z_e_k,
+                    formMode: 'showDetails',
+                    pageTitle: 'Szczegóły zestaw z elementą i komputerą',
+                    formAction: '',
+                    navLocation: 'zestawElementaKomputera'
+                })
+        })
+        ;
 }
 
 
