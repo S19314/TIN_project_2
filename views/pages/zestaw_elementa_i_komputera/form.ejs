@@ -14,12 +14,12 @@
             <label for="model">Model komputera:<abbr title="required" aria-label="required">*</abbr></label>
             <!-- Здесь нужно ищменить name="model" на name="komputerId" ?? Изменяю-->
 
-            <select name="komputerId" id="model" required <%=(formMode=='showDetails' ) ? 'disabled' : '' %>
+            <select name="komputerId" id="model" required <%=(formMode=='showDetails' ) ? 'disabled' : '' %> >
                 <option value="" selected disabled>-- Model komputera --</option>
                 <% for ( let i=0; i < allKomputers.length; i++){ let komputer=allKomputers[i]; %>
                     <option value="<%=komputer._id%>" label="<%= komputer.model %>" <%=(zestaw_elementa_i_komputera._id
                         && komputer._id.toString()==zestaw_elementa_i_komputera.komputer._id.toString()) ? 'selected'
-                        : '' %> )>
+                        : '' %> >
                     </option>
                     <% } %>
             </select>
@@ -32,8 +32,8 @@
                 <% for ( let i=0; i < allElements.length; i++){ let element=allElements[i]; %>
                     <option value="<%=element._id%>" label="<%=element.nazwa %>" <%=(zestaw_elementa_i_komputera._id &&
                         element._id.toString()==zestaw_elementa_i_komputera.element_komputera._id.toString())
-                        ? 'selected' : '' %>
-                        )>
+                        ? 'selected' : '' %> >
+
                     </option>
                     <% } %>
             </select>
@@ -69,12 +69,10 @@
                 %>
             required />
             <datalist id="typPolaczenia">
-                <% for ( let i=0; i < allElements.length; i++){ let element=allElements[i]; %>
-                    <option value="<%=element.typPolaczenia%>" label="<%=element.typPolaczenia%>"
+                <% for ( let i=0; i < allZestaws.length; i++){ let zestaw=allZestaws[i]; %>
+                    <option value="<%=zestaw.typPolaczenia%>" label="<%=zestaw.typPolaczenia%>"
                         <%=(zestaw_elementa_i_komputera._id &&
-                        element._id.toString()==zestaw_elementa_i_komputera.element_komputera._id.toString()
-                        )? 'selected' : '' %>
-                        )>
+                        zestaw._id.toString()==zestaw_elementa_i_komputera._id.toString() )? 'selected' : '' %>>
                     </option>
                     <% } %>
             </datalist>

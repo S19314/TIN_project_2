@@ -89,8 +89,12 @@ exports.showZestawElementKomputerDetails = (req, res, next) => {
 
 exports.showAddZestawElementKomputerForm = (req, res, next) => {
     console.log("showAddZestawElementKomputerForm START");
-    let allElements, allKomputers;
-    ElementKomputeraRepository.getElements_Komputera()
+    let allElements, allKomputers, allZestaws;
+    ZestawElementaKomputeraRepository.getZestawyElementowKomputera()
+        .then(z_e_ks => {
+            allZestaws = z_e_ks;
+            return ElementKomputeraRepository.getElements_Komputera();
+        })
         .then(elements => {
             allElements = elements;
             return KomputerRepository.getKomputers();
@@ -102,6 +106,7 @@ exports.showAddZestawElementKomputerForm = (req, res, next) => {
                 formMode: 'createNew',
                 allElements: allElements,
                 allKomputers: allKomputers,
+                allZestaws: allZestaws,
                 pageTitle: 'Nowy zestaw elementa i komputera',
                 btnLabel: 'Dodaj zestaw elementa i komputera',
                 formAction: '/zestaw-komputera-element/add',
