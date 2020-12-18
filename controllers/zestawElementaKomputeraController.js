@@ -27,17 +27,19 @@ exports.showAddZestawElementKomputerForm = (req, res, next) => {
             btnLabel: 'Dodaj zestaw z elementa i komputera',
             formAction: '/zestaw_elementa_i_komputera/add',
             navLocation: 'zestawElementaKomputera'
-        });
+        }); 
 
 }
 */
 
-exports.showEditEmployeeForm = (req, res, next) => {
-    console.log("showZestawElementKomputerForm START");
+exports.showEditZestawElementKomputerForm = (req, res, next) => {
+    console.log("showEditZestawElementKomputerForm START")
     const zestawId = req.params.zestawId;
+    console.log("ZestawId");
+    console.log(zestawId);
     ZestawElementaKomputeraRepository.getZestawElementaKomputeraById(zestawId)
         .then(z_e_k => {
-            res.render('pages/zestaw_elementa_i_komputera/form', {
+            res.render('pages/zestaw_elementa_i_komputera/form_reserve_copy/form_special_for_edit', { // 'form_special_for_edit'  // form
                 zestaw_elementa_i_komputera: z_e_k,
                 pageTitle: 'Edycja zestaw z elementa i komputera',
                 formMode: 'edit',
