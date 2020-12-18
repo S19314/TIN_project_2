@@ -238,18 +238,19 @@ textarea{
 .form input[type="number"],
 .form input[type="date"],
 .form input[type="email"],
-.form textarea{
+.form textarea
+{
     border: 1px solid #7f8c8d;
     color: #2c3e50;
     border-radius: 5px;
     padding: 0.5rem;
-    width: 100%;
+    width: 100%;    
 }
 
 .form label{
     display: block;
-    margin-bottom: 0.5rem;
-    /* margin-top: 0.5rem; */
+    margin-bottom: 0.1rem;
+    margin-top: 1rem;
 }
 
 .form-group{
@@ -289,6 +290,13 @@ footer{
     max-width: 25%;
 }
 
+
+.p-opis{
+    border: 1px solid black;
+    border-radius: 0.3em;
+    padding: 0.5rem;
+    background-color: white;
+}
 @media all and (max-width: 720px){
     header{
         flex-direction: column;

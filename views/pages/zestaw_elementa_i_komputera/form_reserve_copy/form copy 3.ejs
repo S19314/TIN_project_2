@@ -1,0 +1,28 @@
+<%- include('../../fragments/header.ejs')%>
+
+
+    <main>
+        <script type="application/javascript;charset=utf-8"
+            src="/public/js/validationZestawElementaIKomputera"> </script>
+        <h1>
+            <%= pageTitle %>
+
+        </h1>
+        <form class="form" method="post" action="<%=formAction%>" novalidate onsubmit="return validateForm();">
+            <input type="hidden" name="_id" value="<%= zestaw_elementa_i_komputera._id %>">
+            <label for="model">Model komputera:<abbr title="required" aria-label="required">*</abbr></label>
+            <select name="komputerId" id="model" required <%=(formMode=='showDetails' )?'disabled':''%>>
+                <option value="" selected disabled>-- Model komputera --</option>
+                <% for ( let i=0; i < allKomputers.length; i++){ let komputer=allKomputers[i]; %>
+                    <option value="<%=komputer._id%>" label="<%= komputer.model %>" <%=(zestaw_elementa_i_komputera._id
+                        && komputer._id.toString()==zestaw_elementa_i_komputera.komputer._id.toString()) ? 'selected'
+                        : '' %> )>
+                    </option>
+                    <% } %>
+
+
+            </select>
+            <span id="errorModel" class="errors-text"></span>
+        </form>
+    </main>
+    <%- include('../../fragments/footer.ejs')%>

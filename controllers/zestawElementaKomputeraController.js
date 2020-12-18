@@ -4,6 +4,7 @@ const KomputerRepository = require('../repository/mysql2/KomputerRepository');
 const ElementKomputeraRepository = require('../repository/mysql2/ElementKomputeraRepository');
 
 exports.showZestawElementKomputerList = (req, res, next) => {
+    console.log("showZestawElementKomputerList START");
     ZestawElementaKomputeraRepository.getZestawyElementowKomputera()
         .then(z_e_ks => {
             res.render('pages/zestaw_elementa_i_komputera/list',
@@ -16,6 +17,7 @@ exports.showZestawElementKomputerList = (req, res, next) => {
 
 }
 
+/*
 exports.showAddZestawElementKomputerForm = (req, res, next) => {
     res.render('pages/zestaw_elementa_i_komputera/form',
         {
@@ -27,10 +29,11 @@ exports.showAddZestawElementKomputerForm = (req, res, next) => {
             navLocation: 'zestawElementaKomputera'
         });
 
-
 }
+*/
 
 exports.showEditEmployeeForm = (req, res, next) => {
+    console.log("showZestawElementKomputerForm START");
     const zestawId = req.params.zestawId;
     ZestawElementaKomputeraRepository.getZestawElementaKomputeraById(zestawId)
         .then(z_e_k => {
@@ -46,23 +49,46 @@ exports.showEditEmployeeForm = (req, res, next) => {
 };
 
 exports.showZestawElementKomputerDetails = (req, res, next) => {
+    console.log("showZestawElementKomputerDetails START");
     const zestawId = req.params.zestawId;
-    ZestawElementaKomputeraRepository.getZestawElementaKomputeraById(zestawId)
+    let allElems, allKomps;
+    ElementKomputeraRepository.getElements_Komputera()
+        .then(elements => {
+            allElems = elements;
+            return KomputerRepository.getKomputers();
+        })
+        .then(komps => {
+            allKomps = komps;
+            return ZestawElementaKomputeraRepository.getZestawElementaKomputeraById(zestawId);
+        })
         .then(z_e_k => {
+            /*
+            console.log("z_e_k");
+            console.log(z_e_k);
+            console.log("akkEle");
+            console.log(allElems[0]);
+            console.log("akkK");
+            console.log(allKomps[0]);
+            */
+            //res.render('pages/zestaw_elementa_i_komputera/form',
             res.render('pages/zestaw_elementa_i_komputera/form',
                 {
                     zestaw_elementa_i_komputera: z_e_k,
                     formMode: 'showDetails',
                     pageTitle: 'Szczegóły zestaw z elementą i komputerą',
                     formAction: '',
-                    navLocation: 'zestawElementaKomputera'
+                    navLocation: 'zestawElementaKomputera',
+                    allElements: allElems,
+                    allKomputers: allKomps
                 })
+
         })
         ;
 }
 
 
 exports.showAddZestawElementKomputerForm = (req, res, next) => {
+    console.log("showAddZestawElementKomputerForm START");
     let allElements, allKomputers;
     ElementKomputeraRepository.getElements_Komputera()
         .then(elements => {

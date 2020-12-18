@@ -4,7 +4,7 @@ const ElementKomputeraRepository = require('../repository/mysql2/ElementKomputer
 exports.showElementKomputerList = (req, res, next) => {
     ElementKomputeraRepository.getElements_Komputera()
         .then(elements => {
-            res.render('pages/element_komputera/list',
+            res.render('pages/element_komputera/computer-element-list',
                 {
                     elements: elements,
                     navLocation: 'elementKomputer'
