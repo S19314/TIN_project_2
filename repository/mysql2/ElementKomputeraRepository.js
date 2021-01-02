@@ -68,9 +68,15 @@ exports.getElement_KomputeraById = (elementId) => {
 };
 
 exports.createElement_Komputera = (newElementData) => {
+    const originPathPhoto = './public/updates';
+    // Тут добавить функцию, которая будет сохранять в файловую систему отправляемую фотографию
+    // После закачки в файловую систему, в foto_path конкатанация с originPathPhoto И запись в БД
     const nazwa = newElementData.nazwa;
     const opis = newElementData.opis;
-    const foto_path = newElementData.foto_path;
+    /// Попробовать вытянуть фотку и созранить её тут.
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //const foto_path = newElementData.foto_path; // DOWN Ubrat'
+    const foto_path = 'https://cdn.x-kom.pl/i/setup/images/prod/big/product-new-big,,2019/10/pr_2019_10_25_13_53_0_788_06.jpg';
     const sql = 'INSERT INTO Element_komputera (nazwa, opis, foto_path) VALUES (?, ?, ?)';
     return db.promise().execute(sql, [nazwa, opis, foto_path]);
 };

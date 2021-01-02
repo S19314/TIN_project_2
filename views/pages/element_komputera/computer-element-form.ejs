@@ -18,19 +18,19 @@
                 %>><%=element.opis%></textarea>
             <span id="errorOpis" class="errors-text"></span>
 
-            <label for="foto_path">Foto:<abbr title="required" aria-label="required">*</abbr></abbr></label>
+            <label for="fotoInput">Foto:<abbr title="required" aria-label="required">*</abbr></abbr></label>
             <%if (formMode=='showDetails' || formMode=='edit' ) {%>
                 <div>
                     <img src="<%=element.foto_path %>" alt="foto <%=element.foto_path%>" class="form-opis-foto">
                 </div>
                 <% } %>
                     <!-- name="foto" изменить на "foto_path"? -->
-                    <!-- 
-                    <input type="file" name="foto" id="fotoInput" value="<%=element.foto_path%>"
-                        <%=(formMode=='showDetails' ) ? 'disabled' : '' %>/>
-                        -->
+                    <!-- <input type="file" name="foto" id="fotoInput" value="<%=element.foto_path%>" -->
+                    <input type="file" name="foto" id="fotoInput" <%=(formMode=='showDetails' ) ? 'disabled' : '' %>/>
+                    <!--
                     <input type="text" name="foto_path" id="fotoInput" value="<%=element.foto_path%>"
                         <%=(formMode=='showDetails' ) ? 'disabled' : '' %>/>
+                    -->
                     <span id="errorFotoInput" class="errors-text"></span>
                     <% if (formMode=='showDetails' ) { %>
                         <div class="form-buttons">

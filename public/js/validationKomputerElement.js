@@ -40,6 +40,10 @@ function validateForm() {
         errorFotoInput.innerText = "Pole jest wymagane";
     }
 */
+    console.log('What is it fotoInput?');
+    console.log(fotoInputInput);
+
+
     if (!valid) {
         errorSummary.innerText = "Formularz zawiera błędy";
     }
