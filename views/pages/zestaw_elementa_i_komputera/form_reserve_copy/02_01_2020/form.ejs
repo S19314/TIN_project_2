@@ -68,27 +68,32 @@
                 value="<%=zestaw_elementa_i_komputera.typPolaczenia%>" <%=(formMode=='showDetails' ) ? 'disabled' : ''
                 %>
             required />
-            <!-- DOWN проблема для szegolow(без этого кусочка кода - всё работает)-->
             <datalist id="typPolaczenia">
-
-                <% for( let zestaw of allZestaws){ %>
-                    <option value="<%=zestaw.typPolaczenia%>" <%=( zestaw_elementa_i_komputera._id &&
-                        zestaw._id.toString()==zestaw_elementa_i_komputera._id.toString() ) ? 'selected' : '' %>>
+                <% for ( let i=0; i < allZestaws.length; i++){ let zestaw=allZestaws[i]; %>
+                    <option value="<%=zestaw.typPolaczenia%>" label="<%=zestaw.typPolaczenia%>"
+                        <%=(zestaw_elementa_i_komputera._id &&
+                        zestaw._id.toString()==zestaw_elementa_i_komputera._id.toString() )? 'selected' : '' %>>
                     </option>
                     <% } %>
             </datalist>
             <span id="errorTypPolaczenia" class="errors-text"></span>
 
-            <!-- UP -->
-            <div class="form-buttons">
-                <p id="errorsSummary" class="errors-text"></p>
-                <% if (formMode !='showDetails' ) { %>
-                    <input class="form-button-submit" type="submit" value="<%=btnLabel%>" />
-                    <a class="form-button-cancel" href="/zestaw-komputera-element">Anuluj</a>
-                    <% } else { %>
-                        <a class="form-button-cancel" href="/zestaw-komputera-element">Powrót</a>
-                        <% } %>
-            </div>
+            <% if (formMode=='showDetails' ) { %>
+                <div class="section-buttons">
+                    <a href="/zestaw-komputera-element/edit/<%= zestaw_elementa_i_komputera._id %>"
+                        class="list-actions-button-edit">Edytuj</a>
+                </div>
+                <% } %>
+
+                    <div class="form-buttons">
+                        <p id="errorsSummary" class="errors-text"></p>
+                        <% if (formMode !='showDetails' ) { %>
+                            <input class="form-button-submit" type="submit" value="<%=btnLabel%>" />
+                            <a class="form-button-cancel" href="/zestaw-komputera-element">Anuluj</a>
+                            <% } else { %>
+                                <a class="form-button-cancel" href="/zestaw-komputera-element">Powrót</a>
+                                <% } %>
+                    </div>
 
 
         </form>
