@@ -1,52 +1,132 @@
 <%- include('../../fragments/header.ejs')%>
-<main>
-    <h1>Nowy komputer</h1>
-    <form class="form" novalidate onsubmit="return validateForm();">
+    <main>
+        <script type="application/javascript" src="/public/js/validationKomputerForm.js"></script>
+        <h2>
+            <%= pageTitle %>
+        </h2>
 
-        <label for="model">Model:<abbr title="required" aria-label="required">*</abbr></abbr></label>
-        <select name="model" id="model">
-            <option selected disabled>Model komputera</option>
-            <option value="Jaguar 3000">Jaguar 3000</option>
-            <option value="Actina by Corsair">Actina by Corsair</option>
-            <option value="Acer Aspire XC-330 AMD">Acer Aspire XC-330 AMD </option>
-        </select>
-        <span id="errorModel" class="errors-text"></span>
+        <form class="form" method="post" action="<%=formAction%>" novalidate onsubmit="return validateForm();">
 
-        <label for="systemOperacyjny">Zainstalowany system operacyjny:<abbr title="required"
-                aria-label="required">*</abbr></abbr></label>
-        <select name="systemOperacyjny" id="systemOperacyjny">
-            <option selected disabled>System operacyjny</option>
-            <option value="Tornado 6.1.0">Tornado 6.1.0</option>
-            <option value="Windows 7">Windows 7</option>
-            <option value="Windows 10">Windows 10</option>
-            <option value="Windows NT 3.5 Server">Windows NT 3.5 Server</option>
-        </select>
-        <span id="errorSystemOperacyjny" class="errors-text"></span>
+            <input type="hidden" name="_id" value="<%=komputer._id%>">
+            <!-- 
+            <label for="model">Model:<abbr title="required" aria-label="required">*</abbr></abbr></label>
+            <select name="model" id="model">
+                <option selected disabled>Model komputera</option>
+                <option value="Jaguar 3000">Jaguar 3000</option>
+                <option value="Actina by Corsair">Actina by Corsair</option>
+                <option value="Acer Aspire XC-330 AMD">Acer Aspire XC-330 AMD </option>
+            </select>
+            <span id="errorModel" class="errors-text"></span>
+            -->
+            <!-- NEW DOWN -->
+            <label for="valueModel">Model:<abbr title="required" aria-label="required">*</abbr></label>
+            <input type="text" list="model" placeholder="Model komputera" id="valueModel" value="<%=komputer.model%>"
+                <%=(formMode=='showDetails' )? 'disabled' :''%> >
 
-        <label for="typKomputera">Typ Komputera:<abbr title="required" aria-label="required">*</abbr></abbr></label>
-        <select required name="typKomputera" id="typKomputera">
-            <option selected disabled>Typ Komputera</option>
-            <option value="Komputer stacjonarny">Komputer stacjonarny</option>
-            <option value="Monoblok">Monoblok</option>
-            <option value="Laptop">Laptop</option>
-            <option value="Netbook">Netbook</option>
-            <option value="Tablet PC">Tablet PC</option>
-            <option value="Nettop">Nettop</option>
-            <option value="Komputer kieszonkowe">Komputer kieszonkowe</option>
-        </select>
-        <span id="errorTypKomputera" class="errors-text"></span>
+            <datalist id="model">
+                <% for(let komp of allKomputers){ %>
+                    <option value="<%=komp.model%>" <%=( komputer._id && komp._id.toString()==komputer._id.toString() )
+                        ? 'selected' : '' %>>
+                    </option>
+                    <% } %>
+            </datalist>
+            <span id="errorModel" class="errors-text"></span>
+            <!-- NEW UP-->
+            <label for="systemOperacyjnyInput">Zainstalowany system operacyjny:<abbr title="required"
+                    aria-label="required">*</abbr></label>
+            <input type="text" list="systemOperacyjny" placeholder="System operacyjny" id="systemOperacyjnyInput"
+                value="<%=komputer.zaintstalowany_System_Operacyjny%>" <%=(formMode=='showDetails' )? 'disabled' :''%>>
+            <datalist id="systemOperacyjny">
+                <% for(let komp of allKomputers){ %>
+                    <option value="<%=komp.zaintstalowany_System_Operacyjny%>" <%=( komputer._id &&
+                        komp._id.toString()==komputer._id.toString() ) ? 'selected' : '' %>>
+                    </option>
+                    <% } %>
+            </datalist>
+            <span id="errorSystemOperacyjny" class="errors-text"></span>
 
-        <!-- <div> -->
-        <label for="datatime">Data stworzenia:<abbr title="required" aria-label="required">*</abbr></label>
-        <input type="datetime-local" name="datatime" id="dataStworzenia" />
-        <span id="errorDataStworzenia" class="errors-text"></span>
-        <!-- </div> -->
-        <div class="form-buttons">
-            <p id="errorsSummary" class="errors-text"></p>
-            <input type="submit" value="Dodaj" class="form-button-submit" />
-            <a href="computer-list.html" class="form-button-cancel">Anuluj</a>
-        </div>
-    </form>
-</main>
 
-<%- include('../../fragments/footer.ejs')%>
+            <label for="typKomputeraInput">Typ Komputera:<abbr title="required" aria-label="required">*</abbr></label>
+            <input type="text" list="typKomputera" placeholder="Typ Komputera" id="typKomputeraInput"
+                value="<%=komputer.typ_Komputera%>" <%=(formMode=='showDetails' )? 'disabled' :''%>>
+            <datalist id="typKomputera">
+                <% for(let komp of allKomputers){ %>
+                    <option value="<%=komp.typ_Komputera%>" <%=( komputer._id &&
+                        komp._id.toString()==komputer._id.toString() ) ? 'selected' : '' %>>
+                    </option>
+                    <% } %>
+            </datalist>
+            <span id="errorTypKomputera" class="errors-text"></span>
+
+            <label for="dataStworzeniaInput">Data stworzenia:<abbr title="required"
+                    aria-label="required">*</abbr></label>
+            <input type="text" name="dataStworzenia" id="dataStworzeniaInput" placeholder="yyyy-mm-dd"
+                value="<%=komputer.data_Stworzenia %>" <%=(formMode=='showDetails' )? 'disabled' :''%>>
+            <span id="errorDataStworzenia" class="errors-text"></span>
+
+            <div class="form-buttons">
+                <p id="errorsSummary" class="errors-text"></p>
+
+                <% if (formMode !='showDetails' ) { %>
+                    <input class="form-button-submit" type="submit" value="<%=btnLabel%>" />
+                    <a class="form-button-cancel" href="/komputers">Anuluj</a>
+                    <% } else { %>
+                        <a href="/kopmuters/edit/<%=komputer._id%>" class="list-actions-button-edit">Edytuj</a>
+                        <a class="list-actions-button-details" href="/komputers">Powrót</a>
+                        <% } %>
+            </div>
+        </form>
+
+
+        <% if (formMode=='showDetails' || formMode=='edit' ) { %>
+            <h1>Szczegóły zestawa elementa i komputera</h1>
+            <table class="table-list">
+                <thead>
+                    <tr>
+                        <th>
+                            Nazwa elementu
+                        </th>
+                        <th>
+                            Aktualna temperatura elementa w kopmputerze
+                        </th>
+                        <th>
+                            Procenty wykorzystanych procentów elementa komputerzem
+                        </th>
+                        <th>
+                            Aktualna szybkość przekazania dannych między elementem komputera a komputerą
+                        </th>
+                        <th>
+                            Typ połączenia
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (let z_e_k of komputer.zestaw_elementow_komputera) { %>
+                        <tr>
+                            <td><a href="/komputer-element/details/<%=z_e_k.element_komputera._id%>">
+                                    <%=z_e_k.element_komputera.nazwa%>
+
+                                </a></td>
+                            <td>
+                                <%=z_e_k.aktuakna_Temperatura%>
+                            </td>
+                            <td>
+                                <%=z_e_k.procent_Wykorzystanych_Zasobow%>
+                            </td>
+                            <td>
+                                <%=z_e_k.aktualna_Szybkosc_Przekazania_Danych%>
+                            </td>
+                            <td>
+                                <%=z_e_k.typPolaczenia%>
+                            </td>
+                        </tr>
+                        <% } %>
+                </tbody>
+            </table>
+
+
+            <% } %>
+
+    </main>
+
+    <%- include('../../fragments/footer.ejs')%>

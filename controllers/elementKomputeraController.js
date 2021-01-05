@@ -42,9 +42,12 @@ exports.showEditElementKomputerowyForm = (req, res, next) => {
 
 // 
 exports.showElementKomputerDetails = (req, res, next) => {
+
     const elementId = req.params.elementId;
     ElementKomputeraRepository.getElement_KomputeraById(elementId)
         .then(element => {
+            console.log("elementKomputera\nData:");
+            console.log(element);
             res.render('pages/element_komputera/computer-element-form', {
                 element: element,
                 formMode: 'showDetails',

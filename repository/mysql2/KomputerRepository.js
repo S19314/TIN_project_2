@@ -57,7 +57,7 @@ exports.getKomputerById = (computerId) => {
                             _id: firstRow._id,
                             nazwa: firstRow.nazwa,
                             opis: firstRow.opis,
-                            foto_path: firstRow.foto_path
+                            foto_path: firstRow.foto_Path // Изменил с foto_path на foto_Path
                         }
                     };
                     computer.zestaw_elementow_komputera.push(zestaw_elementa_komputera);

@@ -70,7 +70,6 @@
                 <%=(formMode=='showDetails' ) ? 'disabled' : '' %>
             >
             <datalist id="typPolaczenia">
-
                 <% for( let zestaw of allZestaws){ %>
                     <option value="<%=zestaw.typPolaczenia%>" <%=( zestaw_elementa_i_komputera._id &&
                         zestaw._id.toString()==zestaw_elementa_i_komputera._id.toString() ) ? 'selected' : '' %>>
