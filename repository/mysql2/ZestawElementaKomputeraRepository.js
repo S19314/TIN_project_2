@@ -114,11 +114,15 @@ exports.createZestawElementaKomputera = (data) => {
         ' VALUES (?, ?, ?, ?, ?, ?)';
     return db.promise().execute(
         sql,
-        [data.element_id, data.computer_id, data.aktuakna_Temperatura, data.procent_Wykorzystanych_Zasobow, data.aktualna_Szybkosc_Przekazania_Danych, data.typPolaczenia]
+        [data.elementId, data.komputerId, data.aktualnaTemperatura, data.procentWykorzystanychZasobow, data.aktualnaSzybkoscPrzekazaniaDanych, data.typPolaczenia]
+        // [data.element_id, data.computer_id, data.aktuakna_Temperatura, data.procent_Wykorzystanych_Zasobow, data.aktualna_Szybkosc_Przekazania_Danych, data.typPolaczenia]
     );
 };
 
 exports.updateZestawElmentaKomputera = (zestawId, data) => {
+
+    console.log("Where is undefined?");
+    // console.log(""data.elementid, data.komputerId, data.aktualnaTemperatura, data.procentWykorzystanychZasobow, data.aktualnaSzybkoscPrzekazaniaDanych, data.typPolaczenia, zestawId]);
     const sql = `UPDATE Zestaw_Elementow_Komputera 
                 set element_id = ?,
                 computer_id = ?,
@@ -129,7 +133,8 @@ exports.updateZestawElmentaKomputera = (zestawId, data) => {
                 where _id = ?`;
     return db.promise().execute(
         sql,
-        [data.element_id, data.computer_id, data.aktuakna_Temperatura, data.procent_Wykorzystanych_Zasobow, data.aktualna_Szybkosc_Przekazania_Danych, data.typPolaczenia, zestawId]
+        [data.elementId, data.komputerId, data.aktualnaTemperatura, data.procentWykorzystanychZasobow, data.aktualnaSzybkoscPrzekazaniaDanych, data.typPolaczenia, zestawId]
+        //        [data.element_id, data.computer_id, data.aktuakna_Temperatura, data.procent_Wykorzystanych_Zasobow, data.aktualna_Szybkosc_Przekazania_Danych, data.typPolaczenia, zestawId]
     );
 }
 
