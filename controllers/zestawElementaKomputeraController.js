@@ -52,11 +52,10 @@ exports.showEditZestawElementKomputerForm = (req, res, next) => {
             return ZestawElementaKomputeraRepository.getZestawElementaKomputeraById(zestawId);
         })
         .then(z_e_k => {
-            res.render('pages/zestaw_elementa_i_komputera/form_reserve_copy/form_special_for_edit', { // 'form_special_for_edit'  // form
-                /*    
+            res.render('pages/zestaw_elementa_i_komputera/form', { // 'form_special_for_edit'  // form
                 allZestaws: allZestaws,
-                    allKomputers: allKomputers,
-                    allElements: allElements,*/
+                allKomputers: allKomputers,
+                allElements: allElements,
                 zestaw_elementa_i_komputera: z_e_k,
                 pageTitle: 'Edycja zestaw z elementa i komputera',
                 formMode: 'edit',
