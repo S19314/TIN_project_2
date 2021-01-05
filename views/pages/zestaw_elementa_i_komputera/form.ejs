@@ -81,11 +81,14 @@
 
             <div class="form-buttons">
                 <p id="errorsSummary" class="errors-text"></p>
+
                 <% if (formMode !='showDetails' ) { %>
                     <input class="form-button-submit" type="submit" value="<%=btnLabel%>" />
                     <a class="form-button-cancel" href="/zestaw-komputera-element">Anuluj</a>
                     <% } else { %>
-                        <a class="form-button-cancel" href="/zestaw-komputera-element">Powrót</a>
+                        <a href="/zestaw-komputera-element/edit/<%=zestaw_elementa_i_komputera._id%>"
+                            class="list-actions-button-edit">Edytuj</a>
+                        <a class="list-actions-button-details" href="/zestaw-komputera-element">Powrót</a>
                         <% } %>
             </div>
 

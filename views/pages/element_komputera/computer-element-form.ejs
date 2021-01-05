@@ -31,29 +31,32 @@
                     <input type="text" name="foto_path" id="fotoInput" value="<%=element.foto_path%>"
                         <%=(formMode=='showDetails' ) ? 'disabled' : '' %>/>
                     -->
+                    <!-- 
                     <span id="errorFotoInput" class="errors-text"></span>
                     <% if (formMode=='showDetails' ) { %>
                         <div class="form-buttons">
-                            <a href="/komputer-element/edit/<%=element._id%>"
-                                class="list-actions-button-edit">Edytuj</a>
                         </div>
                         <% } %>
-                            <!-- Это типа не нужно? 
+                        -->
+                    <!-- Это типа не нужно? 
                             <div class="form-buttons">
                                 <p id="errorSummary" class="errors-text"></p>
                                 <input type="submit" value="Dodaj" class="form-button-submit" />
                                 <a href="computer-element-list.html" class="form-button-cancel">Anuluj</a>
                             </div>
                         -->
-                            <div class="form-buttons">
-                                <p id="errorsSummary" class="errors-text"></p>
-                                <% if (formMode !='showDetails' ) { %>
-                                    <input class="form-button-submit" type="submit" value="<%=btnLabel%>" />
-                                    <a class="form-button-cancel" href="/komputer-element">Anuluj</a>
-                                    <% } else { %>
-                                        <a class="form-button-cancel" href="/komputer-element">Powrót</a>
-                                        <% } %>
-                            </div>
+                    <div class="form-buttons">
+                        <p id="errorsSummary" class="errors-text"></p>
+                        <% if (formMode !='showDetails' ) { %>
+                            <input class="form-button-submit" type="submit" value="<%=btnLabel%>" />
+                            <a class="form-button-cancel" href="/komputer-element">Anuluj</a>
+                            <% } else { %>
+                                <a href="/komputer-element/edit/<%=element._id%>"
+                                    class="list-actions-button-edit">Edytuj</a>
+                                <a class="list-actions-button-details" href="/komputer-element">Powrót</a>
+                                <!-- form-button-cancel => list-actions-button-details -->
+                                <% } %>
+                    </div>
         </form>
         <% if (formMode=='showDetails' || formMode=='edit' ) { %>
             <h2>
