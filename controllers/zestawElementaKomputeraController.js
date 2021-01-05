@@ -12,9 +12,7 @@ exports.showZestawElementKomputerList = (req, res, next) => {
                     zestaw_elementa_i_komputera: z_e_ks,
                     navLocation: 'zestawElementaKomputera'
                 })
-
         });
-
 }
 
 /*
@@ -60,7 +58,7 @@ exports.showEditZestawElementKomputerForm = (req, res, next) => {
                 pageTitle: 'Edycja zestaw z elementa i komputera',
                 formMode: 'edit',
                 btnLabel: 'Edytuj zestaw z elementa i komputera',
-                formAction: '/zestaw_elementa_i_komputera/edit',
+                formAction: '/zestaw-komputera-element/edit',
                 navLocation: 'zestawElementaKomputera'
             });
         });
@@ -124,3 +122,31 @@ exports.showAddZestawElementKomputerForm = (req, res, next) => {
             });
         });
 }
+
+// obsługa akcji formularza
+exports.addZestawElementKomputer = (req, res, next) => {
+    const zestawData = { ...req.body };
+    ZestawElementaKomputeraRepository.createZestawElementaKomputera(zestawData)
+        .then(result => {
+            res.redirect('/zestaw-komputera-element');
+        });
+};
+
+exports.updateZestawElementKomputer = (req, res, next) => {
+    const zestawId = req.body._id;
+    const zestawData = { ...req.body };
+
+    ZestawElementaKomputeraRepository.updateZestawElmentaKomputera(zestawId, zestawData)
+        .then(result => {
+            res.redirect('/zestaw-komputera-element');
+        });
+};
+
+
+exports.deleteZestawElementKomputer = (req, res, next) => {
+    const zestawId = req.params.zestawId;
+    ZestawElementaKomputeraRepository.deleteZestawElementaKomputera(zestawId)
+        .then(() => {
+            res.redirect('/zestaw-komputera-element');
+        });
+};

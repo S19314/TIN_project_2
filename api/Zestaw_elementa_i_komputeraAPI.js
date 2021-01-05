@@ -24,6 +24,7 @@ exports.getZestawyElementowKomputeraById = (req, res, next) => {
         });
 };
 
+
 exports.createZestawElementaKomputera = (req, res, next) => {
     ZestawRepository.createZestawElementaKomputera(req.body)
         .then(newObj => {

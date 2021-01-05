@@ -84,7 +84,8 @@ exports.createElement_Komputera = (newElementData) => {
 exports.updateElement_Komputera = (elementId, elementData) => {
     const nazwa = elementData.nazwa;
     const opis = elementData.opis;
-    const foto_path = elementData.foto_path;
+    //   const foto_path = elementData.foto_path; // DOWN Ubrat'
+    const foto_path = 'https://cdn.x-kom.pl/i/setup/images/prod/big/product-new-big,,2019/10/pr_2019_10_25_13_53_0_788_06.jpg';
     const sql = `UPDATE Element_komputera set nazwa = ?, opis = ?, foto_path = ? where _id = ?`;
     return db.promise().execute(sql, [nazwa, opis, foto_path, elementId]);
 };
