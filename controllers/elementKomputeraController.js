@@ -32,7 +32,7 @@ exports.showEditElementKomputerowyForm = (req, res, next) => {
                 element: element,
                 formMode: 'edit',
                 pageTitle: 'Edycja elementa kopmutera',
-                btnLabel: 'Zatwirdź element kopmutera',
+                btnLabel: 'Zatwierdź element kopmutera',
                 formAction: '/komputer-element/edit',
                 navLocation: 'elementKomputer'
             });
