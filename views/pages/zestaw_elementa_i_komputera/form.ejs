@@ -3,7 +3,7 @@
     <main>
 
         <script type="application/javascript;charset=utf-8"
-            src="/public/js/validationZestawElementaIKomputera"> </script>
+            src="/public/js/validationZestawElementaIKomputera.js"> </script>
 
         <h1>
             <%= pageTitle %>
@@ -43,7 +43,8 @@
                     aria-label="required">*</abbr></label>
             <input type="text" name="aktualnaTemperatura" id="aktualnaTemperatura"
                 value="<%=zestaw_elementa_i_komputera.aktuakna_Temperatura%>" <%=(formMode=='showDetails' ) ? 'disabled'
-                : '' %>/>
+                : '' %>
+            >
             <span id="errorAktualnaTemperatura" class="errors-text"></span>
 
 
@@ -51,24 +52,23 @@
                     aria-label="required">*</abbr></label>
             <input type="text" name="procentWykorzystanychZasobow" id="procentWykorzystanychZasobow"
                 value="<%=zestaw_elementa_i_komputera.procent_Wykorzystanych_Zasobow%>" <%=(formMode=='showDetails' )
-                ? 'disabled' : '' %>/>
+                ? 'disabled' : '' %>>
             <span id="errorProcentWykorzystanychZasobow" class="errors-text"></span>
             <!-- Мб, не название скорости в inout/label не соответсвует с название из БД-->
             <label for="aktualnaSzybkoscPrzekazaniaDanych">Aktualna szybkość przekazania danych:<abbr title="required"
                     aria-label="required">*</abbr></label>
             <input type="text" name="aktualnaSzybkoscPrzekazaniaDanych" id="aktualnaSzybkoscPrzekazaniaDanych"
                 value="<%=zestaw_elementa_i_komputera.aktualna_Szybkosc_Przekazania_Danych%>"
-                <%=(formMode=='showDetails' ) ? 'disabled' : '' %>/>
+                <%=(formMode=='showDetails' ) ? 'disabled' : '' %>>
             <span id="errorAktualnaSzybkoscPrzekazaniaDanych" class="errors-text"></span>
 
             <label for="typPolaczeniaInput">Typ polączenia elementa z komputerem:<abbr title="required"
                     aria-label="required">*</abbr></label>
 
-            <input type="text" list="typPolaczenia" placeholder="Typ Polaczenia" id="typPolaczeniaInput"
-                value="<%=zestaw_elementa_i_komputera.typPolaczenia%>" <%=(formMode=='showDetails' ) ? 'disabled' : ''
-                %>
-            required />
-
+            <input type="text" list="typPolaczenia" name="typPolaczenia" placeholder="Typ Polaczenia"
+                id="typPolaczeniaInput" value="<%=zestaw_elementa_i_komputera.typPolaczenia%>"
+                <%=(formMode=='showDetails' ) ? 'disabled' : '' %>
+            >
             <datalist id="typPolaczenia">
 
                 <% for( let zestaw of allZestaws){ %>

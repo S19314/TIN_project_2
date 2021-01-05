@@ -5,7 +5,11 @@ function validateForm() {
     const aktualnaTemperaturaInput = document.getElementById('aktualnaTemperatura');
     const procentWykorzystanychZasobowInput = document.getElementById('procentWykorzystanychZasobow');
     const aktualnaSzybkoscPrzekazaniaDanychInput = document.getElementById('aktualnaSzybkoscPrzekazaniaDanych');
-    const typPoloczeniaInput = document.getElementById('typPoloczenia');
+    const typPoloczeniaInput = document.getElementById('typPolaczeniaInput'); //typPoloczenia');
+
+    console.log("TypPOloczeniaINput");
+
+    console.log(typPoloczeniaInput);
 
     const errorModel = document.getElementById('errorModel');
     const errorNazwaElementu = document.getElementById('errorNazwaElementu');

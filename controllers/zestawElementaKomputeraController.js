@@ -125,23 +125,24 @@ exports.showAddZestawElementKomputerForm = (req, res, next) => {
 
 // obsługa akcji formularza
 exports.addZestawElementKomputer = (req, res, next) => {
-    const zestawData = { ...req.body };
-    ZestawElementaKomputeraRepository.createZestawElementaKomputera(zestawData)
+    const data = { ...req.body };
+    ZestawElementaKomputeraRepository.createZestawElementaKomputera(data)
         .then(result => {
             res.redirect('/zestaw-komputera-element');
         });
 };
+
 
 exports.updateZestawElementKomputer = (req, res, next) => {
     const zestawId = req.body._id;
-    const zestawData = { ...req.body };
-
-    ZestawElementaKomputeraRepository.updateZestawElmentaKomputera(zestawId, zestawData)
+    const data = { ...req.body };
+    console.log("Update ZestawElemeKOmp in Controller.\nData:");
+    console.log(data);
+    ZestawElementaKomputeraRepository.updateZestawElmentaKomputera(zestawId, data)
         .then(result => {
             res.redirect('/zestaw-komputera-element');
         });
 };
-
 
 exports.deleteZestawElementKomputer = (req, res, next) => {
     const zestawId = req.params.zestawId;
