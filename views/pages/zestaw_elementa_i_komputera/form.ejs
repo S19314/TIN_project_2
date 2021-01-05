@@ -68,7 +68,7 @@
                 value="<%=zestaw_elementa_i_komputera.typPolaczenia%>" <%=(formMode=='showDetails' ) ? 'disabled' : ''
                 %>
             required />
-            <!-- DOWN проблема для szegolow(без этого кусочка кода - всё работает)-->
+
             <datalist id="typPolaczenia">
 
                 <% for( let zestaw of allZestaws){ %>
@@ -79,7 +79,6 @@
             </datalist>
             <span id="errorTypPolaczenia" class="errors-text"></span>
 
-            <!-- UP -->
             <div class="form-buttons">
                 <p id="errorsSummary" class="errors-text"></p>
                 <% if (formMode !='showDetails' ) { %>
