@@ -16,15 +16,21 @@ exports.showKomputerList = (req, res, next) => {
 
 }
 exports.showAddKomputerForm = (req, res, next) => {
-    res.render('pages/komputer/universal-form',
-        {
-            komputer: {},
-            pageTitle: 'Nowy komputer',
-            formMode: 'createNew',
-            btnLabel: 'Dodaj komputer',
-            formAction: '/komputers/add', // GIT ?  Хорошо*???
-            navLocation: 'komputer'
-        });
+    let allKomputers;
+    KomputerRepository.getKomputers()
+        .then(allKomps => {
+            allKomputers = allKomps;
+            res.render('pages/komputer/universal-form',
+                {
+                    allKomputers: allKomputers,
+                    komputer: {},
+                    pageTitle: 'Nowy komputer',
+                    formMode: 'createNew',
+                    btnLabel: 'Dodaj komputer',
+                    formAction: '/komputers/add', // GIT ?  Хорошо*???
+                    navLocation: 'komputer'
+                });
+        })
 }
 
 exports.showKomputerDetails = (req, res, next) => {
@@ -36,8 +42,8 @@ exports.showKomputerDetails = (req, res, next) => {
             return KomputerRepository.getKomputerById(komputerId);
         })
         .then(komputer => {
-            console.log("Kopmuter\Data:");
-            console.log(komputer);
+            // console.log("Kopmuter\Data:");
+            // console.log(komputer);
             res.render('pages/komputer/universal-form', {
                 allKomputers: allKomputers,
                 komputer: komputer,
@@ -51,9 +57,15 @@ exports.showKomputerDetails = (req, res, next) => {
 }
 exports.showEditKomputerForm = (req, res, next) => {
     const komputerId = req.params.komputerId;
-    KomputerRepository.getKomputerById(komputerId)
+    let allKomputers;
+    KomputerRepository.getKomputers()
+        .then(allKomps => {
+            allKomputers = allKomps;
+            return KomputerRepository.getKomputerById(komputerId);
+        })
         .then(komputer => {
             res.render('pages/komputer/universal-form', {
+                allKomputers: allKomputers,
                 komputer: komputer,
                 formMode: 'edit',
                 pageTitle: 'Edycja kopmutera',

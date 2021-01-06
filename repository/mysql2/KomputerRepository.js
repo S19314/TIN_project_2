@@ -75,6 +75,8 @@ exports.getKomputerById = (computerId) => {
 };
 
 exports.createKomputer = (newKomputerData) => {
+    console.log("createKomputer\nnewKomputerData");
+    console.log(newKomputerData);
     const model = newKomputerData.model;
     const zaintstalowany_System_Operacyjny = newKomputerData.zaintstalowany_System_Operacyjny;
     const typ_Komputera = newKomputerData.typ_Komputera;
@@ -85,6 +87,8 @@ exports.createKomputer = (newKomputerData) => {
         [model, zaintstalowany_System_Operacyjny, typ_Komputera, data_Stworzenia]
     );
 };
+
+
 
 exports.updateKomputer = (komputerId, komputerData) => {
     const model = komputerData.model;

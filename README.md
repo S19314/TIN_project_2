@@ -10,3 +10,6 @@ Version 4.23:{
 	( в z_e_k.element_komputera._id ) заключалась в том, что в KomputerRepository  "_id: firstRow.komp_id, [ /*  firstRow._id, */]" по неверному названию колонки брались 
 	данные. 
 }
+Version 4.24:{
+	Причина из-за которой формой не отправляются некоторые поля в том, что input не имеет атрибута name="";
+}
