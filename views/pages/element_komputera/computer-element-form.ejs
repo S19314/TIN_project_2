@@ -6,13 +6,15 @@
         <h1>
             <%=pageTitle%>
         </h1>
-        <form class="form" method="post" action="<%=formAction%>" novalidate onsubmit="return validateForm();">
+        <form class="form" method="post" action="<%=formAction%>" onsubmit="return validateForm();">
+            <!-- novalidate -->
             <input type="hidden" name="_id" value="<%= element._id %>">
             <label for="nazwa">Nazwa:<abbr title="required" aria-label="required"
                     class="errors-text">*</abbr></abbr></label>
-            <input type="text" name="nazwa" id="nazwa" value="<%= element.nazwa %>" <%=(formMode=='showDetails'
-                )? 'disabled' :''%> >
-            <span id="errorNazwa" class="errors-text"></span>
+            <input type="text"
+                class="<%= validationErrors.find(elem => elem.path.includes('nazwa')) ? 'error-input' : '' %>"
+                name="nazwa" id="nazwa" value="<%= element.nazwa %>" <%=(formMode=='showDetails' )? 'disabled' :''%> >
+
 
             <label for="opis">Opis:<abbr title="required" aria-label="required">*</abbr></abbr></label>
             <textarea cols="40" rows="8" name="opis" id="opis" <%=(formMode=='showDetails' ) ? 'disabled' : ''

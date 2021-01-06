@@ -1,0 +1,3 @@
+Instalacja dla walidacji po stronie serwera:
+Pakiet joi instalujemy poleceniem: npm i joi.
+

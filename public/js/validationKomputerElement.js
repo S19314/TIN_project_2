@@ -48,5 +48,6 @@ function validateForm() {
         errorSummary.innerText = "Formularz zawiera błędy";
     }
 
+
     return valid;
 }

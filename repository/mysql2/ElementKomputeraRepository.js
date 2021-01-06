@@ -1,4 +1,5 @@
 const db = require('../../config/mysql2/db');
+const elementSchema = require('../../model/joi/ElementKomputera');
 
 exports.getElements_Komputera = () => {
     return db.promise().query('SELECT * FROM Element_komputera')
@@ -70,6 +71,11 @@ exports.getElement_KomputeraById = (elementId) => {
 };
 
 exports.createElement_Komputera = (newElementData) => {
+    const validateResultElement = elementSchema.validate(newElementData, { abortEarly: false });
+    if (validateResultElement.error) {
+        return Promise.reject(validateResultElement.error);
+    }
+
     const originPathPhoto = './public/updates';
     // Тут добавить функцию, которая будет сохранять в файловую систему отправляемую фотографию
     // После закачки в файловую систему, в foto_path конкатанация с originPathPhoto И запись в БД
@@ -84,6 +90,13 @@ exports.createElement_Komputera = (newElementData) => {
 };
 
 exports.updateElement_Komputera = (elementId, elementData) => {
+    const validateResultElement = elementSchema.validate(elementData, { abortEarly: false });
+    if (validateResultElement.error) {
+        console.log("UpdateEllem_KOmp eRRORS\n");
+        console.log(validateResultElement.error);
+        return Promise.reject(validateResultElement.error);
+    }
+
     const nazwa = elementData.nazwa;
     const opis = elementData.opis;
     console.log("UPDATE Eleme_Komp in Repository\nData:");

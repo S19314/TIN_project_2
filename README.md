@@ -17,3 +17,8 @@ Version 4.25:{
 	1. Изменил ElementKomputeraRepository - в getElement_KomputeraById с row.model i row.komp_id на firstRow.model i firstRow.komp_id;[И для остальных полей так же.]
 	2. B KomputerContoller передавался пустой komputerId, так как в komputerRepository был шаблон ссылки с :elementId, а не :komputerID. иЗМЕНИЛ И ЗАРАБОТАЛО.
 }
+Version 5.1:{
+	Не хотело генереировать страницы, так как в туториале описано добавление .catch(validationError: err.details) в методах по обраотке POST-запросов [ElementKomputeraController].
+	Но не об изменениях в методах show [в ElementKomputeraController], где при генерации страницы необходима переменная(-массив) validationError: => РЕШЕНИЕ __ validationError:[] __;
+	При генерации страница использует - есть откуда брать, а берет null и отлично живёт.
+}

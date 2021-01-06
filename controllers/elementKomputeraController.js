@@ -20,7 +20,8 @@ exports.showAddElementKomputerForm = (req, res, next) => {
         formMode: 'createNew',
         btnLabel: 'Dodaj element komputera',
         formAction: '/komputer-element/add',
-        navLocation: 'elementKomputer'
+        navLocation: 'elementKomputer',
+        validationErrors: []
     });
 }
 
@@ -34,7 +35,8 @@ exports.showEditElementKomputerowyForm = (req, res, next) => {
                 pageTitle: 'Edycja elementa kopmutera',
                 btnLabel: 'Zatwierdź element kopmutera',
                 formAction: '/komputer-element/edit',
-                navLocation: 'elementKomputer'
+                navLocation: 'elementKomputer',
+                validationErrors: []
             });
         });
 };
@@ -53,7 +55,8 @@ exports.showElementKomputerDetails = (req, res, next) => {
                 formMode: 'showDetails',
                 pageTitle: 'Szczegóły elementa komputera',
                 formAction: '',
-                navLocation: 'elementKomputer'
+                navLocation: 'elementKomputer',
+                validationErrors: []
             })
         });
 }
@@ -65,18 +68,43 @@ exports.addElementKomputera = (req, res, next) => {
     ElementKomputeraRepository.createElement_Komputera(elementData)
         .then(result => {
             res.redirect('/komputer-element');
+        })
+        .catch(err => {
+            res.render('pages/element_komputera/computer-element-form', {
+                element: elementData,
+                pageTitle: 'Dodawanie elementa komputera',
+                formMode: 'createNew',
+                btnLabel: 'Dodaj element komputera',
+                formAction: '/komputer-element/add',
+                navLocation: 'elementKomputer',
+                validationErrors: err.details
+            });
         });
 };
 
 exports.updateElementKomputera = (req, res, next) => {
     const elementId = req.body._id;
     const elementData = { ...req.body };
+    /*
     console.log("elementData");
     console.log(elementData);
+    */
     ElementKomputeraRepository.updateElement_Komputera(elementId, elementData)
         .then(result => {
             res.redirect('/komputer-element');
+        })
+        .catch(err => {
+            res.render('pages/element_komputera/computer-element-form', {
+                element: element,
+                pageTitle: 'Edycja elementa kopmutera',
+                formMode: 'edit',
+                btnLabel: 'Zatwierdź element kopmutera',
+                formAction: '/komputer-element/edit',
+                navLocation: 'elementKomputer',
+                validationErrors: err.details
+            });
         });
+
 };
 
 exports.deleteElementKomputera = (req, res, next) => {
