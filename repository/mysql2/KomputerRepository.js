@@ -43,7 +43,10 @@ exports.getKomputerById = (computerId) => {
                 data_Stworzenia: firstRow.data_Stworzenia,
                 zestaw_elementow_komputera: []
             };
-
+            console.log("firstRow.komp_id");
+            console.log(firstRow.komp_id);
+            console.log("First row in getKOmputerById");
+            console.log(firstRow);
             for (let i = 0; i < results[0].length; i++) {
                 const row = results[0][i];
                 if (row.z_e_k_id) {
@@ -54,7 +57,7 @@ exports.getKomputerById = (computerId) => {
                         aktualna_Szybkosc_Przekazania_Danych: row.aktualna_Szybkosc_Przekazania_Danych,
                         typPolaczenia: row.typPolaczenia,
                         element_komputera: {
-                            _id: firstRow._id,
+                            _id: firstRow.komp_id, // firstRow._id, 
                             nazwa: firstRow.nazwa,
                             opis: firstRow.opis,
                             foto_path: firstRow.foto_Path // Изменил с foto_path на foto_Path
