@@ -44,6 +44,9 @@ exports.showKomputerDetails = (req, res, next) => {
         .then(komputer => {
             // console.log("Kopmuter\Data:");
             // console.log(komputer);
+            console.log("showDETAILSKomputerForm");
+            console.log(komputer);
+
             res.render('pages/komputer/universal-form', {
                 allKomputers: allKomputers,
                 komputer: komputer,
@@ -56,7 +59,10 @@ exports.showKomputerDetails = (req, res, next) => {
         );
 }
 exports.showEditKomputerForm = (req, res, next) => {
+    console.log("showEditKomputerForm BEGIN\nkomputerId:");
+
     const komputerId = req.params.komputerId;
+    console.log(komputerId);
     let allKomputers;
     KomputerRepository.getKomputers()
         .then(allKomps => {
@@ -64,6 +70,8 @@ exports.showEditKomputerForm = (req, res, next) => {
             return KomputerRepository.getKomputerById(komputerId);
         })
         .then(komputer => {
+            console.log("showEditKomputerForm");
+            console.log(komputer);
             res.render('pages/komputer/universal-form', {
                 allKomputers: allKomputers,
                 komputer: komputer,
@@ -72,7 +80,7 @@ exports.showEditKomputerForm = (req, res, next) => {
                 btnLabel: 'Zatwierdź kopmuter',
                 formAction: '/komputers/edit',
                 navLocation: 'komputer'
-            });
+            })
         });
 };
 

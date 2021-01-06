@@ -13,3 +13,7 @@ Version 4.23:{
 Version 4.24:{
 	Причина из-за которой формой не отправляются некоторые поля в том, что input не имеет атрибута name="";
 }
+Version 4.25:{
+	1. Изменил ElementKomputeraRepository - в getElement_KomputeraById с row.model i row.komp_id на firstRow.model i firstRow.komp_id;[И для остальных полей так же.]
+
+}

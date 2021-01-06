@@ -9,9 +9,21 @@
         <form class="form" method="post" action="<%=formAction%>" novalidate onsubmit="return validateForm();">
 
             <input type="hidden" name="_id" value="<%=komputer._id%>">
+            <!-- 
+            <label for="model">Model:<abbr title="required" aria-label="required">*</abbr></abbr></label>
+            <select name="model" id="model">
+                <option selected disabled>Model komputera</option>
+                <option value="Jaguar 3000">Jaguar 3000</option>
+                <option value="Actina by Corsair">Actina by Corsair</option>
+                <option value="Acer Aspire XC-330 AMD">Acer Aspire XC-330 AMD </option>
+            </select>
+            <span id="errorModel" class="errors-text"></span>
+            -->
+            <!-- NEW DOWN -->
+            <!-- value="<%=komputer.model%>" -->
             <label for="valueModel">Model:<abbr title="required" aria-label="required">*</abbr></label>
             <input type="text" list="model" name="model" placeholder="Model komputera" id="valueModel"
-                value="<%=komputer.model%>" <%=(formMode=='showDetails' )? 'disabled' :''%> >
+                <%=(formMode=='showDetails' )? 'disabled' :''%> >
 
             <datalist id="model">
                 <% for(let komp of allKomputers){ %>
@@ -24,10 +36,10 @@
             <!-- NEW UP-->
             <label for="systemOperacyjnyInput">Zainstalowany system operacyjny:<abbr title="required"
                     aria-label="required">*</abbr></label>
-
+            <!-- value="<%=komputer.zaintstalowany_System_Operacyjny%>"   -->
             <input type="text" list="systemOperacyjny" name="zaintstalowany_System_Operacyjny"
-                placeholder="System operacyjny" id="systemOperacyjnyInput"
-                value="<%=komputer.zaintstalowany_System_Operacyjny%>" <%=(formMode=='showDetails' )? 'disabled' :''%>>
+                placeholder="System operacyjny" id="systemOperacyjnyInput" <%=(formMode=='showDetails' )? 'disabled'
+                :''%>>
             <datalist id="systemOperacyjny">
                 <% for(let komp of allKomputers){ %>
                     <option value="<%=komp.zaintstalowany_System_Operacyjny%>" <%=( komputer._id &&
@@ -39,10 +51,9 @@
 
 
             <label for="typKomputeraInput">Typ Komputera:<abbr title="required" aria-label="required">*</abbr></label>
-
+            <!-- value="<%=komputer.typ_Komputera%>" -->
             <input type="text" list="typKomputera" name="typ_Komputera" placeholder="Typ Komputera"
-                id="typKomputeraInput" value="<%=komputer.typ_Komputera%>" <%=(formMode=='showDetails' )? 'disabled'
-                :''%>>
+                id="typKomputeraInput" <%=(formMode=='showDetails' )? 'disabled' :''%>>
             <datalist id="typKomputera">
                 <% for(let komp of allKomputers){ %>
                     <option value="<%=komp.typ_Komputera%>" <%=( komputer._id &&
@@ -70,6 +81,8 @@
                         <% } %>
             </div>
         </form>
+
+
         <% if (formMode=='showDetails' || formMode=='edit' ) { %>
             <h1>Szczegóły zestawa elementa i komputera</h1>
             <table class="table-list">
@@ -94,8 +107,6 @@
                 </thead>
                 <tbody>
                     <% for (let z_e_k of komputer.zestaw_elementow_komputera) { %>
-
-
                         <tr>
                             <td><a href="/komputer-element/details/<%= z_e_k.element_komputera._id %>">
                                     <%=z_e_k.element_komputera.nazwa%>
@@ -117,9 +128,9 @@
                         <% } %>
                 </tbody>
             </table>
+
+
             <% } %>
-
-
 
     </main>
 

@@ -39,6 +39,8 @@ exports.getElement_KomputeraById = (elementId) => {
                 foto_path: firstRow.foto_path,
                 zestaw_elementow_komputera: []
             }
+            console.log("firstRow getElement_KopmuteraById");
+            console.log(firstRow);
             for (let i = 0; i < results[0].length; i++) {
                 const row = results[0][i];
                 if (row.z_e_k_id) {
@@ -49,11 +51,11 @@ exports.getElement_KomputeraById = (elementId) => {
                         aktualna_Szybkosc_Przekazania_Danych: row.aktualna_Szybkosc_Przekazania_Danych,
                         typPolaczenia: row.typPolaczenia,
                         komputer: {
-                            _id: row.komp_id,
-                            model: row.model,
-                            zaintstalowany_System_Operacyjny: row.zaintstalowany_System_Operacyjny,
-                            typ_Komputera: row.typ_Komputera,
-                            data_Stworzenia: row.data_Stworzenia
+                            _id: firstRow.komp_id, // row.komp_id,
+                            model: firstRow.model,//row.model,
+                            zaintstalowany_System_Operacyjny: firstRow.zaintstalowany_System_Operacyjny, // row.zaintstalowany_System_Operacyjny,
+                            typ_Komputera: firstRow.typ_Komputera, // row.typ_Komputera,
+                            data_Stworzenia: firstRow.data_Stworzenia, //row.data_Stworzenia
                         }
                     };
                     element_komputera.zestaw_elementow_komputera.push(zestaw_elementa_komputera);
