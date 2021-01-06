@@ -1,12 +1,12 @@
 <%- include('../../fragments/header.ejs')%>
     <main>
+        <!--         <script type="application/javascript" src="/public/js/validationKomputerForm.js"></script>-->
         <!-- <script type="application/javascript" src="/public/js/validationKomputerForm.js"></script> -->
-        <script type="application/javascript" src="/js/validationKomputerForm.js"></script>
+        <script type="application/javascript;charset=utf-8" src="../../../public/js/validationKomputerForm.js"></script>
         <h2>
             <%= pageTitle %>
         </h2>
-
-        <form class="form" method="post" action="<%=formAction%>" novalidate onsubmit="return validateForm();">
+        <form class=" form" method="post" action="<%=formAction%>" novalidate onsubmit="return validateForm();">
 
             <input type="hidden" name="_id" value="<%=komputer._id%>">
             <label for="valueModel">Model:<abbr title="required" aria-label="required">*</abbr></label>
@@ -21,13 +21,14 @@
                     <% } %>
             </datalist>
             <span id="errorModel" class="errors-text"></span>
-            <!-- NEW UP-->
+            <!--NEW UP-->
             <label for="systemOperacyjnyInput">Zainstalowany system operacyjny:<abbr title="required"
                     aria-label="required">*</abbr></label>
 
             <input type="text" list="systemOperacyjny" name="zaintstalowany_System_Operacyjny"
                 placeholder="System operacyjny" id="systemOperacyjnyInput"
-                value="<%=komputer.zaintstalowany_System_Operacyjny%>" <%=(formMode=='showDetails' )? 'disabled' :''%>>
+                value="<%=komputer.zaintstalowany_System_Operacyjny%>" <%=(formMode=='showDetails' ) ? 'disabled' : ''
+                %>>
             <datalist id="systemOperacyjny">
                 <% for(let komp of allKomputers){ %>
                     <option value="<%=komp.zaintstalowany_System_Operacyjny%>" <%=( komputer._id &&
@@ -41,8 +42,8 @@
             <label for="typKomputeraInput">Typ Komputera:<abbr title="required" aria-label="required">*</abbr></label>
 
             <input type="text" list="typKomputera" name="typ_Komputera" placeholder="Typ Komputera"
-                id="typKomputeraInput" value="<%=komputer.typ_Komputera%>" <%=(formMode=='showDetails' )? 'disabled'
-                :''%>>
+                id="typKomputeraInput" value="<%=komputer.typ_Komputera%>" <%=(formMode=='showDetails' ) ? 'disabled'
+                : '' %>>
             <datalist id="typKomputera">
                 <% for(let komp of allKomputers){ %>
                     <option value="<%=komp.typ_Komputera%>" <%=( komputer._id &&
@@ -55,8 +56,10 @@
             <label for="dataStworzeniaInput">Data stworzenia:<abbr title="required"
                     aria-label="required">*</abbr></label>
             <input type="text" name="data_Stworzenia" id="dataStworzeniaInput" placeholder="yyyy-mm-dd"
-                value="<%=komputer.data_Stworzenia %>" <%=(formMode=='showDetails' )? 'disabled' :''%>>
+                value="<%=komputer.data_Stworzenia ? komputer.data_Stworzenia.toISOString().split('T')[0] : '' %>"
+                <%=(formMode=='showDetails' ) ? 'disabled' : '' %>>
             <span id="errorDataStworzenia" class="errors-text"></span>
+            <!--DataStworzenia-->
 
             <div class="form-buttons">
                 <p id="errorsSummary" class="errors-text"></p>
@@ -65,11 +68,13 @@
                     <input class="form-button-submit" type="submit" value="<%=btnLabel%>" />
                     <a class="form-button-cancel" href="/komputers">Anuluj</a>
                     <% } else { %>
-                        <a href="/kopmuters/edit/<%=komputer._id%>" class="list-actions-button-edit">Edytuj</a>
+                        <a href="/komputers/edit/<%=komputer._id%>" class="list-actions-button-edit">Edytuj</a>
                         <a class="list-actions-button-details" href="/komputers">Powrót</a>
                         <% } %>
             </div>
         </form>
+
+
         <% if (formMode=='showDetails' || formMode=='edit' ) { %>
             <h1>Szczegóły zestawa elementa i komputera</h1>
             <table class="table-list">
@@ -94,12 +99,9 @@
                 </thead>
                 <tbody>
                     <% for (let z_e_k of komputer.zestaw_elementow_komputera) { %>
-
-
                         <tr>
                             <td><a href="/komputer-element/details/<%= z_e_k.element_komputera._id %>">
                                     <%=z_e_k.element_komputera.nazwa%>
-
                                 </a></td>
                             <td>
                                 <%=z_e_k.aktuakna_Temperatura%>
@@ -121,6 +123,8 @@
 
 
 
+
+
     </main>
 
-    <%- include('../../fragments/footer.ejs')%>
+    <% - include('../../fragments/footer.ejs') %>

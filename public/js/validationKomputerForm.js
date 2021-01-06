@@ -4,7 +4,8 @@ function validateForm() {
     const modelInput = document.getElementById('valueModel'); // 'model');
     const systemOperacyjnyInput = document.getElementById('systemOperacyjnyInput')
     const typKomputeraInput = document.getElementById('typKomputeraInput');
-    const dataStworzeniaInput = document.getElementById('dataStworzeniaInput');
+    let dataStworzeniaInput = document.getElementById('dataStworzeniaInput');
+
 
     const errorModel = document.getElementById('errorModel');
     const errorSystemOperacyjny = document.getElementById('errorSystemOperacyjny');
@@ -50,7 +51,17 @@ function validateForm() {
         typKomputeraInput.classList.add("error-input");
         errorTypKomputera.innerText = "Pole powinno zawierać od 2 do 60 znaków";
     }
-
+    //  DOWN
+    let normalizationDataStworzeniaInput = new Date(dataStworzeniaInput);
+    normalizationDataStworzeniaInput.setDate(normalizationDataStworzeniaInput.getDate() + 1);
+    console.log("NormalizationDate\nDate:");
+    console.log(normalizationDataStworzeniaInput);
+    console.log("dataStworzeniaInput\nBEFORE:");
+    console.log(dataStworzeniaInput.value);
+    dataStworzeniaInput.value = normalizationDataStworzeniaInput.toISOString().split('T')[0];
+    console.log("dataStworzeniaInput\nAFTER:");
+    console.log(dataStworzeniaInput.value);
+    //  UP
 
     let nowDate = new Date();
     let tommorowDate = new Date();

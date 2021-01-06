@@ -15,5 +15,5 @@ Version 4.24:{
 }
 Version 4.25:{
 	1. Изменил ElementKomputeraRepository - в getElement_KomputeraById с row.model i row.komp_id на firstRow.model i firstRow.komp_id;[И для остальных полей так же.]
-
+	2. B KomputerContoller передавался пустой komputerId, так как в komputerRepository был шаблон ссылки с :elementId, а не :komputerID. иЗМЕНИЛ И ЗАРАБОТАЛО.
 }

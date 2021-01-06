@@ -16,7 +16,8 @@
                             <%= komputer.model %>
                         </td>
                         <td>
-                            <%= komputer.data_Stworzenia %>
+                            <%= komputer.data_Stworzenia ? komputer.data_Stworzenia.toISOString().split('T')[0] : '' %>
+                                <!--  komputer.data_Stworzenia.toISOString().split('T')[0] -->
                         </td>
                         <td>
                             <ul class="list-actions">
