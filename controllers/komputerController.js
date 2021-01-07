@@ -59,10 +59,10 @@ exports.showKomputerDetails = (req, res, next) => {
         );
 }
 exports.showEditKomputerForm = (req, res, next) => {
-    console.log("showEditKomputerForm BEGIN\nkomputerId:");
+    // console.log("showEditKomputerForm BEGIN\nkomputerId:");
 
     const komputerId = req.params.komputerId;
-    console.log(komputerId);
+    // console.log(komputerId);
     let allKomputers;
     KomputerRepository.getKomputers()
         .then(allKomps => {
@@ -96,8 +96,8 @@ exports.addKomputer = (req, res, next) => {
 exports.updateKomputer = (req, res, next) => {
     const komputerId = req.body._id;
     const komputerData = { ...req.body };
-    console.log("komputerData");
-    console.log(komputerData);
+    // console.log("komputerData");
+    // console.log(komputerData);
     KomputerRepository.updateKomputer(komputerId, komputerData)
         .then(result => {
             res.redirect('/komputers');

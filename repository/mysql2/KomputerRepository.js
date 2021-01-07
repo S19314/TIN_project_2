@@ -74,10 +74,12 @@ exports.getKomputerById = (computerId) => {
                 data_Stworzenia: firstRow.data_Stworzenia,
                 zestaw_elementow_komputera: []
             };
+            /*
             console.log("firstRow.komp_id");
             console.log(firstRow.komp_id);
             console.log("First row in getKOmputerById");
             console.log(firstRow);
+            */
             for (let i = 0; i < results[0].length; i++) {
                 const row = results[0][i];
                 if (row.z_e_k_id) {
@@ -106,7 +108,7 @@ exports.getKomputerById = (computerId) => {
 };
 
 exports.createKomputer = (newKomputerData) => {
-    const validationResult = zestawSchema.validate(data, { abortEarly: false });
+    const validationResult = komputerSchema.validate(newKomputerData, { abortEarly: false });
     if (validationResult.error) {
         return Promise.reject(validationResult.error);
     }
@@ -141,8 +143,7 @@ exports.createKomputer = (newKomputerData) => {
 
 
 exports.updateKomputer = (komputerId, komputerData) => {
-
-    const validationResult = zestawSchema.validate(data, { abortEarly: false });
+    const validationResult = komputerSchema.validate(newKomputerData, { abortEarly: false });
     if (validationResult.error) {
         return Promise.reject(validationResult.error);
     }

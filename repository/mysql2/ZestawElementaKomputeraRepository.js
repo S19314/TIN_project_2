@@ -2,27 +2,7 @@ const e = require('express');
 const db = require('../../config/mysql2/db');
 const zestawSchema = require('../../model/joi/Zestaw_Elementow_Komputera');
 
-function checkDateIfAfter(value, compareTo) {
-    if (!value) {
-        return false;
-    }
 
-    if (!compareTo) {
-        return false;
-    }
-
-
-    const valueDate = new Date(value);
-    // valueDate = valueDate.setDate(value);
-    const compareToDate = new Date(compareTo);
-    // compareToDate = compareToDate.setDate(compareTo);
-
-    if (valueDate.getTime() <= compareToDate.getTime()) { // Верно ли сравнивает? Мб сравнивает часы в сутках ( от 0 до 23 )
-        return false;
-    }
-
-    return true;
-}
 
 exports.getZestawyElementowKomputera = () => {
     const query = `SELECT z_e_k._id as z_e_k_id,
@@ -129,8 +109,6 @@ exports.getZestawElementaKomputeraById = (zestawId) => {
 };
 
 exports.createZestawElementaKomputera = (data) => {
-    //   console.log('createZestawElementaKomputera');
-    // console.log(data);
     const validationResult = zestawSchema.validate(data, { abortEarly: false });
     if (validationResult.error) {
         return Promise.reject(validationResult.error);
@@ -142,14 +120,14 @@ exports.createZestawElementaKomputera = (data) => {
     return db.promise().execute(
         sql,
         [data.elementId, data.komputerId, data.aktualnaTemperatura, data.procentWykorzystanychZasobow, data.aktualnaSzybkoscPrzekazaniaDanych, data.typPolaczenia]
-        // [data.element_id, data.computer_id, data.aktuakna_Temperatura, data.procent_Wykorzystanych_Zasobow, data.aktualna_Szybkosc_Przekazania_Danych, data.typPolaczenia]
     );
 };
 
 exports.updateZestawElmentaKomputera = (zestawId, data) => {
-
-    console.log("Where is undefined?");
-    // console.log(""data.elementid, data.komputerId, data.aktualnaTemperatura, data.procentWykorzystanychZasobow, data.aktualnaSzybkoscPrzekazaniaDanych, data.typPolaczenia, zestawId]);
+    const validationResult = zestawSchema.validate(data, { abortEarly: false });
+    if (validationResult.error) {
+        return Promise.reject(validationResult.error);
+    }
     const sql = `UPDATE Zestaw_Elementow_Komputera 
                 set element_id = ?,
                 computer_id = ?,
@@ -161,7 +139,6 @@ exports.updateZestawElmentaKomputera = (zestawId, data) => {
     return db.promise().execute(
         sql,
         [data.elementId, data.komputerId, data.aktualnaTemperatura, data.procentWykorzystanychZasobow, data.aktualnaSzybkoscPrzekazaniaDanych, data.typPolaczenia, zestawId]
-        //        [data.element_id, data.computer_id, data.aktuakna_Temperatura, data.procent_Wykorzystanych_Zasobow, data.aktualna_Szybkosc_Przekazania_Danych, data.typPolaczenia, zestawId]
     );
 }
 
