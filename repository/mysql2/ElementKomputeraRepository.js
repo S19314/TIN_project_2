@@ -94,6 +94,12 @@ exports.updateElement_Komputera = (elementId, elementData) => {
     if (validateResultElement.error) {
         console.log("UpdateEllem_KOmp eRRORS\n");
         console.log(validateResultElement.error);
+        /*
+        console.log("UpdateEllem_KOmp Details.message\n");
+        console.log(validateResultElement.error.details[0].message);
+        console.log("UpdateEllem_KOmp Details.path[0]\n");
+        console.log(validateResultElement.error.details[0].path[0]);
+*/
         return Promise.reject(validateResultElement.error);
     }
 

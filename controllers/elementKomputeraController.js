@@ -41,6 +41,42 @@ exports.showEditElementKomputerowyForm = (req, res, next) => {
         });
 };
 
+exports.updateElementKomputera = (req, res, next) => {
+    const elementId = req.body._id;
+    const elementData = { ...req.body };
+    req.params.elementId = elementId;
+    /*
+    console.log("elementData");
+    console.log(elementData);
+    */
+    ElementKomputeraRepository.updateElement_Komputera(elementId, elementData)
+        .then(result => {
+            res.redirect('/komputer-element');
+        })
+        .catch(err => {
+
+            // const element = ElementKomputeraRepository.getElement_KomputeraById(elementId);
+            // element.nazwa = err._original.nazwa;
+            // element.opis = err._original.opis;
+            // element.foto_path =  err._original.foto;
+            // console.log("err._original");
+            // console.log(err._original);
+            const newElementData = { 'zestaw_elementow_komputera': [], ...elementData };
+            console.log("BEFORE RENDERING");
+            res.render('pages/element_komputera/computer-element-form', {
+                element: newElementData,
+                pageTitle: 'Edycja elementa kopmutera',
+                formMode: 'edit',
+                btnLabel: 'Zatwierdź element kopmutera',
+                formAction: '/komputer-element/edit/',
+                navLocation: 'elementKomputer',
+                validationErrors: err.details
+            });
+            console.log("AFTER RENDERING");
+        });
+
+};
+
 
 // 
 exports.showElementKomputerDetails = (req, res, next) => {
@@ -70,6 +106,7 @@ exports.addElementKomputera = (req, res, next) => {
             res.redirect('/komputer-element');
         })
         .catch(err => {
+            elementData = { 'zestaw_elementow_komputera': [], ...elementData };
             res.render('pages/element_komputera/computer-element-form', {
                 element: elementData,
                 pageTitle: 'Dodawanie elementa komputera',
@@ -82,30 +119,6 @@ exports.addElementKomputera = (req, res, next) => {
         });
 };
 
-exports.updateElementKomputera = (req, res, next) => {
-    const elementId = req.body._id;
-    const elementData = { ...req.body };
-    /*
-    console.log("elementData");
-    console.log(elementData);
-    */
-    ElementKomputeraRepository.updateElement_Komputera(elementId, elementData)
-        .then(result => {
-            res.redirect('/komputer-element');
-        })
-        .catch(err => {
-            res.render('pages/element_komputera/computer-element-form', {
-                element: element,
-                pageTitle: 'Edycja elementa kopmutera',
-                formMode: 'edit',
-                btnLabel: 'Zatwierdź element kopmutera',
-                formAction: '/komputer-element/edit',
-                navLocation: 'elementKomputer',
-                validationErrors: err.details
-            });
-        });
-
-};
 
 exports.deleteElementKomputera = (req, res, next) => {
     const elementId = req.params.elementId;

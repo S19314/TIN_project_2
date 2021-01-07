@@ -11,25 +11,14 @@
             <input type="hidden" name="_id" value="<%= element._id %>">
             <label for="nazwa">Nazwa:<abbr title="required" aria-label="required"
                     class="errors-text">*</abbr></abbr></label>
-            <input class="<%= validationErrors.find(elem => elem.path.includes('nazwa')) ? 'error-input' : '' %>"
-                type="text" name="nazwa" id="nazwa" value="<%= element.nazwa %>" <%=(formMode=='showDetails'
+            <input type="text" name="nazwa" id="nazwa" value="<%= element.nazwa %>" <%=(formMode=='showDetails'
                 )? 'disabled' :''%> >
 
-            <span id="errorNazwa" class="errors-text">
-                <% if (validationErrors.find(elem=> elem.path.includes('nazwa'))) { %>
-                    <%= validationErrors.find(elem=> elem.path.includes('nazwa')).message %>
-                        <% } %>
-            </span>
+
 
             <label for="opis">Opis:<abbr title="required" aria-label="required">*</abbr></abbr></label>
-            <textarea class="<%= validationErrors.find(elem => elem.path.includes('opis')) ? 'error-input' : '' %>"
-                cols="40" rows="8" name="opis" id="opis" <%=(formMode=='showDetails' ) ? 'disabled' : ''
+            <textarea cols="40" rows="8" name="opis" id="opis" <%=(formMode=='showDetails' ) ? 'disabled' : ''
                 %>><%=element.opis%></textarea>
-            <span id="errorOpis" class="errors-text">
-                <% if (validationErrors.find(elem=> elem.path.includes('opis'))) { %>
-                    <%= validationErrors.find(elem=> elem.path.includes('opis')).message %>
-                        <% } %>
-            </span>
 
 
             <label for="fotoInput">Foto:<abbr title="required" aria-label="required">*</abbr></abbr></label>
@@ -100,7 +89,6 @@
                     </tr>
                 </thead>
                 <tbody>
-
                     <% for (let z_e_k of element.zestaw_elementow_komputera) { %>
                         <tr>
                             <!-- zestaw-komputera-element -->
@@ -121,7 +109,6 @@
                             </td>
                         </tr>
                         <% } %>
-
                 </tbody>
             </table>
             <% } %>

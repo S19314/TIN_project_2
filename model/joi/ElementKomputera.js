@@ -34,7 +34,7 @@ const elementSchema = Joi.object({
         .max(1000)
         .required()
         .error(errMessages),
-    foto_path: Joi.string()
+    foto: Joi //.string()
         .required()
         .error(errMessages)
 });
