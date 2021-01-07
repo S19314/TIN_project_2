@@ -1,5 +1,36 @@
 const db = require('../../config/mysql2/db');
+const komputerSchema = require('../../model/joi/Komputer');
 
+function checkDateIfAfter(value, compareTo) {
+    let err = {
+        details: [{
+            path: ['email'],
+            message: 'Podany adres email jest już używany'
+        }]
+    };
+
+
+
+    if (!value) {
+        return err;
+    }
+
+    if (!compareTo) {
+        return err;
+    }
+
+
+    const valueDate = new Date(value);
+    // valueDate = valueDate.setDate(value);
+    const compareToDate = new Date(compareTo);
+    // compareToDate = compareToDate.setDate(compareTo);
+
+    if (valueDate.getTime() <= compareToDate.getTime()) { // Верно ли сравнивает? Мб сравнивает часы в сутках ( от 0 до 23 )
+        return err;
+    }
+
+    return {};
+}
 exports.getKomputers = () => {
     return db.promise().query('SELECT * FROM Komputer')
         .then((results, fields) => {
@@ -75,36 +106,73 @@ exports.getKomputerById = (computerId) => {
 };
 
 exports.createKomputer = (newKomputerData) => {
-    console.log("createKomputer\nnewKomputerData");
-    console.log(newKomputerData);
-    const model = newKomputerData.model;
-    const zaintstalowany_System_Operacyjny = newKomputerData.zaintstalowany_System_Operacyjny;
-    const typ_Komputera = newKomputerData.typ_Komputera;
-    const data_Stworzenia = newKomputerData.data_Stworzenia;
-    const sql = 'INSERT INTO Komputer (model, zaintstalowany_System_Operacyjny, typ_Komputera, data_Stworzenia) VALUES (?, ?, ?, ?)';
-    return db.promise().execute(
-        sql,
-        [model, zaintstalowany_System_Operacyjny, typ_Komputera, data_Stworzenia]
-    );
+    const validationResult = zestawSchema.validate(data, { abortEarly: false });
+    if (validationResult.error) {
+        return Promise.reject(validationResult.error);
+    }
+    let tommorowDate = new Date();
+    tommorowDate.setDate(nowDate.getDate() + 1);
+    return checkDateIfAfter(data.data_Stworzenia, tommorowDate)
+        .then(dataError => {
+            if (dataError) {
+                return Promise.reject(dataError);
+            } else {
+                /*
+                console.log("createKomputer\nnewKomputerData");
+                console.log(newKomputerData);
+                */
+                const model = newKomputerData.model;
+                const zaintstalowany_System_Operacyjny = newKomputerData.zaintstalowany_System_Operacyjny;
+                const typ_Komputera = newKomputerData.typ_Komputera;
+                const data_Stworzenia = newKomputerData.data_Stworzenia;
+                const sql = 'INSERT INTO Komputer (model, zaintstalowany_System_Operacyjny, typ_Komputera, data_Stworzenia) VALUES (?, ?, ?, ?)';
+                return db.promise().execute(
+                    sql,
+                    [model, zaintstalowany_System_Operacyjny, typ_Komputera, data_Stworzenia]
+                );
+            }
+        })
+        .catch(err => {
+            return Promise.reject(err);
+        });
+
 };
 
 
 
 exports.updateKomputer = (komputerId, komputerData) => {
-    const model = komputerData.model;
-    const zaintstalowany_System_Operacyjny = komputerData.zaintstalowany_System_Operacyjny;
-    const typ_Komputera = komputerData.typ_Komputera;
-    const data_Stworzenia = komputerData.data_Stworzenia;
-    const sql = `UPDATE Komputer 
+
+    const validationResult = zestawSchema.validate(data, { abortEarly: false });
+    if (validationResult.error) {
+        return Promise.reject(validationResult.error);
+    }
+    let tommorowDate = new Date();
+    tommorowDate.setDate(nowDate.getDate() + 1);
+    return checkDateIfAfter(data.data_Stworzenia, tommorowDate)
+        .then(dataError => {
+            if (dataError) {
+                return Promise.reject(dataError);
+            } else {
+                const model = komputerData.model;
+                const zaintstalowany_System_Operacyjny = komputerData.zaintstalowany_System_Operacyjny;
+                const typ_Komputera = komputerData.typ_Komputera;
+                const data_Stworzenia = komputerData.data_Stworzenia;
+                const sql = `UPDATE Komputer 
                 set model = ?,
                 zaintstalowany_System_Operacyjny = ?,
                 typ_Komputera = ?,
                 data_Stworzenia = ?
                 where _id = ?`;
-    return db.promise().execute(
-        sql,
-        [model, zaintstalowany_System_Operacyjny, typ_Komputera, data_Stworzenia, komputerId]
-    );
+                return db.promise().execute(
+                    sql,
+                    [model, zaintstalowany_System_Operacyjny, typ_Komputera, data_Stworzenia, komputerId]
+                );
+            }
+        })
+        .catch(err => {
+            return Promise.reject(err);
+        });
+
 };
 
 exports.deleteKomputer = (computerId) => {
