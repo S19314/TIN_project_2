@@ -80,7 +80,7 @@ function validateForm() {
         procentWykorzystanychZasobowInput.classList.add("error-input");
         errorProcentWykorzystanychZasobow.innerText = "Pole powinno zawierać od 2 do 60 znaków";
     }
-
+    /*  Изменить на проверку число ли это */
     if (!checkRequired(aktualnaTemperaturaInput.value)) {
         valid = false;
         aktualnaTemperaturaInput.classList.add("error-input");
