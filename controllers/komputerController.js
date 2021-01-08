@@ -27,11 +27,34 @@ exports.showAddKomputerForm = (req, res, next) => {
                     pageTitle: 'Nowy komputer',
                     formMode: 'createNew',
                     btnLabel: 'Dodaj komputer',
-                    formAction: '/komputers/add', // GIT ?  Хорошо*???
-                    navLocation: 'komputer'
+                    formAction: '/komputers/add',
+                    navLocation: 'komputer',
+                    validationErrors: []
                 });
         })
 }
+exports.addKomputer = (req, res, next) => {
+    const newKomputerData = { ...req.body };
+    KomputerRepository.createKomputer(newKomputerData)
+        .then(result => {
+            res.redirect('/komputers');
+        })
+        .catch(err => {
+            newKomputerData = { 'zestaw_elementow_komputera': [], ...newKomputerData };
+            res.render('pages/element_komputera/computer-element-form', {
+                komputer: newKomputerData,
+                pageTitle: 'Nowy komputer',
+                formMode: 'createNew',
+                btnLabel: 'Dodaj komputer',
+                formAction: '/komputers/add',
+                navLocation: 'komputer',
+                validationErrors: err.details
+            });
+        })
+        ;
+};
+
+
 
 exports.showKomputerDetails = (req, res, next) => {
     const komputerId = req.params.komputerId;
@@ -44,16 +67,18 @@ exports.showKomputerDetails = (req, res, next) => {
         .then(komputer => {
             // console.log("Kopmuter\Data:");
             // console.log(komputer);
+            /*
             console.log("showDETAILSKomputerForm");
             console.log(komputer);
-
+*/
             res.render('pages/komputer/universal-form', {
                 allKomputers: allKomputers,
                 komputer: komputer,
                 formMode: 'showDetails',
                 pageTitle: 'Szczegóły komputera',
                 formAction: '',
-                navLocation: 'komputer'
+                navLocation: 'komputer',
+                validationErrors: []
             })
         }
         );
@@ -70,39 +95,44 @@ exports.showEditKomputerForm = (req, res, next) => {
             return KomputerRepository.getKomputerById(komputerId);
         })
         .then(komputer => {
-            console.log("showEditKomputerForm");
-            console.log(komputer);
             res.render('pages/komputer/universal-form', {
                 allKomputers: allKomputers,
                 komputer: komputer,
                 formMode: 'edit',
-                pageTitle: 'Edycja kopmutera',
-                btnLabel: 'Zatwierdź kopmuter',
+                pageTitle: 'Edycja komputera',
+                btnLabel: 'Zatwierdź komputer',
                 formAction: '/komputers/edit',
-                navLocation: 'komputer'
+                navLocation: 'komputer',
+                validationErrors: []
             })
         });
 };
-
-// obsługa akcji formularza
-exports.addKomputer = (req, res, next) => {
-    const newKomputerData = { ...req.body };
-    KomputerRepository.createKomputer(newKomputerData)
-        .then(result => {
-            res.redirect('/komputers');
-        });
-};
-
 exports.updateKomputer = (req, res, next) => {
     const komputerId = req.body._id;
     const komputerData = { ...req.body };
-    // console.log("komputerData");
-    // console.log(komputerData);
     KomputerRepository.updateKomputer(komputerId, komputerData)
         .then(result => {
             res.redirect('/komputers');
+        })
+        .catch(err => {
+            const newKomputerData = { 'zestaw_elementow_komputera': [], ...komputerData };
+            res.render('pages/komputer/universal-form', {
+                komputer: newKomputerData,
+                pageTitle: 'Edycja komputera',
+                formMode: 'edit',
+                btnLabel: 'Zatwierdź komputer',
+                formAction: '/komputers/edit',
+                navLocation: 'komputer',
+                validationErrors: err.details
+            });
+
         });
+
 };
+
+
+// obsługa akcji formularza
+
 
 exports.deleteKomputer = (req, res, next) => {
     const computerId = req.params.komputerId;

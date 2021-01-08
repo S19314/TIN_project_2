@@ -1,6 +1,6 @@
 const e = require('express');
 const db = require('../../config/mysql2/db');
-const zestawSchema = require('../../model/joi/Zestaw_Elementow_Komputera');
+const zestawSchema = require('../../model/joi/ZestawElementaIKomputera');
 
 
 
@@ -47,7 +47,7 @@ exports.getZestawyElementowKomputera = () => {
                 };
                 zestawy_elementa_komputera.push(zestaw_elementa_komputera);
             }
-            console.log(zestawy_elementa_komputera);
+            // console.log(zestawy_elementa_komputera);
             return zestawy_elementa_komputera;
         })
         .catch(err => {
@@ -99,7 +99,7 @@ exports.getZestawElementaKomputeraById = (zestawId) => {
                 }
             };
 
-            console.log(zestaw_elementa_komputera);
+            // console.log(zestaw_elementa_komputera);
             return zestaw_elementa_komputera;
         })
         .catch(err => {

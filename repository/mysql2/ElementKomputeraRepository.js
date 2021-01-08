@@ -40,8 +40,8 @@ exports.getElement_KomputeraById = (elementId) => {
                 foto_path: firstRow.foto_path,
                 zestaw_elementow_komputera: []
             }
-            console.log("firstRow getElement_KopmuteraById");
-            console.log(firstRow);
+            // console.log("firstRow getElement_KopmuteraById");
+            // console.log(firstRow);
             for (let i = 0; i < results[0].length; i++) {
                 const row = results[0][i];
                 if (row.z_e_k_id) {
@@ -95,7 +95,7 @@ exports.updateElement_Komputera = (elementId, elementData) => {
         /*
         console.log("UpdateEllem_KOmp eRRORS\n");
         console.log(validateResultElement.error);
-  
+
         console.log("UpdateEllem_KOmp Details.message\n");
         console.log(validateResultElement.error.details[0].message);
         console.log("UpdateEllem_KOmp Details.path[0]\n");
@@ -106,8 +106,8 @@ exports.updateElement_Komputera = (elementId, elementData) => {
 
     const nazwa = elementData.nazwa;
     const opis = elementData.opis;
-    console.log("UPDATE Eleme_Komp in Repository\nData:");
-    console.log(elementData);
+    // console.log("UPDATE Eleme_Komp in Repository\nData:");
+    // console.log(elementData);
     //   const foto_path = elementData.foto_path; // DOWN Ubrat'
     const foto_path = 'https://cdn.x-kom.pl/i/setup/images/prod/big/product-new-big,,2019/10/pr_2019_10_25_13_53_0_788_06.jpg';
     const sql = `UPDATE Element_komputera set nazwa = ?, opis = ?, foto_path = ? where _id = ?`;

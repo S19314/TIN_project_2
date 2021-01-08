@@ -1,4 +1,7 @@
-const Joi = require('joi');
+const BaseJoi = require('joi');
+//const ExtensionJoi = require('joi-date-extensions');
+//const Joi = BaseJoi.extend(ExtensionJoi);
+const Joi = BaseJoi;
 
 const errMessages = (errors) => {
     errors.forEach(err => {
@@ -41,11 +44,15 @@ const elementSchema = Joi.object({
         .min(2)
         .max(60)
         .required()
-        .error(errMessages),
-    data_Stworzenia: Joi.date() //string() ?
-        .format('YYYY-MM-DD')
+        .error(errMessages)
+
+    /* ,
+
+    data_Stworzenia: Joi.string()//date() //string() ?
+        .format('yyyy-mm-dd')// .format('YYYY-MM-DD')
         .required()
         .error(errMessages)
+*/
 });
 
 

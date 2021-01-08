@@ -62,7 +62,7 @@ exports.updateElementKomputera = (req, res, next) => {
             // console.log("err._original");
             // console.log(err._original);
             const newElementData = { 'zestaw_elementow_komputera': [], ...elementData };
-            console.log("BEFORE RENDERING");
+            //     console.log("BEFORE RENDERING");
             res.render('pages/element_komputera/computer-element-form', {
                 element: newElementData,
                 pageTitle: 'Edycja elementa kopmutera',
@@ -72,7 +72,7 @@ exports.updateElementKomputera = (req, res, next) => {
                 navLocation: 'elementKomputer',
                 validationErrors: err.details
             });
-            console.log("AFTER RENDERING");
+            //   console.log("AFTER RENDERING");
         });
 
 };

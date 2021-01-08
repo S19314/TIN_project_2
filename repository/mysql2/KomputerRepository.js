@@ -9,8 +9,6 @@ function checkDateIfAfter(value, compareTo) {
         }]
     };
 
-
-
     if (!value) {
         return err;
     }
@@ -34,7 +32,7 @@ function checkDateIfAfter(value, compareTo) {
 exports.getKomputers = () => {
     return db.promise().query('SELECT * FROM Komputer')
         .then((results, fields) => {
-            console.log(results[0]);
+            // console.log(results[0]);
             return results[0];
         })
         .catch(err => {
@@ -177,10 +175,11 @@ exports.updateKomputer = (komputerId, komputerData) => {
 };
 
 exports.deleteKomputer = (computerId) => {
+    /*
     console.log("Where is null?");
     console.log("computerID");
     console.log(computerId);
-
+*/
     const sql1 = 'DELETE FROM Zestaw_Elementow_Komputera where computer_id = ?';
     const sql2 = 'DELETE FROM Komputer where _id = ?';
 

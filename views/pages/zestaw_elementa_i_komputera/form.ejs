@@ -9,12 +9,15 @@
             <%= pageTitle %>
         </h1>
 
-        <form class="form" method="post" action="<%=formAction%>" novalidate onsubmit="return validateForm();">
+        <form class="form" method="post" action="<%=formAction%>" novalidate>
+            <!-- onsubmit="return validateForm();"> -->
             <input type="hidden" name="_id" value="<%= zestaw_elementa_i_komputera._id %>">
             <label for="model">Model komputera:<abbr title="required" aria-label="required">*</abbr></label>
             <!-- Здесь нужно ищменить name="model" на name="komputerId" ?? Изменяю-->
 
-            <select name="komputerId" id="model" required <%=(formMode=='showDetails' ) ? 'disabled' : '' %> >
+            <select
+                class="<%= validationErrors.find(z_e_k => z_e_k.path.includes('modelKomputera')) ? 'error-input' : '' %>"
+                name="komputerId" id="model" required <%=(formMode=='showDetails' ) ? 'disabled' : '' %> >
                 <option value="" selected disabled>-- Model komputera --</option>
                 <% for ( let i=0; i < allKomputers.length; i++){ let komputer=allKomputers[i]; %>
                     <option value="<%=komputer._id%>" label="<%= komputer.model %>" <%=(zestaw_elementa_i_komputera._id
@@ -23,11 +26,17 @@
                     </option>
                     <% } %>
             </select>
-            <span id="errorModel" class="errors-text"></span>
+            <span id="errorModel" class="errors-text">
+                <% if (validationErrors.find(z_e_k=> z_e_k.path.includes('modelKomputera'))) { %>
+                    <%= validationErrors.find(z_e_k=> z_e_k.path.includes('modelKomputera')).message %>
+                        <% } %>
+            </span>
             <!-- Не был выбран  -->
             <label for="nazwaElementu">Nazwa elementu:<abbr title="required" aria-label="required">*</abbr></label>
 
-            <select name="elementId" id="nazwaElementu" required <%=(formMode=='showDetails' ) ? 'disabled' : '' %>>
+            <select
+                class="<%= validationErrors.find(z_e_k => z_e_k.path.includes('nazwaElementa')) ? 'error-input' : '' %>"
+                name="elementId" id="nazwaElementu" required <%=(formMode=='showDetails' ) ? 'disabled' : '' %>>
                 <option value="" selected disabled>-- Nazwa elementu -- </option>
                 <% for ( let i=0; i < allElements.length; i++){ let element=allElements[i]; %>
                     <option value="<%=element._id%>" label="<%=element.nazwa %>" <%=(zestaw_elementa_i_komputera._id &&
@@ -37,35 +46,60 @@
                     </option>
                     <% } %>
             </select>
-            <span id="errorNazwaElementu" class="errors-text"></span>
+            <span id="errorNazwaElementu" class="errors-text">
+                <% if (validationErrors.find(z_e_k=> z_e_k.path.includes('nazwaElementa'))) { %>
+                    <%= validationErrors.find(z_e_k=> z_e_k.path.includes('nazwaElementa')).message %>
+                        <% } %>
+            </span>
             <!-- Типа, не был выбран -->
             <label for="aktualnaTemperatura">Aktualna temperatura:<abbr title="required"
                     aria-label="required">*</abbr></label>
-            <input type="text" name="aktualnaTemperatura" id="aktualnaTemperatura"
+            <input type="text"
+                class="<%= validationErrors.find(z_e_k => z_e_k.path.includes('aktualnaTemperatura')) ? 'error-input' : '' %>"
+                name="aktualnaTemperatura" id="aktualnaTemperatura"
                 value="<%=zestaw_elementa_i_komputera.aktuakna_Temperatura%>" <%=(formMode=='showDetails' ) ? 'disabled'
                 : '' %>
             >
-            <span id="errorAktualnaTemperatura" class="errors-text"></span>
+            <span id="errorAktualnaTemperatura" class="errors-text">
+                <% if (validationErrors.find(z_e_k=> z_e_k.path.includes('aktualnaTemperatura'))) { %>
+                    <%= validationErrors.find(z_e_k=> z_e_k.path.includes('aktualnaTemperatura')).message %>
+                        <% } %>
+            </span>
 
 
             <label for="procentWykorzystanychZasobow">Procent wykorystanych zasobów:<abbr title="required"
                     aria-label="required">*</abbr></label>
-            <input type="text" name="procentWykorzystanychZasobow" id="procentWykorzystanychZasobow"
+            <input
+                class="<%= validationErrors.find(z_e_k => z_e_k.path.includes('procentWykorzystanychZasobow')) ? 'error-input' : '' %>"
+                type="text" name="procentWykorzystanychZasobow" id="procentWykorzystanychZasobow"
                 value="<%=zestaw_elementa_i_komputera.procent_Wykorzystanych_Zasobow%>" <%=(formMode=='showDetails' )
                 ? 'disabled' : '' %>>
-            <span id="errorProcentWykorzystanychZasobow" class="errors-text"></span>
+            <span id="errorProcentWykorzystanychZasobow" class="errors-text">
+                <% if (validationErrors.find(z_e_k=> z_e_k.path.includes('procentWykorzystanychZasobow'))) { %>
+                    <%= validationErrors.find(z_e_k=> z_e_k.path.includes('procentWykorzystanychZasobow')).message %>
+                        <% } %>
+            </span>
             <!-- Мб, не название скорости в inout/label не соответсвует с название из БД-->
             <label for="aktualnaSzybkoscPrzekazaniaDanych">Aktualna szybkość przekazania danych:<abbr title="required"
                     aria-label="required">*</abbr></label>
-            <input type="text" name="aktualnaSzybkoscPrzekazaniaDanych" id="aktualnaSzybkoscPrzekazaniaDanych"
+            <input
+                class="<%= validationErrors.find(z_e_k => z_e_k.path.includes('aktualnaSzybkoscPrzekazaniaDanych')) ? 'error-input' : '' %>"
+                type="text" name="aktualnaSzybkoscPrzekazaniaDanych" id="aktualnaSzybkoscPrzekazaniaDanych"
                 value="<%=zestaw_elementa_i_komputera.aktualna_Szybkosc_Przekazania_Danych%>"
                 <%=(formMode=='showDetails' ) ? 'disabled' : '' %>>
-            <span id="errorAktualnaSzybkoscPrzekazaniaDanych" class="errors-text"></span>
+            <span id="errorAktualnaSzybkoscPrzekazaniaDanych" class="errors-text">
+                <% if (validationErrors.find(z_e_k=> z_e_k.path.includes('aktualnaSzybkoscPrzekazaniaDanych'))) { %>
+                    <%= validationErrors.find(z_e_k=> z_e_k.path.includes('aktualnaSzybkoscPrzekazaniaDanych')).message
+                        %>
+                        <% } %>
+            </span>
 
             <label for="typPolaczeniaInput">Typ polączenia elementa z komputerem:<abbr title="required"
                     aria-label="required">*</abbr></label>
 
-            <input type="text" list="typPolaczenia" name="typPolaczenia" placeholder="Typ Polaczenia"
+            <input
+                class="<%= validationErrors.find(z_e_k => z_e_k.path.includes('typPolaczenia')) ? 'error-input' : '' %>"
+                type="text" list="typPolaczenia" name="typPolaczenia" placeholder="Typ Polaczenia"
                 id="typPolaczeniaInput" value="<%=zestaw_elementa_i_komputera.typPolaczenia%>"
                 <%=(formMode=='showDetails' ) ? 'disabled' : '' %>
             >
@@ -76,7 +110,12 @@
                     </option>
                     <% } %>
             </datalist>
-            <span id="errorTypPolaczenia" class="errors-text"></span>
+            <span id="errorTypPolaczenia" class="errors-text">
+                <% if (validationErrors.find(z_e_k=> z_e_k.path.includes('typPolaczenia'))) { %>
+                    <%= validationErrors.find(z_e_k=> z_e_k.path.includes('typPolaczenia')).message
+                        %>
+                        <% } %>
+            </span>
 
             <div class="form-buttons">
                 <p id="errorsSummary" class="errors-text"></p>
