@@ -27,7 +27,11 @@ const elementSchema = Joi.object({
     _id: Joi.number()
         .optional()
         .allow(""),
-    modelKomputera: Joi.string()
+    komputerId: Joi.number()
+        .required(),
+    elementId: Joi.number()
+        .required(),
+    /* modelKomputera: Joi.string()
         .min(2)
         .max(60)
         .required()
@@ -37,6 +41,7 @@ const elementSchema = Joi.object({
         .max(100)
         .required()
         .error(errMessages),
+        */
     aktualnaTemperatura: Joi.number()
         .required()
         .error(errMessages),
