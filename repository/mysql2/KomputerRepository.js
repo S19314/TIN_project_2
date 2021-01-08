@@ -2,30 +2,32 @@ const db = require('../../config/mysql2/db');
 const komputerSchema = require('../../model/joi/Komputer');
 
 function checkDateIfAfter(value, compareTo) {
+    console.log("Start checkDateIfAfter");
     let err = {
         details: [{
-            path: ['email'],
-            message: 'Podany adres email jest już używany'
+            path: ['data_Stworzenia'],
+            message: 'Podana data stworzenia jest z przyszłości, co nie jest możliwo.'
         }]
     };
-
+    console.log("AFTER err definition");
     if (!value) {
         return err;
     }
-
+    console.log("AFTER if !value");
     if (!compareTo) {
         return err;
     }
-
+    console.log("AFTER if !compareTo");
 
     const valueDate = new Date(value);
     // valueDate = valueDate.setDate(value);
     const compareToDate = new Date(compareTo);
     // compareToDate = compareToDate.setDate(compareTo);
-
+    console.log("AFTER valueDate i compareToDate definiton");
     if (valueDate.getTime() <= compareToDate.getTime()) { // Верно ли сравнивает? Мб сравнивает часы в сутках ( от 0 до 23 )
         return err;
     }
+    console.log("AFTER if проверка меньше ли дата, чем завтра");
 
     return {};
 }
@@ -112,66 +114,82 @@ exports.createKomputer = (newKomputerData) => {
     }
     let tommorowDate = new Date();
     tommorowDate.setDate(nowDate.getDate() + 1);
-    return checkDateIfAfter(data.data_Stworzenia, tommorowDate)
-        .then(dataError => {
-            if (dataError) {
-                return Promise.reject(dataError);
-            } else {
-                /*
-                console.log("createKomputer\nnewKomputerData");
-                console.log(newKomputerData);
-                */
-                const model = newKomputerData.model;
-                const zaintstalowany_System_Operacyjny = newKomputerData.zaintstalowany_System_Operacyjny;
-                const typ_Komputera = newKomputerData.typ_Komputera;
-                const data_Stworzenia = newKomputerData.data_Stworzenia;
-                const sql = 'INSERT INTO Komputer (model, zaintstalowany_System_Operacyjny, typ_Komputera, data_Stworzenia) VALUES (?, ?, ?, ?)';
-                return db.promise().execute(
-                    sql,
-                    [model, zaintstalowany_System_Operacyjny, typ_Komputera, data_Stworzenia]
-                );
-            }
-        })
-        .catch(err => {
+    let dataError = checkDateIfAfter(data.data_Stworzenia, tommorowDate);
+
+    if (dataError) {
+        return Promise.reject(dataError);
+    } else {
+        /*
+        console.log("createKomputer\nnewKomputerData");
+        console.log(newKomputerData);
+        */
+        const model = newKomputerData.model;
+        const zaintstalowany_System_Operacyjny = newKomputerData.zaintstalowany_System_Operacyjny;
+        const typ_Komputera = newKomputerData.typ_Komputera;
+        const data_Stworzenia = newKomputerData.data_Stworzenia.toISOString().split('T')[0]; // ТУТ ДОБАВИЛ
+        const sql = 'INSERT INTO Komputer (model, zaintstalowany_System_Operacyjny, typ_Komputera, data_Stworzenia) VALUES (?, ?, ?, ?)';
+        return db.promise().execute(
+            sql,
+            [model, zaintstalowany_System_Operacyjny, typ_Komputera, data_Stworzenia]
+        ).catch(err => {
             return Promise.reject(err);
         });
-
+    }
 };
 
 
 
 exports.updateKomputer = (komputerId, komputerData) => {
-    const validationResult = komputerSchema.validate(newKomputerData, { abortEarly: false });
+    console.log("updateKomputer in KompRepositoru Start");
+    const validationResult = komputerSchema.validate(komputerData, { abortEarly: false });
+    console.log("After validationResult");
     if (validationResult.error) {
+        console.log("validationRes.error");
+        console.log(validationResult.error);
         return Promise.reject(validationResult.error);
     }
+    console.log("Before date");
     let tommorowDate = new Date();
-    tommorowDate.setDate(nowDate.getDate() + 1);
-    return checkDateIfAfter(data.data_Stworzenia, tommorowDate)
-        .then(dataError => {
-            if (dataError) {
-                return Promise.reject(dataError);
-            } else {
-                const model = komputerData.model;
-                const zaintstalowany_System_Operacyjny = komputerData.zaintstalowany_System_Operacyjny;
-                const typ_Komputera = komputerData.typ_Komputera;
-                const data_Stworzenia = komputerData.data_Stworzenia;
-                const sql = `UPDATE Komputer 
+    console.log("komputerData.data_Stworzenia ");
+    console.log(komputerData.data_Stworzenia);
+    tommorowDate.setDate(tommorowDate.getDate() + 1);
+    console.log("Check Date in updateKomputer");
+    console.log(tommorowDate);
+    let updateData_Stworzenia = komputerData.data_Stworzenia.split('T')[0];
+    console.log("After format Date in updateKomputer");
+    console.log(updateData_Stworzenia);
+    tommorowDate = tommorowDate.toISOString().split('T')[0];
+    // Мб, выкинуть на другой уровень абстракции, чтобы там это обрезало дату.
+    console.log("Прямо перед проверкой.");
+    let dataError = checkDateIfAfter(updateData_Stworzenia, tommorowDate);
+
+    console.log("Start then");
+    if (dataError) {
+        console.log("true");
+        return Promise.reject(dataError);
+    } else {
+        console.log("false");
+        console.log("data:\n");
+        console.log(data);
+        const model = komputerData.model;
+        const zaintstalowany_System_Operacyjny = komputerData.zaintstalowany_System_Operacyjny;
+        const typ_Komputera = komputerData.typ_Komputera;
+        const data_Stworzenia = updateData_Stworzenia; // komputerData.data_Stworzenia;
+        console.log("Data_stworzenia updateKOmputer in KompRepositor");
+        console.log(data_Stworzenia);
+        const sql = `UPDATE Komputer 
                 set model = ?,
                 zaintstalowany_System_Operacyjny = ?,
                 typ_Komputera = ?,
                 data_Stworzenia = ?
                 where _id = ?`;
-                return db.promise().execute(
-                    sql,
-                    [model, zaintstalowany_System_Operacyjny, typ_Komputera, data_Stworzenia, komputerId]
-                );
-            }
-        })
-        .catch(err => {
+        return db.promise().execute(
+            sql,
+            [model, zaintstalowany_System_Operacyjny, typ_Komputera, data_Stworzenia, komputerId]
+        ).catch(err => {
             return Promise.reject(err);
         });
-
+    }
 };
 
 exports.deleteKomputer = (computerId) => {

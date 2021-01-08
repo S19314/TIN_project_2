@@ -44,8 +44,10 @@ const elementSchema = Joi.object({
         .min(2)
         .max(60)
         .required()
+        .error(errMessages),
+    data_Stworzenia: Joi.string()
+        .required()
         .error(errMessages)
-
     /* ,
 
     data_Stworzenia: Joi.string()//date() //string() ?

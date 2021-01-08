@@ -115,27 +115,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                <tbody>
-                    <% for (let z_e_k of komputer.zestaw_elementow_komputera) { %>
-                        <tr>
-                            <td><a href="/komputer-element/details/<%= z_e_k.element_komputera._id %>">
-                                    <%=z_e_k.element_komputera.nazwa%>
-                                </a></td>
-                            <td>
-                                <%=z_e_k.aktuakna_Temperatura%>
-                            </td>
-                            <td>
-                                <%=z_e_k.procent_Wykorzystanych_Zasobow%>
-                            </td>
-                            <td>
-                                <%=z_e_k.aktualna_Szybkosc_Przekazania_Danych%>
-                            </td>
-                            <td>
-                                <%=z_e_k.typPolaczenia%>
-                            </td>
-                        </tr>
-                        <% } %>
-                </tbody>
+
                 </tbody>
             </table>
             <% } %>
