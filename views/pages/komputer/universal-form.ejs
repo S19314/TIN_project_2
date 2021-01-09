@@ -71,12 +71,19 @@
                         <% } %>
             </span>
 
+
             <label for="dataStworzeniaInput">Data stworzenia:<abbr title="required"
                     aria-label="required">*</abbr></label>
-            <input type="text" name="data_Stworzenia" id="dataStworzeniaInput" placeholder="yyyy-mm-dd"
+            <input type="text"
+                class="<%= validationErrors.find(komp => komp.path.includes('data_Stworzenia')) ? 'error-input' : '' %>"
+                name="data_Stworzenia" id="dataStworzeniaInput" placeholder="yyyy-mm-dd"
                 value="<%=komputer.data_Stworzenia ? komputer.data_Stworzenia.toISOString().split('T')[0] : '' %>"
                 <%=(formMode=='showDetails' ) ? 'disabled' : '' %>>
-
+            <span id="errorDataStworzenia" class="errors-text">
+                <% if (validationErrors.find(komp=> komp.path.includes('data_Stworzenia'))) { %>
+                    <%= validationErrors.find(komp=> komp.path.includes('data_Stworzenia')).message %>
+                        <% } %>
+            </span>
 
             <div class="form-buttons">
                 <p id="errorsSummary" class="errors-text"></p>

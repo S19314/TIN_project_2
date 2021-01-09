@@ -1,0 +1,69 @@
+<%- include('../../fragments/header.ejs')%>
+    <main>
+        <!--         <script type="application/javascript" src="/public/js/validationKomputerForm.js"></script>-->
+        <!-- <script type="application/javascript" src="/public/js/validationKomputerForm.js"></script> -->
+        <script type="application/javascript;charset=utf-8" src="../../../public/js/validationKomputerForm.js"></script>
+        <h2>
+            <%= pageTitle %>
+        </h2>
+        <form class=" form" method="post" action="<%=formAction%>" novalidate>
+            <!--  onsubmit="return validateForm();"> -->
+
+            <input type="hidden" name="_id" value="<%=komputer._id%>">
+            <label for="valueModel">Model:<abbr title="required" aria-label="required">*</abbr></label>
+            <input type="text" list="model" name="model" placeholder="Model komputera" id="valueModel"
+                value="<%=komputer.model%>" <%=(formMode=='showDetails' )? 'disabled' :''%> >
+
+            <datalist id="model">
+                <% for(let komp of allKomputers){ %>
+                    <option value="<%=komp.model%>" <%=( komputer._id && komp._id.toString()==komputer._id.toString() )
+                        ? 'selected' : '' %>>
+                    </option>
+                    <% } %>
+            </datalist>
+            <span id="errorModel" class="errors-text">
+                <% if (validationErrors.find(komp=> komp.path.includes('model'))) { %>
+                    <%= validationErrors.find(komp=> komp.path.includes('model')).message %>
+                        <% } %>
+            </span>
+
+
+            <label for="systemOperacyjnyInput">Zainstalowany system operacyjny:<abbr title="required"
+                    aria-label="required">*</abbr></label>
+
+            <input type="text" list="systemOperacyjny" name="zaintstalowany_System_Operacyjny"
+                placeholder="System operacyjny" id="systemOperacyjnyInput"
+                value="<%=komputer.zaintstalowany_System_Operacyjny%>" <%=(formMode=='showDetails' ) ? 'disabled' : ''
+                %>>
+            <datalist id="systemOperacyjny">
+                <% for(let komp of allKomputers){ %>
+                    <option value="<%=komp.zaintstalowany_System_Operacyjny%>" <%=( komputer._id &&
+                        komp._id.toString()==komputer._id.toString() ) ? 'selected' : '' %>>
+                    </option>
+                    <% } %>
+            </datalist>
+
+
+
+            <label for="typKomputeraInput">Typ Komputera:<abbr title="required" aria-label="required">*</abbr></label>
+
+
+
+
+            <div class="form-buttons">
+                <p id="errorsSummary" class="errors-text"></p>
+
+                <% if (formMode !='showDetails' ) { %>
+                    <input class="form-button-submit" type="submit" value="<%=btnLabel%>" />
+                    <a class="form-button-cancel" href="/komputers">Anuluj</a>
+                    <% } else { %>
+                        <a href="/komputers/edit/<%=komputer._id%>" class="list-actions-button-edit">Edytuj</a>
+                        <a class="list-actions-button-details" href="/komputers">Powrót</a>
+                        <% } %>
+            </div>
+        </form>
+
+
+    </main>
+
+    <% - include('../../fragments/footer.ejs') %>

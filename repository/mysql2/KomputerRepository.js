@@ -24,7 +24,7 @@ function checkDateIfAfter(value, compareTo) {
     const compareToDate = new Date(compareTo);
     // compareToDate = compareToDate.setDate(compareTo);
     console.log("AFTER valueDate i compareToDate definiton");
-    if (valueDate.getTime() <= compareToDate.getTime()) { // Верно ли сравнивает? Мб сравнивает часы в сутках ( от 0 до 23 )
+    if (compareToDate.getTime() <= valueDate.getTime()) { // Верно ли сравнивает? Мб сравнивает часы в сутках ( от 0 до 23 )
         return err;
     }
     console.log("AFTER if проверка меньше ли дата, чем завтра");
@@ -162,15 +162,23 @@ exports.updateKomputer = (komputerId, komputerData) => {
     // Мб, выкинуть на другой уровень абстракции, чтобы там это обрезало дату.
     console.log("Прямо перед проверкой.");
     let dataError = checkDateIfAfter(updateData_Stworzenia, tommorowDate);
-
+    let updateData_Stworzenia_Date = new Date(updateData_Stworzenia);
+    updateData_Stworzenia_Date.setDate(updateData_Stworzenia_Date.getDate() + 1);
+    updateData_Stworzenia = updateData_Stworzenia_Date.toISOString().split('T')[0];
     console.log("Start then");
-    if (dataError) {
+    console.log(dataError);
+    console.log("Туть");
+    // изменить тип проверки в и в методе создать
+    // Разобраться из-за чего ошибка
+    //if (dataError) { //.hasOwnProperty('details')
+    if (dataError.hasOwnProperty('details')) {
         console.log("true");
         return Promise.reject(dataError);
     } else {
         console.log("false");
-        console.log("data:\n");
-        console.log(data);
+        console.log("komputerData:\n");
+        console.log(komputerData);
+        console.log("komputerData aFTER");
         const model = komputerData.model;
         const zaintstalowany_System_Operacyjny = komputerData.zaintstalowany_System_Operacyjny;
         const typ_Komputera = komputerData.typ_Komputera;
@@ -189,6 +197,8 @@ exports.updateKomputer = (komputerId, komputerData) => {
         ).catch(err => {
             return Promise.reject(err);
         });
+
+
     }
 };
 

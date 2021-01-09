@@ -109,6 +109,17 @@ exports.showEditKomputerForm = (req, res, next) => {
             })
         });
 };
+
+
+function dateNormalization(date) {
+    /*
+       Дело в том, что нормализируется дата (если она не пустая) для uipdate, но не для  create. 
+       И при splt('T') в view, она выбивает ошибку.
+       План: 1. почистить код (ибо чёрт ногу сломает), в репозиотрии и в контроллере. 
+       2. Вынести общие моменты в функции
+       3. Дописать нормализацию даты в контроллере и в репозиотрии для create.
+    */
+}
 exports.updateKomputer = (req, res, next) => {
     // console.log("Update komp ");
     const komputerId = req.body._id;
@@ -128,15 +139,31 @@ exports.updateKomputer = (req, res, next) => {
                     let newKomputerData = { 'zestaw_elementow_komputera': [], ...komputerData }; // Exception is there?
                     console.log("NewKOmputerDAta");
                     console.log(newKomputerData);
-                    newKomputerData.data_Stworzenia = new Date(newKomputerData.data_Stworzenia);
+                    if (newKomputerData.data_Stworzenia != '') {
+                        console.log('newKomputerData.data_Stworzenia != undefined/pusto');
+                        newKomputerData.data_Stworzenia = new Date(newKomputerData.data_Stworzenia);
+                    }
 
-                    //     console.log("newKomputerData\nSTART");
-                    //  console.log(newKomputerData);
+                    console.log("newKomputerData with normalizated Date\nSTART");
+                    console.log(newKomputerData);
+                    console.log("ERR.DETAIKLS");
+                    console.log(err);
+                    console.log("err.details");
+                    console.log(err.details);
+                    for (let det of err.details) {
+                        console.log("err.details[i].path");
+                        console.log(det.path);
+                    }
+                    /*
+                    console.log("err.details[0].path");
+                    console.log(err.details[0].path);
+                    */
                     //  console.log("newKomputerData\nEND");
                     // console.log("allKomps\nSTART");
                     // console.log(allKomps);
                     // console.log("allKomps\nEND");
-                    res.render('pages/komputer/universal-form', {
+                    res.render('pages/komputer/universal-form', { // ИЗМЕНИТЬ ПУТЬ НА ПРЕЖНИЙ!!!. // universal-form_copy_3
+                        // res.render('pages/komputer/universal-form_copy_3', {
                         komputer: newKomputerData,
                         allKomputers: allKomps,
                         pageTitle: 'Edycja komputera',
