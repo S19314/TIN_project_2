@@ -3,35 +3,43 @@ const db = require('../../config/mysql2/db');
 const komputerSchema = require('../../model/joi/Komputer');
 
 function checkDateIfAfter(value, compareTo) {
-    console.log("Start checkDateIfAfter");
+
     let err = {
         details: [{
             path: ['data_Stworzenia'],
             message: 'Podana data stworzenia jest z przyszłości, co nie jest możliwo.'
         }]
     };
-    console.log("AFTER err definition");
+
     if (!value) {
         return err;
     }
-    console.log("AFTER if !value");
+
     if (!compareTo) {
         return err;
     }
-    console.log("AFTER if !compareTo");
-
     const valueDate = new Date(value);
     // valueDate = valueDate.setDate(value);
     const compareToDate = new Date(compareTo);
     // compareToDate = compareToDate.setDate(compareTo);
-    console.log("AFTER valueDate i compareToDate definiton");
     if (compareToDate.getTime() <= valueDate.getTime()) { // Верно ли сравнивает? Мб сравнивает часы в сутках ( от 0 до 23 )
         return err;
     }
-    console.log("AFTER if проверка меньше ли дата, чем завтра");
-
     return {};
 }
+
+function createTommorowDate() {
+    let tommorowDate = new Date();
+    tommorowDate.setDate(tommorowDate.getDate() + 1);
+    return tommorowDate;
+}
+function convertDateIntoStringLikeInView(date) {
+    if (!(typeof date.getMonth === 'function')) return date;
+
+    let dateAsString = date.toISOString().split('T')[0];
+    return dateAsString;
+}
+
 exports.getKomputers = () => {
     return db.promise().query('SELECT * FROM Komputer')
         .then((results, fields) => {
@@ -113,18 +121,25 @@ exports.createKomputer = (newKomputerData) => {
     if (validationResult.error) {
         return Promise.reject(validationResult.error);
     }
-    let tommorowDate = new Date();
-    tommorowDate.setDate(nowDate.getDate() + 1);
-    let dataError = checkDateIfAfter(data.data_Stworzenia, tommorowDate);
+
+    let tommorowDate = convertDateIntoStringLikeInView(createTommorowDate());
+
+    let updateData_Stworzenia = convertDateIntoStringLikeInView(newKomputerData.data_Stworzenia);
+    let dataError = checkDateIfAfter(updateData_Stworzenia, tommorowDate);
+
     // if (dataError) {
     if (dataError.hasOwnProperty('details')) {
         return Promise.reject(dataError);
     } else {
+        // normalization
+        let updateData_Stworzenia_Date = new Date(updateData_Stworzenia);
+
         const model = newKomputerData.model;
         const zaintstalowany_System_Operacyjny = newKomputerData.zaintstalowany_System_Operacyjny;
         const typ_Komputera = newKomputerData.typ_Komputera;
-        const data_Stworzenia = newKomputerData.data_Stworzenia.toISOString().split('T')[0]; // ТУТ ДОБАВИЛ
+        const data_Stworzenia = updateData_Stworzenia_Date;// newKomputerData.data_Stworzenia.toISOString().split('T')[0]; // ТУТ ДОБАВИЛ
         const sql = 'INSERT INTO Komputer (model, zaintstalowany_System_Operacyjny, typ_Komputera, data_Stworzenia) VALUES (?, ?, ?, ?)';
+        console.log("Before send SQL");
         return db.promise().execute(
             sql,
             [model, zaintstalowany_System_Operacyjny, typ_Komputera, data_Stworzenia]
@@ -134,36 +149,18 @@ exports.createKomputer = (newKomputerData) => {
     }
 };
 
-
-function createTommorowDate() {
-    let tommorowDate = new Date();
-    tommorowDate.setDate(tommorowDate.getDate() + 1);
-    return tommorowDate;
-}
-function convertDateIntoStringLikeInView(date) {
-    let tommorowDate = createTommorowDate();
-    tommorowDate = tommorowDate.toISOString().split('T')[0];
-    return dateAsString;
-}
-
 exports.updateKomputer = (komputerId, komputerData) => {
-
     const validationResult = komputerSchema.validate(komputerData, { abortEarly: false });
-
     if (validationResult.error) {
         return Promise.reject(validationResult.error);
     }
-
-    let tommorowDate = createTommorowDate();
-
-    let updateData_Stworzenia = komputerData.data_Stworzenia.split('T')[0];
-
-
-
+    let tommorowDate = convertDateIntoStringLikeInView(createTommorowDate());
+    let updateData_Stworzenia = convertDateIntoStringLikeInView(komputerData.data_Stworzenia);
     let dataError = checkDateIfAfter(updateData_Stworzenia, tommorowDate);
     let updateData_Stworzenia_Date = new Date(updateData_Stworzenia);
-    updateData_Stworzenia_Date.setDate(updateData_Stworzenia_Date.getDate() + 1);
-    updateData_Stworzenia = updateData_Stworzenia_Date.toISOString().split('T')[0];
+    updateData_Stworzenia_Date.setDate(updateData_Stworzenia_Date.getDate() + 1); // Нормализация даты под человеческий способ отображения.
+    updateData_Stworzenia = convertDateIntoStringLikeInView(updateData_Stworzenia_Date);
+    //updateData_Stworzenia = updateData_Stworzenia_Date.toISOString().split('T')[0];
     // изменить тип проверки в и в методе создать
     // Разобраться из-за чего ошибка
     //if (dataError) { //.hasOwnProperty('details')

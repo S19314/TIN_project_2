@@ -47,13 +47,10 @@ exports.addKomputer = (req, res, next) => {
             res.redirect('/komputers');
         })
         .catch(err => {
-
             KomputerRepository.getKomputers()
                 .then(allKomputers => {
                     let newKomputerDataLikeInDB = { 'zestaw_elementow_komputera': [], ...newKomputerData };
-                    let dateAsString = newKomputerDataLikeInDB.data_Stworzenia;
-                    newKomputerDataLikeInDB.data_Stworzenia = dateNormalization(dateAsString);
-
+                    newKomputerDataLikeInDB.data_Stworzenia = dateNormalization(newKomputerDataLikeInDB.data_Stworzenia); // dateAsString);
                     res.render('pages/komputer/universal-form', {
                         komputer: newKomputerDataLikeInDB,
                         allKomputers: allKomputers,
