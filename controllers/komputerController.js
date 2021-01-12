@@ -5,7 +5,6 @@ const { all } = require('../app');
 const KomputerRepository = require('../repository/mysql2/KomputerRepository');
 
 function dateNormalization(dateAsString) {
-
     if (dateAsString === '')
         return dateAsString;
 
@@ -137,9 +136,9 @@ exports.updateKomputer = (req, res, next) => {
                 .then(allKomps => {
 
                     let newKomputerData = { 'zestaw_elementow_komputera': [], ...komputerData };
-                    let dateAsString = newKomputerData.data_Stworzenia;
-                    newKomputerData.data_Stworzenia = dateNormalization(dateAsString);
-
+                    // let dateAsString = newKomputerData.data_Stworzenia; // check
+                    // И в create/update пересмотреть.
+                    newKomputerData.data_Stworzenia = dateNormalization(newKomputerData.data_Stworzenia); // dateAsString);
                     res.render('pages/komputer/universal-form', {
                         komputer: newKomputerData,
                         allKomputers: allKomps,

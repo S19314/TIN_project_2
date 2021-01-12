@@ -1,3 +1,4 @@
+const { date } = require('joi');
 const db = require('../../config/mysql2/db');
 const komputerSchema = require('../../model/joi/Komputer');
 
@@ -115,14 +116,10 @@ exports.createKomputer = (newKomputerData) => {
     let tommorowDate = new Date();
     tommorowDate.setDate(nowDate.getDate() + 1);
     let dataError = checkDateIfAfter(data.data_Stworzenia, tommorowDate);
-
-    if (dataError) {
+    // if (dataError) {
+    if (dataError.hasOwnProperty('details')) {
         return Promise.reject(dataError);
     } else {
-        /*
-        console.log("createKomputer\nnewKomputerData");
-        console.log(newKomputerData);
-        */
         const model = newKomputerData.model;
         const zaintstalowany_System_Operacyjny = newKomputerData.zaintstalowany_System_Operacyjny;
         const typ_Komputera = newKomputerData.typ_Komputera;
@@ -138,53 +135,47 @@ exports.createKomputer = (newKomputerData) => {
 };
 
 
+function createTommorowDate() {
+    let tommorowDate = new Date();
+    tommorowDate.setDate(tommorowDate.getDate() + 1);
+    return tommorowDate;
+}
+function convertDateIntoStringLikeInView(date) {
+    let tommorowDate = createTommorowDate();
+    tommorowDate = tommorowDate.toISOString().split('T')[0];
+    return dateAsString;
+}
 
 exports.updateKomputer = (komputerId, komputerData) => {
-    console.log("updateKomputer in KompRepositoru Start");
+
     const validationResult = komputerSchema.validate(komputerData, { abortEarly: false });
-    console.log("After validationResult");
+
     if (validationResult.error) {
-        console.log("validationRes.error");
-        console.log(validationResult.error);
         return Promise.reject(validationResult.error);
     }
-    console.log("Before date");
-    let tommorowDate = new Date();
-    console.log("komputerData.data_Stworzenia ");
-    console.log(komputerData.data_Stworzenia);
-    tommorowDate.setDate(tommorowDate.getDate() + 1);
-    console.log("Check Date in updateKomputer");
-    console.log(tommorowDate);
+
+    let tommorowDate = createTommorowDate();
+
     let updateData_Stworzenia = komputerData.data_Stworzenia.split('T')[0];
-    console.log("After format Date in updateKomputer");
-    console.log(updateData_Stworzenia);
-    tommorowDate = tommorowDate.toISOString().split('T')[0];
-    // Мб, выкинуть на другой уровень абстракции, чтобы там это обрезало дату.
-    console.log("Прямо перед проверкой.");
+
+
+
     let dataError = checkDateIfAfter(updateData_Stworzenia, tommorowDate);
     let updateData_Stworzenia_Date = new Date(updateData_Stworzenia);
     updateData_Stworzenia_Date.setDate(updateData_Stworzenia_Date.getDate() + 1);
     updateData_Stworzenia = updateData_Stworzenia_Date.toISOString().split('T')[0];
-    console.log("Start then");
-    console.log(dataError);
-    console.log("Туть");
     // изменить тип проверки в и в методе создать
     // Разобраться из-за чего ошибка
     //if (dataError) { //.hasOwnProperty('details')
     if (dataError.hasOwnProperty('details')) {
-        console.log("true");
         return Promise.reject(dataError);
     } else {
-        console.log("false");
-        console.log("komputerData:\n");
-        console.log(komputerData);
-        console.log("komputerData aFTER");
+
         const model = komputerData.model;
         const zaintstalowany_System_Operacyjny = komputerData.zaintstalowany_System_Operacyjny;
         const typ_Komputera = komputerData.typ_Komputera;
         const data_Stworzenia = updateData_Stworzenia; // komputerData.data_Stworzenia;
-        console.log("Data_stworzenia updateKOmputer in KompRepositor");
-        console.log(data_Stworzenia);
+
         const sql = `UPDATE Komputer 
                 set model = ?,
                 zaintstalowany_System_Operacyjny = ?,
@@ -203,11 +194,6 @@ exports.updateKomputer = (komputerId, komputerData) => {
 };
 
 exports.deleteKomputer = (computerId) => {
-    /*
-    console.log("Where is null?");
-    console.log("computerID");
-    console.log(computerId);
-*/
     const sql1 = 'DELETE FROM Zestaw_Elementow_Komputera where computer_id = ?';
     const sql2 = 'DELETE FROM Komputer where _id = ?';
 
