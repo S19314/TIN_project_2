@@ -1,8 +1,3 @@
-﻿function helloWorld() {
-    console.log("I finnaly awake.");
-    return false;
-}
-
 
 function validateForm() {
 
@@ -83,7 +78,7 @@ function validateForm() {
     if (!checkRequired(dataStworzeniaInput.value)) {
         valid = false;
         dataStworzeniaInput.classList.add("error-input");
-        errorDataStworzenia.innerText = "Pole jest wymagane hello from client";
+        errorDataStworzenia.innerText = "Pole jest wymagane";
     } else if (!checkDate(dataStworzeniaInput.value)) {
         valid = false;
         dataStworzeniaInput.classList.add("error-input");

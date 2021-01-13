@@ -1,9 +1,4 @@
-﻿function helloWorld() {
-    console.log("I finnaly awake.");
-    return false;
-}
-
-
+﻿
 function validateForm() {
 
     const modelInput = document.getElementById('valueModel'); // 'model');

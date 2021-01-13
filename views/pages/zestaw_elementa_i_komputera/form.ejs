@@ -9,7 +9,7 @@
             <%= pageTitle %>
         </h1>
 
-        <form class="form" method="post" action="<%=formAction%>" novalidate>
+        <form class="form" method="post" action="<%=formAction%>" onsubmit="return validateForm();" novalidate>
             <!-- onsubmit="return validateForm();"> -->
             <input type="hidden" name="_id" value="<%= zestaw_elementa_i_komputera._id %>">
             <label for="model">Model komputera:<abbr title="required" aria-label="required">*</abbr></label>
