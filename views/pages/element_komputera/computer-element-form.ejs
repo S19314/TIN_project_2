@@ -1,12 +1,12 @@
 <%- include('../../fragments/header.ejs')%>
     <main>
+        <script type="application/javascript;charset=utf-8" src="/public/js/validationCommon.js"> </script>
         <script type="application/javascript;charset=utf-8"
             src="../../../public/js/validationKomputerElement.js"></script>
-
         <h1>
             <%=pageTitle%>
         </h1>
-        <form class="form" method="post" action="<%=formAction%>" onsubmit="return validateForm();">
+        <form class="form" method="post" action="<%=formAction%>" onsubmit="return validateForm();" novalidate>
             <!-- novalidate -->
             <input type="hidden" name="_id" value="<%= element._id %>">
             <label for="nazwa">Nazwa:<abbr title="required" aria-label="required"
@@ -63,7 +63,7 @@
                             </div>
                         -->
                     <div class="form-buttons">
-                        <p id="errorsSummary" class="errors-text"></p>
+                        <p id="errorSummary" class="errors-text"></p>
                         <% if (formMode !='showDetails' ) { %>
                             <input class="form-button-submit" type="submit" value="<%=btnLabel%>" />
                             <a class="form-button-cancel" href="/komputer-element">Anuluj</a>

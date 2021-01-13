@@ -1,15 +1,229 @@
 <%- include('../../fragments/header.ejs')%>
 
     <main>
-
+        <!-- 
+        <script type="application/javascript;charset=utf-8" src="/public/js/validationCommon.js"></script>
         <script type="application/javascript;charset=utf-8"
-            src="/public/js/validationZestawElementaIKomputera.js"> </script>
+            src="/public/js/validationZestawElementaIKomputera.js"></script>
+-->
+        <script>
 
+            function resetErrors(inputs, errorTexts, errorInfo) {
+                for (let i = 0; i < inputs.length; i++) {
+                    inputs[i].classList.remove("error_input"); // Możliwe tutaj musze być "error-input"? // Изменил с error_input, на error-input
+                }
+
+                for (let i = 0; i < errorTexts.length; i++) {
+                    errorTexts[i].innerText = "";
+                }
+                errorInfo.innerText = "";
+            }
+
+            function checkRequired(value) {
+                if (!value) {
+                    return false;
+                }
+                value = value.toString().trim();
+                if (value === "") {
+                    return false;
+                }
+                return true;
+            }
+
+            function checkTextLengthRange(value, min, max) {
+                if (!value) {
+                    return false;
+                }
+                value = value.toString().trim();
+                const length = value.length;
+                if (max && length > max) {
+                    return false;
+                }
+
+                if (min && length < min) {
+                    return false;
+                }
+
+                return true;
+            }
+
+            function checkDateIfAfter(value, compareTo) {
+                if (!value) {
+                    return false;
+                }
+
+                if (!compareTo) {
+                    return false;
+                }
+
+
+                const valueDate = new Date(value);
+                // valueDate = valueDate.setDate(value);
+                const compareToDate = new Date(compareTo);
+                // compareToDate = compareToDate.setDate(compareTo);
+
+                if (valueDate.getTime() <= compareToDate.getTime()) { // Верно ли сравнивает? Мб сравнивает часы в сутках ( от 0 до 23 )
+                    return false;
+                }
+
+                return true;
+            }
+
+            function checkNumber(value) {
+                if (!value) {
+                    return false;
+                }
+
+                if (isNaN(value)) {
+                    return false;
+                }
+
+                return true;
+            }
+
+            function checkNumberRange(value, min, max) {
+                if (!value) {
+                    return false;
+                }
+                if (isNaN(value)) {
+                    return false;
+                }
+                value = parseFloat(value);
+                if (value < min) {
+                    return false;
+                }
+                if (value > max) {
+                    return false;
+                }
+
+                return true;
+            }
+
+
+            function checkDate(value) {
+                if (!value) {
+                    return false;
+                }
+                const pattern = /(\d{4})-(\d{2})-(\d{2})/;
+                return pattern.test(value);
+            }
+
+            function validateForm() {
+                const modelInput = document.getElementById('model');
+                const nazwaElementuInput = document.getElementById('nazwaElementu')
+                const aktualnaTemperaturaInput = document.getElementById('aktualnaTemperatura');
+                const procentWykorzystanychZasobowInput = document.getElementById('procentWykorzystanychZasobow');
+                const aktualnaSzybkoscPrzekazaniaDanychInput = document.getElementById('aktualnaSzybkoscPrzekazaniaDanych');
+                const typPoloczeniaInput = document.getElementById('typPolaczeniaInput'); //typPoloczenia');
+
+
+                const errorModel = document.getElementById('errorModel');
+                const errorNazwaElementu = document.getElementById('errorNazwaElementu');
+                const errorAktualnaTemperatura = document.getElementById('errorAktualnaTemperatura');
+                const errorProcentWykorzystanychZasobow = document.getElementById('errorProcentWykorzystanychZasobow');
+                const errorAktualnaSzybkoscPrzekazaniaDanych = document.getElementById('errorAktualnaSzybkoscPrzekazaniaDanych');
+                const errorTypPolaczenia = document.getElementById('errorTypPolaczenia');
+
+                const errorSummary = document.getElementById('errorSummary');
+                /*
+                    event.preventDefault(); // Usuń  DOWN
+                    errorSummary.innerText = "Ala ma kota 1 ";
+                    return false;
+                    // UP
+                    */
+
+                resetErrors(
+                    [modelInput, nazwaElementuInput, aktualnaTemperaturaInput, procentWykorzystanychZasobowInput,
+                        aktualnaSzybkoscPrzekazaniaDanychInput, typPoloczeniaInput],
+                    [errorModel, errorNazwaElementu, errorAktualnaTemperatura, errorProcentWykorzystanychZasobow,
+                        errorAktualnaSzybkoscPrzekazaniaDanych, errorTypPolaczenia],
+                    errorSummary);
+
+                let valid = true;
+
+
+                if (!checkRequired(modelInput.value)) {
+                    valid = false;
+                    modelInput.classList.add("error-input");
+                    errorModel.innerText = "Pole jest wymagane";
+                }/*
+                 else if (!checkTextLengthRange(modelInput.value, 2, 60)) {
+                    valid = false;
+                    modelInput.classList.add("error-input");
+                    errorModel.innerText = "Pole powinno zawierać od 2 do 60 znaków";
+                }
+                */
+
+                if (!checkRequired(nazwaElementuInput.value)) {
+                    valid = false;
+                    nazwaElementuInput.classList.add("error-input");
+                    errorNazwaElementuInput.innerText = "Pole jest wymagane";
+                }
+                /*
+                else if (!checkTextLengthRange(nazwaElementuInput.value, 2, 100)) {
+                    valid = false;
+                    nazwaElementuInput.classList.add("error-input");
+                    errorNazwaElementu.innerText = "Pole powinno zawierać od 2 do 100 znaków";
+                }
+                */
+                if (!checkRequired(aktualnaTemperaturaInput.value)) {
+                    valid = false;
+                    aktualnaTemperaturaInput.classList.add("error-input");
+                    errorAktualnaTemperatura.innerText = "Pole jest wymagane";
+                }
+
+                if (!checkRequired(procentWykorzystanychZasobowInput.value)) {
+                    valid = false;
+                    procentWykorzystanychZasobowInput.classList.add("error-input");
+                    errorProcentWykorzystanychZasobow.innerText = "Pole jest wymagane";
+                } else if (!checkTextLengthRange(procentWykorzystanychZasobowInput.value, 2, 60)) {
+                    valid = false;
+                    procentWykorzystanychZasobowInput.classList.add("error-input");
+                    errorProcentWykorzystanychZasobow.innerText = "Pole powinno zawierać od 2 do 60 znaków";
+                }
+                /*  Изменить на проверку число ли это */
+                if (!checkRequired(aktualnaTemperaturaInput.value)) {
+                    valid = false;
+                    aktualnaTemperaturaInput.classList.add("error-input");
+                    errorAktualnaTemperatura.innerText = "Pole jest wymagane";
+                } else if (!checkTextLengthRange(aktualnaTemperaturaInput.value, 2, 60)) {
+                    valid = false;
+                    aktualnaTemperaturaInput.classList.add("error-input");
+                    errorAktualnaTemperatura.innerText = "Pole powinno zawierać od 2 do 60 znaków";
+                }
+
+
+                if (!checkRequired(aktualnaSzybkoscPrzekazaniaDanychInput.value)) {
+                    valid = false;
+                    aktualnaSzybkoscPrzekazaniaDanychInput.classList.add("error-input");
+                    errorAktualnaSzybkoscPrzekazaniaDanych.innerText = "Pole jest wymagane";
+                } else if (!checkTextLengthRange(aktualnaSzybkoscPrzekazaniaDanychInput.value, 2, 60)) {
+                    valid = false;
+                    errorAktualnaSzybkoscPrzekazaniaDanych.classList.add("error-input");
+                    errorAktualnaSzybkoscPrzekazaniaDanych.innerText = "Pole powinno zawierać od 2 do 60 znaków";
+                }
+
+                if (!checkRequired(typPoloczeniaInput.value)) {
+                    valid = false;
+                    typPoloczeniaInput.classList.add("error-input");
+                    errorTypPolaczenia.innerText = "Pole jest wymagane";
+                } else if (!checkTextLengthRange(typPoloczeniaInput.value, 2, 60)) {
+                    valid = false;
+                    typPoloczeniaInput.classList.add("error-input");
+                    errorTypPolaczenia.innerText = "Pole powinno zawierać od 2 do 60 znaków";
+                }
+                if (!valid) {
+                    errorSummary.innerText = "Formularz zawiera błędy";
+                }
+
+                return valid;
+            }
+        </script>
         <h1>
             <%= pageTitle %>
         </h1>
 
-        <form class="form" method="post" action="<%=formAction%>" onsubmit="return validateForm();" novalidate>
+        <form class="form" method="post" action="<%=formAction%>" novalidate onsubmit="return validateForm();">
             <!-- onsubmit="return validateForm();"> -->
             <input type="hidden" name="_id" value="<%= zestaw_elementa_i_komputera._id %>">
             <label for="model">Model komputera:<abbr title="required" aria-label="required">*</abbr></label>
@@ -117,8 +331,7 @@
             </span>
 
             <div class="form-buttons">
-                <p id="errorsSummary" class="errors-text"></p>
-
+                <p id="errorSummary" class="errors-text"></p>
                 <% if (formMode !='showDetails' ) { %>
                     <input class="form-button-submit" type="submit" value="<%=btnLabel%>" />
                     <a class="form-button-cancel" href="/zestaw-komputera-element">Anuluj</a>

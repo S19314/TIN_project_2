@@ -1,4 +1,5 @@
-﻿function validateForm() {
+﻿
+function validateForm() {
     const modelInput = document.getElementById('model');
     const nazwaElementuInput = document.getElementById('nazwaElementu')
     const aktualnaTemperaturaInput = document.getElementById('aktualnaTemperatura');
@@ -8,7 +9,7 @@
 
     console.log("TypPOloczeniaINput");
 
-    console.log(typPoloczeniaInput.value);
+    console.log(typPoloczeniaInput);
 
     const errorModel = document.getElementById('errorModel');
     const errorNazwaElementu = document.getElementById('errorNazwaElementu');

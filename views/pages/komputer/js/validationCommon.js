@@ -1,3 +1,10 @@
+function convertDateIntoStringLikeInView(date) {
+    if (!(typeof date.getMonth === 'function')) return date;
+
+    let dateAsString = date.toISOString().split('T')[0];
+    return dateAsString;
+}
+
 function resetErrors(inputs, errorTexts, errorInfo) {
     for (let i = 0; i < inputs.length; i++) {
         inputs[i].classList.remove("error_input"); // Możliwe tutaj musze być "error-input"? // Изменил с error_input, на error-input
@@ -97,3 +104,4 @@ function checkDate(value) {
     const pattern = /(\d{4})-(\d{2})-(\d{2})/;
     return pattern.test(value);
 }
+

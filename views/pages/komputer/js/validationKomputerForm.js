@@ -3,7 +3,6 @@
     return false;
 }
 
-
 function validateForm() {
 
     const modelInput = document.getElementById('valueModel'); // 'model');
@@ -56,44 +55,49 @@ function validateForm() {
         typKomputeraInput.classList.add("error-input");
         errorTypKomputera.innerText = "Pole powinno zawierać od 2 do 60 znaków";
     }
-    //  DOWN
-    let normalizationDataStworzeniaInput = new Date(dataStworzeniaInput);
-    normalizationDataStworzeniaInput.setDate(normalizationDataStworzeniaInput.getDate() + 1);
-    console.log("NormalizationDate\nDate:");
-    console.log(normalizationDataStworzeniaInput);
-    console.log("dataStworzeniaInput\nBEFORE:");
-    console.log(dataStworzeniaInput.value);
-    dataStworzeniaInput.value = normalizationDataStworzeniaInput.toISOString().split('T')[0];
-    console.log("dataStworzeniaInput\nAFTER:");
-    console.log(dataStworzeniaInput.value);
-    //  UP
-
-    let nowDate = new Date();
-    let tommorowDate = new Date();
-    tommorowDate.setDate(nowDate.getDate() + 1);
-
-    let month = '' + (tommorowDate.getMonth() + 1),
-        day = '' + tommorowDate.getDate(),
-        year = tommorowDate.getFullYear();
-
-    if (month.length < 2) month = '0' + month;
-    if (day.length < 2) day = '0' + day;
-    const tommorowString = [year, month, day].join('-');
 
     if (!checkRequired(dataStworzeniaInput.value)) {
         valid = false;
         dataStworzeniaInput.classList.add("error-input");
         errorDataStworzenia.innerText = "Pole jest wymagane hello from client";
-    } else if (!checkDate(dataStworzeniaInput.value)) {
-        valid = false;
-        dataStworzeniaInput.classList.add("error-input");
-        errorDataStworzenia.innerText = "Pole powinno zawierać datę w formacie MM-dd-yyyy (np. 2000-01-24)";
-    } else if (checkDateIfAfter(dataStworzeniaInput.value, tommorowString)) {
-        valid = false;
-        dataStworzeniaInput.classList.add("error-input");
-        errorDataStworzenia.innerText = "Data nie może być z przyszłości";
-    }
+    } else {
+        //  DOWN
+        let normalizationDataStworzeniaInput = new Date(dataStworzeniaInput.value);
+        normalizationDataStworzeniaInput.setDate(normalizationDataStworzeniaInput.getDate() + 1);
+        console.log("Normalization date");
+        console.log(normalizationDataStworzeniaInput);
+        console.log("NormalizationDate\nDate:");
+        console.log(normalizationDataStworzeniaInput);
+        console.log("dataStworzeniaInput\nBEFORE:");
+        console.log(dataStworzeniaInput.value);
 
+        dataStworzeniaInput.value = convertDateIntoStringLikeInView(normalizationDataStworzeniaInput);
+        console.log("dataStworzeniaInput\nAFTER:");
+        console.log(dataStworzeniaInput.value);
+        //  UP
+
+        let nowDate = new Date();
+        let tommorowDate = new Date();
+        tommorowDate.setDate(nowDate.getDate() + 1);
+
+        let month = '' + (tommorowDate.getMonth() + 1),
+            day = '' + tommorowDate.getDate(),
+            year = tommorowDate.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+        const tommorowString = [year, month, day].join('-');
+
+        if (!checkDate(dataStworzeniaInput.value)) {
+            valid = false;
+            dataStworzeniaInput.classList.add("error-input");
+            errorDataStworzenia.innerText = "Pole powinno zawierać datę w formacie MM-dd-yyyy (np. 2000-01-24)";
+        } else if (checkDateIfAfter(dataStworzeniaInput.value, tommorowString)) {
+            valid = false;
+            dataStworzeniaInput.classList.add("error-input");
+            errorDataStworzenia.innerText = "Data nie może być z przyszłości";
+        }
+    }
     if (!valid) {
         errorSummary.innerText = "Formularz zawiera błędy";
     }
