@@ -116,70 +116,71 @@ function writeFotoIntoFyleSystem(foto) {
         });
 
 }
-
-
-
-function getFileName() {
-
+function removeFile(filePath) {
+    if (fileSystem.existsSync(filePath)) {
+        fileSystem.unlinkSync(filePath, (err) => {
+            if (err) console.log("error during unlink file");
+        });
+    }
 }
-function moveToUniqueDirectory() {
+
+function moveToUniqueDirectory(elementId) {
     const directoryImages = "public/uploads";
-    console.log("start moveToUniqueDirectory");
+    let sourcePath,
+        targetPath;
     let item;
     fileSystem.readdir(directoryImages, function (err, items) {
         if (err) {
             console.log("error");
             console.log(err);
         }
-        console.log("items");
-        console.log(items);
-        console.log("items[0]");
-        console.log(items[0]);
-
+        /*
         for (var i = 0; i < items.length; i++) {
             console.log(items[i]);
         }
+        */
         for (var i = 0; i < items.length; i++) {
-            console.log(items[i]);
             let stat = fileSystem
                 .statSync(directoryImages + "/" + items[i], function (err, data) {
                     if (err) console.log(err);
                 });
-            console.log("stat");
-            console.log(stat);
-            console.log("stat.isFile()");
-            console.log(stat.isFile());
             if (stat.isFile()) {
                 item = items[i];
                 break;
             }
         }
-
-        console.log("use getLastId_Element_Komputera");
-        return getLastId_Element_Komputera()
-            .then(resultId => {
-                console.log("In then getLastId_Element_Komputera()");
-                if (resultId === -1) resultId = 1;
-                console.log("resultId");
-                console.log(resultId);
-                fileSystem.mkdir(directoryImages + "/" + resultId, function (error, data) {
-                    if (error) throw error;
-                    // console.log(data);
-                });
-                fileSystem.rename(directoryImages + "/" + item, directoryImages + "/" + resultId + "/" + item, function (error, data) {
-                    if (error) throw error;
-                    // console.log(data);
-                });
-
-                const sql = `UPDATE Element_komputera set foto_path = ? where _id = ? ;`;
-                db.promise().execute(sql, [originPathPhoto + "/" + resultId + "/" + item, resultId]);
-
-                console.log("END moveTo");
-                return originPathPhoto + "/" + resultId + "/" + item;
+        sourcePath = directoryImages + "/" + item;
+        targetPath = directoryImages + "/" + elementId + "/" + item;
+        if (elementId === -1) elementId = 1;
+        if (!fileSystem.existsSync(directoryImages + "/" + elementId))
+            fileSystem.mkdir(directoryImages + "/" + elementId, function (error, data) {
+                if (error) throw error;
+                // console.log(data);
             });
+        removeFile();
+        if (fileSystem.existsSync(targetPath)) {
+            fileSystem.unlinkSync(targetPath, (err) => {
+                if (err) console.log("error while unlink file");
+            });
+        }
+        fileSystem.rename(sourcePath, targetPath, function (error, data) {
+            if (error) throw error;
+            // console.log(data);
+        });
+        return targetPath;
+
     });
+}
 
 
+updatePathFoto = (elementId, fotoPath) => {
+    const sql = `UPDATE Element_komputera set foto_path = ? where _id = ? ;`;
+    return db.promise().execute(sql, [fotoPath, elementId]);
+}
+
+getPathFoto = (elementId) => {
+    const sql = `SELECT foto_path FROM Element_komputera  where _id = ? ;`;
+    return db.promise().execute(sql, [elementId]);
 }
 /*
 function getPathToImage() {
@@ -188,23 +189,12 @@ function getPathToImage() {
 
 exports.createElement_Komputera = (newElementData) => {
     console.log("START createElementKOmputeara");
-    /*
-    let fotoFile = newElementData.fotoFile;
-    newElementData.fotoFile = newElementData.fotoFile.originalname;
-    */
     const validateResultElement = elementSchema.validate(newElementData, { abortEarly: false });
     if (validateResultElement.error) {
         console.log("In validate error");
         console.log(validateResultElement.error);
         return Promise.reject(validateResultElement.error);
     }
-    /*
-    console.log("elementData is there foto?");
-    console.log(validateResultElement);
-    console.log("elementData =>  only foto?");
-    console.log(validateResultElement.foto);
-    */
-
 
     // Тут добавить функцию, которая будет сохранять в файловую систему отправляемую фотографию
     // После закачки в файловую систему, в foto_path конкатанация с originPathPhoto И запись в БД
@@ -222,47 +212,42 @@ exports.createElement_Komputera = (newElementData) => {
     //const foto_path = newElementData.foto_path; // DOWN Ubrat'
     // const foto_path = 'https://cdn.x-kom.pl/i/setup/images/prod/big/product-new-big,,2019/10/pr_2019_10_25_13_53_0_788_06.jpg';
     const sql = 'INSERT INTO Element_komputera (nazwa, opis, foto_path) VALUES (?, ?, ?)';
+    let dbQueryResult,
+        elemId;
     return db.promise().execute(sql, [nazwa, opis, foto_path])
-        .then(
-            result => {
-                return moveToUniqueDirectory()
-                    .then(path => {
-
-                        console.log("then moveTo");
-
-                        return results;
-                    });
-            }
-        );
-
-
+        .then(result => {
+            dbQueryResult = result;
+            return getLastId_Element_Komputera();
+        })
+        .then(elementId => {
+            elemId = elementId;
+            return moveToUniqueDirectory(elementId);
+        })
+        .then(path => {
+            console.log("path in then");
+            console.log(path);
+            return updatePathFoto(elemId, path)
+        })
+        .then(updateQueryResult => {
+            return dbQueryResult;
+        });
 }
 
 exports.updateElement_Komputera = (elementId, elementData) => {
     const validateResultElement = elementSchema.validate(elementData, { abortEarly: false });
     if (validateResultElement.error) {
-        /*
-        console.log("UpdateEllem_KOmp eRRORS\n");
-        console.log(validateResultElement.error);
- 
-        console.log("UpdateEllem_KOmp Details.message\n");
-        console.log(validateResultElement.error.details[0].message);
-        console.log("UpdateEllem_KOmp Details.path[0]\n");
-        console.log(validateResultElement.error.details[0].path[0]);
-*/
         return Promise.reject(validateResultElement.error);
     }
 
     const nazwa = elementData.nazwa;
     const opis = elementData.opis;
-    // console.log("UPDATE Eleme_Komp in Repository\nData:");
-    // console.log(elementData);
-    //   const foto_path = elementData.foto_path; // DOWN Ubrat'
-    const foto_path = 'https://cdn.x-kom.pl/i/setup/images/prod/big/product-new-big,,2019/10/pr_2019_10_25_13_53_0_788_06.jpg';
-    const sql = `UPDATE Element_komputera set nazwa = ?, opis = ?, foto_path = ? where _id = ?`;
-    return db.promise().execute(sql, [nazwa, opis, foto_path, elementId]);
-
-
+    moveToUniqueDirectory(elementId)
+        .then(path => {
+            //   const foto_path = elementData.foto_path; // DOWN Ubrat'
+            const foto_path = path; // 'https://cdn.x-kom.pl/i/setup/images/prod/big/product-new-big,,2019/10/pr_2019_10_25_13_53_0_788_06.jpg';
+            const sql = `UPDATE Element_komputera set nazwa = ?, opis = ?, foto_path = ? where _id = ?`;
+            return db.promise().execute(sql, [nazwa, opis, foto_path, elementId]);
+        });
 };
 
 exports.deleteElement_Komputera = (elementId) => {
@@ -272,6 +257,12 @@ exports.deleteElement_Komputera = (elementId) => {
     return db.promise().execute(sql1, [elementId])
         .then(() => {
             return db.promise().execute(sql2, [elementId])
+        })
+        .then(() => {
+            return getPathFoto(elementId);
+        })
+        .then(path => {
+            removeFile(path)
         });
 
 };

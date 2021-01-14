@@ -56,7 +56,9 @@ app.post("/komputer-element/add");
   next();  // под вопросом, но всё же 
 });
 */
-app.post("/komputer-element/edit", function (req, res, next) {
+app.post("/komputer-element/edit");
+/*
+, function (req, res, next) {
   let filedata = req.file;
   console.log(filedata);
   if (!filedata)
@@ -66,7 +68,7 @@ app.post("/komputer-element/edit", function (req, res, next) {
 
   next();  // под вопросом, но всё же 
 });
-
+*/
 app.use('/komputer-element', elementKomputerRouter);
 app.use('/', indexRouter);
 app.use('/komputers', komputerRouter);
