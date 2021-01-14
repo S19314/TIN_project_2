@@ -76,8 +76,7 @@ exports.getElement_KomputeraById = (elementId) => {
 // function 
 getLastId_Element_Komputera = () => {
     console.log("START In getLastId_Element_Komputera()");
-    const query = `SELECT MAX(e._id) as _id
-    FROM Element_komputera e;`;
+    const query = `SELECT MAX(e._id) as _id  FROM Element_komputera e;`;
 
     return db.promise().query(query)
         .then((results, fields) => {
@@ -119,6 +118,10 @@ function writeFotoIntoFyleSystem(foto) {
 }
 
 
+
+function getFileName() {
+
+}
 function moveToUniqueDirectory() {
     const directoryImages = "public/uploads";
     console.log("start moveToUniqueDirectory");
@@ -157,7 +160,6 @@ function moveToUniqueDirectory() {
             .then(resultId => {
                 console.log("In then getLastId_Element_Komputera()");
                 if (resultId === -1) resultId = 1;
-                else resultId++;
                 console.log("resultId");
                 console.log(resultId);
                 fileSystem.mkdir(directoryImages + "/" + resultId, function (error, data) {
@@ -168,6 +170,10 @@ function moveToUniqueDirectory() {
                     if (error) throw error;
                     // console.log(data);
                 });
+
+                const sql = `UPDATE Element_komputera set foto_path = ? where _id = ? ;`;
+                db.promise().execute(sql, [originPathPhoto + "/" + resultId + "/" + item, resultId]);
+
                 console.log("END moveTo");
                 return originPathPhoto + "/" + resultId + "/" + item;
             });
@@ -203,25 +209,33 @@ exports.createElement_Komputera = (newElementData) => {
     // Тут добавить функцию, которая будет сохранять в файловую систему отправляемую фотографию
     // После закачки в файловую систему, в foto_path конкатанация с originPathPhoto И запись в БД
     console.log("After validation of error");
+    let foto_path = "none"; //path;
 
-    return moveToUniqueDirectory()
-        .then(path => {
-            console.log("then moveTo");
-            let foto_path = path;
+    console.log("AFTER moveToUniqueDirectory");
+    console.log("foto_path");
+    console.log(foto_path);
 
-            console.log("AFTER moveToUniqueDirectory");
-            console.log("foto_path");
-            console.log(foto_path);
+    const nazwa = newElementData.nazwa;
+    const opis = newElementData.opis;
+    /// Попробовать вытянуть фотку и созранить её тут.
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //const foto_path = newElementData.foto_path; // DOWN Ubrat'
+    // const foto_path = 'https://cdn.x-kom.pl/i/setup/images/prod/big/product-new-big,,2019/10/pr_2019_10_25_13_53_0_788_06.jpg';
+    const sql = 'INSERT INTO Element_komputera (nazwa, opis, foto_path) VALUES (?, ?, ?)';
+    return db.promise().execute(sql, [nazwa, opis, foto_path])
+        .then(
+            result => {
+                return moveToUniqueDirectory()
+                    .then(path => {
 
-            const nazwa = newElementData.nazwa;
-            const opis = newElementData.opis;
-            /// Попробовать вытянуть фотку и созранить её тут.
-            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            //const foto_path = newElementData.foto_path; // DOWN Ubrat'
-            // const foto_path = 'https://cdn.x-kom.pl/i/setup/images/prod/big/product-new-big,,2019/10/pr_2019_10_25_13_53_0_788_06.jpg';
-            const sql = 'INSERT INTO Element_komputera (nazwa, opis, foto_path) VALUES (?, ?, ?)';
-            return db.promise().execute(sql, [nazwa, opis, foto_path]);
-        });
+                        console.log("then moveTo");
+
+                        return results;
+                    });
+            }
+        );
+
+
 }
 
 exports.updateElement_Komputera = (elementId, elementData) => {
