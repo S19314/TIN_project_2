@@ -98,9 +98,18 @@ exports.showElementKomputerDetails = (req, res, next) => {
 }
 
 
+const url = require('url');
 // obsługa akcji formularza
 exports.addElementKomputera = (req, res, next) => {
+
+    console.log("START addELement, paramsInRequest");
     const elementData = { ...req.body };
+    // ВозможноЮ придётся декодить данные о фотографии
+    console.log("elementData is there foto?");
+    console.lof(req.file.filename);
+    let isContainFoto = elementData.foto === null ? false : true;
+    console.log(isContainFoto);
+
     ElementKomputeraRepository.createElement_Komputera(elementData)
         .then(result => {
             res.redirect('/komputer-element');

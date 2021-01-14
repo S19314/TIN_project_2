@@ -1,10 +1,12 @@
 const db = require('../../config/mysql2/db');
 const elementSchema = require('../../model/joi/ElementKomputera');
+const fileSystem = require("fs");
+const originPathPhoto = '../../uploadFoto';
 
 exports.getElements_Komputera = () => {
     return db.promise().query('SELECT * FROM Element_komputera')
         .then((results, fields) => {
-            console.log(results[0]);
+            //            console.log(results[0]);
             return results[0];
         })
         .catch(err => {
@@ -70,13 +72,62 @@ exports.getElement_KomputeraById = (elementId) => {
         });
 };
 
+exports.getLastId_Element_Komputera = () => {
+    const query = `SELECT MAX(e._id) as _id
+    FROM Element_komputera e;`;
+
+    return db.promise().query(query)
+        .then((results, fields) => {
+            const firstRow = results[0][0];
+            if (!firstRow) {
+                return -1;
+            }
+            return firstRow._id;
+        })
+        .catch(err => {
+            console.log(err);
+            throw err;
+        });
+};
+
+
+function writeFotoIntoFyleSystem(foto) {
+    if (foto === null) return;
+    getLastId_Element_Komputera()
+        .then(resultId => {
+            if (resultId === -1) resultId = 1;
+
+            fileSystem.mkdir(originPathPhoto + "/" + resultId);
+            fileSystem.open(resultId + "__foto.", 'wx', (err, foto) => {
+                if (err) {
+                    if (err.code === 'EEXIST') {
+                        console.error('myfile already exists');
+                        return;
+                    }
+
+                    throw err;
+                }
+
+                writeMyData(fd);
+            });
+
+        });
+
+}
+
+
 exports.createElement_Komputera = (newElementData) => {
     const validateResultElement = elementSchema.validate(newElementData, { abortEarly: false });
     if (validateResultElement.error) {
         return Promise.reject(validateResultElement.error);
     }
+    /*
+    console.log("elementData is there foto?");
+    console.log(validateResultElement);
+    console.log("elementData =>  only foto?");
+    console.log(validateResultElement.foto);
+    */
 
-    const originPathPhoto = './public/updates';
     // Тут добавить функцию, которая будет сохранять в файловую систему отправляемую фотографию
     // После закачки в файловую систему, в foto_path конкатанация с originPathPhoto И запись в БД
     const nazwa = newElementData.nazwa;

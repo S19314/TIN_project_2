@@ -1,12 +1,172 @@
 <%- include('../../fragments/header.ejs')%>
     <main>
+
+        <!-- 
         <script type="application/javascript;charset=utf-8" src="/public/js/validationCommon.js"> </script>
         <script type="application/javascript;charset=utf-8"
             src="../../../public/js/validationKomputerElement.js"></script>
+            -->
+        <script>
+            function resetErrors(inputs, errorTexts, errorInfo) {
+                for (let i = 0; i < inputs.length; i++) {
+                    inputs[i].classList.remove("error_input"); // Możliwe tutaj musze być "error-input"? // Изменил с error_input, на error-input
+                }
+
+                for (let i = 0; i < errorTexts.length; i++) {
+                    errorTexts[i].innerText = "";
+                }
+                errorInfo.innerText = "";
+            }
+
+            function checkRequired(value) {
+                if (!value) {
+                    return false;
+                }
+                value = value.toString().trim();
+                if (value === "") {
+                    return false;
+                }
+                return true;
+            }
+
+            function checkTextLengthRange(value, min, max) {
+                if (!value) {
+                    return false;
+                }
+                value = value.toString().trim();
+                const length = value.length;
+                if (max && length > max) {
+                    return false;
+                }
+
+                if (min && length < min) {
+                    return false;
+                }
+
+                return true;
+            }
+
+            function checkDateIfAfter(value, compareTo) {
+                if (!value) {
+                    return false;
+                }
+
+                if (!compareTo) {
+                    return false;
+                }
+
+
+                const valueDate = new Date(value);
+                // valueDate = valueDate.setDate(value);
+                const compareToDate = new Date(compareTo);
+                // compareToDate = compareToDate.setDate(compareTo);
+
+                if (valueDate.getTime() <= compareToDate.getTime()) { // Верно ли сравнивает? Мб сравнивает часы в сутках ( от 0 до 23 )
+                    return false;
+                }
+
+                return true;
+            }
+
+            function checkNumber(value) {
+                if (!value) {
+                    return false;
+                }
+
+                if (isNaN(value)) {
+                    return false;
+                }
+
+                return true;
+            }
+
+            function checkNumberRange(value, min, max) {
+                if (!value) {
+                    return false;
+                }
+                if (isNaN(value)) {
+                    return false;
+                }
+                value = parseFloat(value);
+                if (value < min) {
+                    return false;
+                }
+                if (value > max) {
+                    return false;
+                }
+
+                return true;
+            }
+
+
+            function checkDate(value) {
+                if (!value) {
+                    return false;
+                }
+                const pattern = /(\d{4})-(\d{2})-(\d{2})/;
+                return pattern.test(value);
+            }
+
+
+            function validateForm() {
+                const nazwaInput = document.getElementById('nazwa');
+                const opisInput = document.getElementById('opis')
+                const fotoInputInput = document.getElementById('fotoInput');
+
+                const errorNazwa = document.getElementById('errorNazwa');
+                const errorOpis = document.getElementById('errorOpis');
+                const errorFotoInput = document.getElementById('errorFotoInput');
+
+                const errorSummary = document.getElementById('errorSummary');
+
+                resetErrors([nazwaInput, opisInput, fotoInputInput], [errorNazwa, errorOpis, errorFotoInput], errorSummary);
+
+                var valid = true;
+
+                if (!checkRequired(nazwaInput.value)) {
+                    valid = false;
+                    nazwaInput.classList.add("error-input");
+                    errorNazwa.innerText = "Pole jest wymagane";
+                } else if (!checkTextLengthRange(nazwaInput.value, 2, 60)) {
+                    valid = false;
+                    nazwaInput.classList.add("error-input");
+                    errorNazwa.innerText = "Pole powinno zawierać od 2 do 60 znaków";
+                }
+
+                if (!checkRequired(opisInput.value)) {
+                    valid = false;
+                    opisInput.classList.add("error-input");
+                    errorOpis.innerText = "Pole jest wymagane";
+                } else if (!checkTextLengthRange(opisInput.value, 2, 1000)) {
+                    valid = false;
+                    opisInput.classList.add("error-input");
+                    errorOpis.innerText = "Pole powinno zawierać od 2 do 1000 znaków";
+                }
+                /*
+                if (!checkRequired(fotoInputInput.value)) {
+                    valid = false;
+                    fotoInputInput.classList.add("error-input");
+                    errorFotoInput.innerText = "Pole jest wymagane";
+                }
+            
+                console.log('What is it fotoInput?');
+                console.log(fotoInputInput);
+*/
+
+                if (!valid) {
+                    errorSummary.innerText = "Formularz zawiera błędy";
+                }
+
+
+                return valid;
+            }
+
+        </script>
         <h1>
             <%=pageTitle%>
         </h1>
-        <form class="form" method="post" action="<%=formAction%>" onsubmit="return validateForm();" novalidate>
+        <form class="form" method="POST" enctype="multipart/form-data" action="<%=formAction%>"
+            onsubmit="return validateForm();" novalidate>
             <!-- novalidate -->
             <input type="hidden" name="_id" value="<%= element._id %>">
             <label for="nazwa">Nazwa:<abbr title="required" aria-label="required"
