@@ -1,7 +1,8 @@
 const db = require('../../config/mysql2/db');
 const elementSchema = require('../../model/joi/ElementKomputera');
 const fileSystem = require("fs");
-const originPathPhoto = '../../uploadFoto';
+const { func } = require('joi');
+const originPathPhoto = '../../uploads';
 
 exports.getElements_Komputera = () => {
     return db.promise().query('SELECT * FROM Element_komputera')
@@ -72,7 +73,9 @@ exports.getElement_KomputeraById = (elementId) => {
         });
 };
 
-exports.getLastId_Element_Komputera = () => {
+// function 
+getLastId_Element_Komputera = () => {
+    console.log("START In getLastId_Element_Komputera()");
     const query = `SELECT MAX(e._id) as _id
     FROM Element_komputera e;`;
 
@@ -116,9 +119,77 @@ function writeFotoIntoFyleSystem(foto) {
 }
 
 
+function moveToUniqueDirectory() {
+    const directoryImages = "public/uploads";
+    console.log("start moveToUniqueDirectory");
+    let item;
+    fileSystem.readdir(directoryImages, function (err, items) {
+        if (err) {
+            console.log("error");
+            console.log(err);
+        }
+        console.log("items");
+        console.log(items);
+        console.log("items[0]");
+        console.log(items[0]);
+
+        for (var i = 0; i < items.length; i++) {
+            console.log(items[i]);
+        }
+        for (var i = 0; i < items.length; i++) {
+            console.log(items[i]);
+            let stat = fileSystem
+                .statSync(directoryImages + "/" + items[i], function (err, data) {
+                    if (err) console.log(err);
+                });
+            console.log("stat");
+            console.log(stat);
+            console.log("stat.isFile()");
+            console.log(stat.isFile());
+            if (stat.isFile()) {
+                item = items[i];
+                break;
+            }
+        }
+
+        console.log("use getLastId_Element_Komputera");
+        return getLastId_Element_Komputera()
+            .then(resultId => {
+                console.log("In then getLastId_Element_Komputera()");
+                if (resultId === -1) resultId = 1;
+                else resultId++;
+                console.log("resultId");
+                console.log(resultId);
+                fileSystem.mkdir(directoryImages + "/" + resultId, function (error, data) {
+                    if (error) throw error;
+                    // console.log(data);
+                });
+                fileSystem.rename(directoryImages + "/" + item, directoryImages + "/" + resultId + "/" + item, function (error, data) {
+                    if (error) throw error;
+                    // console.log(data);
+                });
+                console.log("END moveTo");
+                return originPathPhoto + "/" + resultId + "/" + item;
+            });
+    });
+
+
+}
+/*
+function getPathToImage() {
+}
+*/
+
 exports.createElement_Komputera = (newElementData) => {
+    console.log("START createElementKOmputeara");
+    /*
+    let fotoFile = newElementData.fotoFile;
+    newElementData.fotoFile = newElementData.fotoFile.originalname;
+    */
     const validateResultElement = elementSchema.validate(newElementData, { abortEarly: false });
     if (validateResultElement.error) {
+        console.log("In validate error");
+        console.log(validateResultElement.error);
         return Promise.reject(validateResultElement.error);
     }
     /*
@@ -128,17 +199,30 @@ exports.createElement_Komputera = (newElementData) => {
     console.log(validateResultElement.foto);
     */
 
+
     // Тут добавить функцию, которая будет сохранять в файловую систему отправляемую фотографию
     // После закачки в файловую систему, в foto_path конкатанация с originPathPhoto И запись в БД
-    const nazwa = newElementData.nazwa;
-    const opis = newElementData.opis;
-    /// Попробовать вытянуть фотку и созранить её тут.
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //const foto_path = newElementData.foto_path; // DOWN Ubrat'
-    const foto_path = 'https://cdn.x-kom.pl/i/setup/images/prod/big/product-new-big,,2019/10/pr_2019_10_25_13_53_0_788_06.jpg';
-    const sql = 'INSERT INTO Element_komputera (nazwa, opis, foto_path) VALUES (?, ?, ?)';
-    return db.promise().execute(sql, [nazwa, opis, foto_path]);
-};
+    console.log("After validation of error");
+
+    return moveToUniqueDirectory()
+        .then(path => {
+            console.log("then moveTo");
+            let foto_path = path;
+
+            console.log("AFTER moveToUniqueDirectory");
+            console.log("foto_path");
+            console.log(foto_path);
+
+            const nazwa = newElementData.nazwa;
+            const opis = newElementData.opis;
+            /// Попробовать вытянуть фотку и созранить её тут.
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            //const foto_path = newElementData.foto_path; // DOWN Ubrat'
+            // const foto_path = 'https://cdn.x-kom.pl/i/setup/images/prod/big/product-new-big,,2019/10/pr_2019_10_25_13_53_0_788_06.jpg';
+            const sql = 'INSERT INTO Element_komputera (nazwa, opis, foto_path) VALUES (?, ?, ?)';
+            return db.promise().execute(sql, [nazwa, opis, foto_path]);
+        });
+}
 
 exports.updateElement_Komputera = (elementId, elementData) => {
     const validateResultElement = elementSchema.validate(elementData, { abortEarly: false });
@@ -146,7 +230,7 @@ exports.updateElement_Komputera = (elementId, elementData) => {
         /*
         console.log("UpdateEllem_KOmp eRRORS\n");
         console.log(validateResultElement.error);
-
+ 
         console.log("UpdateEllem_KOmp Details.message\n");
         console.log(validateResultElement.error.details[0].message);
         console.log("UpdateEllem_KOmp Details.path[0]\n");
@@ -163,6 +247,8 @@ exports.updateElement_Komputera = (elementId, elementData) => {
     const foto_path = 'https://cdn.x-kom.pl/i/setup/images/prod/big/product-new-big,,2019/10/pr_2019_10_25_13_53_0_788_06.jpg';
     const sql = `UPDATE Element_komputera set nazwa = ?, opis = ?, foto_path = ? where _id = ?`;
     return db.promise().execute(sql, [nazwa, opis, foto_path, elementId]);
+
+
 };
 
 exports.deleteElement_Komputera = (elementId) => {

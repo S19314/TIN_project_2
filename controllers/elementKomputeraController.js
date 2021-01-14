@@ -84,8 +84,10 @@ exports.showElementKomputerDetails = (req, res, next) => {
     const elementId = req.params.elementId;
     ElementKomputeraRepository.getElement_KomputeraById(elementId)
         .then(element => {
+            /*
             console.log("elementKomputera\nData:");
             console.log(element);
+            */
             res.render('pages/element_komputera/computer-element-form', {
                 element: element,
                 formMode: 'showDetails',
@@ -98,17 +100,29 @@ exports.showElementKomputerDetails = (req, res, next) => {
 }
 
 
-const url = require('url');
+// const url = require('url');
 // obsługa akcji formularza
-exports.addElementKomputera = (req, res, next) => {
-
+/*
     console.log("START addELement, paramsInRequest");
-    const elementData = { ...req.body };
+    
     // ВозможноЮ придётся декодить данные о фотографии
     console.log("elementData is there foto?");
-    console.lof(req.file.filename);
+    console.log("req.foto.filename");
+    );
+    console.log(req.file.filename);
+
+    console.log("req.files[0].filename");
+    console.log(req.files[0].filename);
+
+
     let isContainFoto = elementData.foto === null ? false : true;
     console.log(isContainFoto);
+*/
+exports.addElementKomputera = (req, res, next) => {
+    console.log("Start addElemtne controller ");
+    let elementData = { ...req.body, 'fotoFile': req.foto };
+    console.log("elementData");
+    console.log(elementData);
 
     ElementKomputeraRepository.createElement_Komputera(elementData)
         .then(result => {

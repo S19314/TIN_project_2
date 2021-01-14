@@ -1,4 +1,8 @@
 const Joi = require('joi');
+/*
+const ImageExtension = require('joi-image-extension');
+const Joi = BaseJoi.extend(ImageExtension);
+*/
 
 const errMessages = (errors) => {
     errors.forEach(err => {
@@ -19,7 +23,6 @@ const errMessages = (errors) => {
     return errors;
 }
 
-
 const elementSchema = Joi.object({
     _id: Joi.number()
         .optional()
@@ -34,8 +37,9 @@ const elementSchema = Joi.object({
         .max(1000)
         .required()
         .error(errMessages),
-    foto: Joi //.string()
-        .required()
+    fotoFile: Joi.string()
+        //.allowTypes(['png', 'jpg'])
+        .optional()
         .error(errMessages)
 });
 
