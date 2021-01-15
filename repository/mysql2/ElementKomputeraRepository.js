@@ -164,6 +164,9 @@ moveToUniqueDirectory = (elementId) => {
                     break;
                 }
             }
+            if (item === undefined) {
+                return "withoutPhoto";
+            }
             console.log("after is file");
 
             sourcePath = directoryImages + "/" + item;

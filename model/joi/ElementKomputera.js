@@ -39,7 +39,7 @@ const elementSchema = Joi.object({
         .error(errMessages),
     fotoFile: Joi.string()
         //.allowTypes(['png', 'jpg'])
-        .optional()
+        .required()
         .error(errMessages)
 });
 
