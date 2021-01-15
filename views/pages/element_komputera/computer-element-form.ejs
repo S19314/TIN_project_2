@@ -1,11 +1,11 @@
 <%- include('../../fragments/header.ejs')%>
     <main>
 
-        <!-- 
+
         <script type="application/javascript;charset=utf-8" src="/public/js/validationCommon.js"> </script>
         <script type="application/javascript;charset=utf-8"
             src="../../../public/js/validationKomputerElement.js"></script>
-            -->
+
         <script>
             function resetErrors(inputs, errorTexts, errorInfo) {
                 for (let i = 0; i < inputs.length; i++) {
@@ -108,6 +108,8 @@
             }
 
 
+
+
             function validateForm() {
                 const nazwaInput = document.getElementById('nazwa');
                 const opisInput = document.getElementById('opis')
@@ -142,25 +144,18 @@
                     opisInput.classList.add("error-input");
                     errorOpis.innerText = "Pole powinno zawierać od 2 do 1000 znaków";
                 }
-                /*
+
                 if (!checkRequired(fotoInputInput.value)) {
                     valid = false;
                     fotoInputInput.classList.add("error-input");
                     errorFotoInput.innerText = "Pole jest wymagane";
                 }
-            
-                console.log('What is it fotoInput?');
-                console.log(fotoInputInput);
-*/
 
                 if (!valid) {
                     errorSummary.innerText = "Formularz zawiera błędy";
                 }
-
-
                 return valid;
             }
-
         </script>
         <h1>
             <%=pageTitle%>

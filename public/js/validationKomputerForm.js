@@ -1,8 +1,4 @@
-﻿function helloWorld() {
-    console.log("I finnaly awake.");
-    return false;
-}
-
+﻿
 function validateForm() {
 
     const modelInput = document.getElementById('valueModel'); // 'model');
@@ -49,7 +45,7 @@ function validateForm() {
     if (!checkRequired(typKomputeraInput.value)) {
         valid = false;
         typKomputeraInput.classList.add("error-input");
-        errorTypKomputera.innerText = "Pole jest wymagane";
+        errorTypKomputera.innerText = "Pole jest wymagane CLIENT SIDE";
     } else if (!checkTextLengthRange(typKomputeraInput.value, 2, 60)) {
         valid = false;
         typKomputeraInput.classList.add("error-input");
