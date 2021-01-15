@@ -3,6 +3,7 @@ const elementSchema = require('../../model/joi/ElementKomputera');
 const fileSystem = require("fs");
 const { func } = require('joi');
 const e = require('express');
+const { path } = require('../../app');
 const originPathPhoto = '../../uploads';
 const table_schema = 'tin-computer-state',
     table_name = 'Element_komputera';
@@ -204,9 +205,14 @@ updatePathFoto = (elemId, path) => {
 
 getPathFoto = (elementId) => {
     const sql = `SELECT foto_path FROM Element_komputera  where _id = ? ;`;
-    return db.promise().query(sql, [elementId])
+    console.log("getPathFoto");
+    console.log("elementId");
+    console.log(elementId);
+    return db.promise().query(sql, elementId)
         .then((results, fields) => {
             const firstRow = results[0][0];
+            console.log("In getPathFoto firstRow");
+            console.log(firstRow);
             if (!firstRow) {
                 return 'none';
             }
@@ -300,16 +306,21 @@ exports.updateElement_Komputera = (elementId, elementData) => {
 exports.deleteElement_Komputera = (elementId) => {
     const sql1 = 'DELETE FROM Zestaw_Elementow_Komputera where element_id = ?';
     const sql2 = 'DELETE FROM Element_komputera where _id = ?';
-
+    let pathFile;
     return db.promise().execute(sql1, [elementId])
-        .then(() => {
-            return db.promise().execute(sql2, [elementId])
-        })
         .then(() => {
             return getPathFoto(elementId);
         })
         .then(path => {
-            removeFile(path)
+            console.log("Delete path");
+            console.log(path);
+            pathFile = path;
+            return db.promise().execute(sql2, [elementId])
+        })
+        .then(() => {
+            removeFile(pathFile);
         });
+
+
 
 };
