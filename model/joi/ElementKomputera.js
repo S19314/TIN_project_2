@@ -37,10 +37,10 @@ const elementSchema = Joi.object({
         .max(1000)
         .required()
         .error(errMessages),
-    fotoFile: Joi.string()
+    fotoFile: Joi.object().keys({//.string()
         //.allowTypes(['png', 'jpg'])
-        .required()
-        .error(errMessages)
+        imagename: Joi.string().required()
+    }).error(errMessages)
 });
 
 

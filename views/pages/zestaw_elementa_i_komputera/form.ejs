@@ -141,35 +141,40 @@
 
                 let valid = true;
 
+                if (!checkRequired(modelInput.value)) {
+                    valid = false;
+                    modelInput.classList.add("error-input");
+                    errorModel.innerText = "Pole jest wymagane";
+                } else if (!checkTextLengthRange(modelInput.value, 2, 60)) {
+                    valid = false;
+                    modelInput.classList.add("error-input");
+                    errorModel.innerText = "Pole powinno zawierać od 2 do 60 znaków";
+                }
+
+                if (!checkRequired(nazwaElementuInput.value)) {
+                    valid = false;
+                    nazwaElementuInput.classList.add("error-input");
+                    errorNazwaElementu.innerText = "Pole jest wymagane";
+                } else if (!checkTextLengthRange(nazwaElementuInput.value, 2, 100)) {
+                    valid = false;
+                    nazwaElementuInput.classList.add("error-input");
+                    errorNazwaElementu.innerText = "Pole powinno zawierać od 2 do 100 znaków";
+                }
+
+                if (!checkRequired(aktualnaTemperaturaInput.value)) {
+                    valid = false;
+                    aktualnaTemperaturaInput.classList.add("error-input");
+                    errorAktualnaTemperatura.innerText = "Pole jest wymagane";
+                }
 
                 if (!checkRequired(modelInput.value)) {
                     valid = false;
                     modelInput.classList.add("error-input");
                     errorModel.innerText = "Pole jest wymagane";
-                }/*
-                 else if (!checkTextLengthRange(modelInput.value, 2, 60)) {
+                } else if (!checkTextLengthRange(modelInput.value, 2, 60)) {
                     valid = false;
                     modelInput.classList.add("error-input");
                     errorModel.innerText = "Pole powinno zawierać od 2 do 60 znaków";
-                }
-                */
-
-                if (!checkRequired(nazwaElementuInput.value)) {
-                    valid = false;
-                    nazwaElementuInput.classList.add("error-input");
-                    errorNazwaElementuInput.innerText = "Pole jest wymagane";
-                }
-                /*
-                else if (!checkTextLengthRange(nazwaElementuInput.value, 2, 100)) {
-                    valid = false;
-                    nazwaElementuInput.classList.add("error-input");
-                    errorNazwaElementu.innerText = "Pole powinno zawierać od 2 do 100 znaków";
-                }
-                */
-                if (!checkRequired(aktualnaTemperaturaInput.value)) {
-                    valid = false;
-                    aktualnaTemperaturaInput.classList.add("error-input");
-                    errorAktualnaTemperatura.innerText = "Pole jest wymagane";
                 }
 
                 if (!checkRequired(procentWykorzystanychZasobowInput.value)) {
@@ -212,18 +217,21 @@
                     typPoloczeniaInput.classList.add("error-input");
                     errorTypPolaczenia.innerText = "Pole powinno zawierać od 2 do 60 znaków";
                 }
+
+
                 if (!valid) {
                     errorSummary.innerText = "Formularz zawiera błędy";
                 }
 
                 return valid;
             }
+
         </script>
         <h1>
             <%= pageTitle %>
         </h1>
 
-        <form class="form" method="post" action="<%=formAction%>" novalidate onsubmit="return validateForm();">
+        <form class="form" method="post" action="<%=formAction%>" onsubmit="return validateForm();" novalidate>
             <!-- onsubmit="return validateForm();"> -->
             <input type="hidden" name="_id" value="<%= zestaw_elementa_i_komputera._id %>">
             <label for="model">Model komputera:<abbr title="required" aria-label="required">*</abbr></label>

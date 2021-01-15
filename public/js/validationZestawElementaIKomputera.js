@@ -6,9 +6,7 @@
     const aktualnaSzybkoscPrzekazaniaDanychInput = document.getElementById('aktualnaSzybkoscPrzekazaniaDanych');
     const typPoloczeniaInput = document.getElementById('typPolaczeniaInput'); //typPoloczenia');
 
-    console.log("TypPOloczeniaINput");
 
-    console.log(typPoloczeniaInput.value);
 
     const errorModel = document.getElementById('errorModel');
     const errorNazwaElementu = document.getElementById('errorNazwaElementu');
@@ -47,7 +45,7 @@
     if (!checkRequired(nazwaElementuInput.value)) {
         valid = false;
         nazwaElementuInput.classList.add("error-input");
-        errorNazwaElementuInput.innerText = "Pole jest wymagane";
+        errorNazwaElementu.innerText = "Pole jest wymagane";
     } else if (!checkTextLengthRange(nazwaElementuInput.value, 2, 100)) {
         valid = false;
         nazwaElementuInput.classList.add("error-input");
