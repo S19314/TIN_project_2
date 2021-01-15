@@ -185,8 +185,7 @@ function moveToUniqueDirectory(elementId) {
 
         console.log("targetPath");
         console.log(targetPath);
-        return updatePathFoto(elementId, targetPath)
-        // return targetPath;
+        return targetPath;
 
     });
 }
@@ -202,9 +201,38 @@ updatePathFoto = (elemId, path) => {
 
 getPathFoto = (elementId) => {
     const sql = `SELECT foto_path FROM Element_komputera  where _id = ? ;`;
-    return db.promise().execute(sql, [elementId])
-        .then(foto_path => {
-            return foto_path;
+    return db.promise().query(sql, [elementId])
+        .then((results, fields) => {
+            const firstRow = results[0][0];
+            if (!firstRow) {
+                return 'none';
+            }
+            return firstRow.foto_path;
+        })
+        .catch(err => {
+            console.log(err);
+            throw err;
+        });
+}
+
+
+
+getAutoIncrement = (table_schema, table_name) => {
+
+    const sql = ` SELECT AUTO_INCREMENT FROM  INFORMATION_SCHEMA.TABLES
+                  WHERE TABLE_SCHEMA = ?
+                  AND   TABLE_NAME = ? ;`;
+    return db.promise().query(sql, [table_schema, table_name])
+        .then((results, fields) => {
+            const firstRow = results[0][0];
+            if (!firstRow) {
+                return 'none';
+            }
+            return firstRow.foto_path;
+        })
+        .catch(err => {
+            console.log(err);
+            throw err;
         });
 }
 /*
@@ -225,6 +253,10 @@ exports.createElement_Komputera = (newElementData) => {
     // После закачки в файловую систему, в foto_path конкатанация с originPathPhoto И запись в БД
     console.log("After validation of error");
     let foto_path = "none"; //path;
+    /*
+        a = 'tin-computer-state';
+        b = 'Element_komputera';
+     */
 
     console.log("AFTER moveToUniqueDirectory");
     console.log("foto_path");
@@ -240,6 +272,11 @@ exports.createElement_Komputera = (newElementData) => {
     let dbQueryResult,
         elemId,
         path;
+
+    updatePathFoto(elementId, targetPath)
+
+
+
     return db.promise().execute(sql, [nazwa, opis, foto_path])
         .then(result => {
             dbQueryResult = result;
