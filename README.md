@@ -55,3 +55,9 @@ Version 5.19:{
 		AND   TABLE_NAME   = 'Element_komputera';
 	]), then add all info into DataBase and return query promise  sql-code insert into.	
 }
+
+Version 5.23:{
+	1. moveToUniqueDirectory() должен был возвращать Promise, благодаря которому можно получить targetPath to image.
+	А так, получал но то ли не тот Promise, то ли вообще не Promise.
+	2. Фотография нормально не отображается, так как путь относительно repository, а не формы.
+}

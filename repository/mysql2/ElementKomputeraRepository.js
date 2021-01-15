@@ -129,64 +129,66 @@ function removeFile(filePath) {
 
 // function moveToUniqueDirectory(elementId) {
 moveToUniqueDirectory = (elementId) => {
-    console.log("START moveToUniqueDirectory");
-    console.log("elementId");
-    console.log(elementId);
-    const directoryImages = "public/uploads";
-    let sourcePath,
-        targetPath;
-    let item;
-    return fileSystem.readdir(directoryImages, function (err, items) {
-        console.log("fileSystem.readdir(directoryImages, function (err, items) {");
-        if (err) {
-            console.log("error");
-            console.log(err);
-        }
-
-        /*
-                for (var i = 0; i < items.length; i++) {
-                    console.log(items[i]);
-                }
-        */
-        for (var i = 0; i < items.length; i++) {
-            let stat = fileSystem
-                .statSync(directoryImages + "/" + items[i], function (err, data) {
-                    if (err) {
-                        console.log("ERROR statSync");
-                        console.log(err);
-                    }
-                });
-            if (stat.isFile()) {
-                item = items[i];
-                break;
+    return new Promise((resolve, reject) => {
+        console.log("START moveToUniqueDirectory");
+        console.log("elementId");
+        console.log(elementId);
+        const directoryImages = "public/uploads";
+        let sourcePath,
+            targetPath;
+        let item;
+        return fileSystem.readdir(directoryImages, function (err, items) {
+            console.log("fileSystem.readdir(directoryImages, function (err, items) {");
+            if (err) {
+                console.log("error");
+                console.log(err);
             }
-        }
-        console.log("after is file");
 
-        sourcePath = directoryImages + "/" + item;
-        targetPath = directoryImages + "/" + elementId + "/" + item;
-        if (elementId === -1) elementId = 1;
-        if (!fileSystem.existsSync(directoryImages + "/" + elementId))
-            fileSystem.mkdir(directoryImages + "/" + elementId, function (error, data) {
+            /*
+                    for (var i = 0; i < items.length; i++) {
+                        console.log(items[i]);
+                    }
+            */
+            for (var i = 0; i < items.length; i++) {
+                let stat = fileSystem
+                    .statSync(directoryImages + "/" + items[i], function (err, data) {
+                        if (err) {
+                            console.log("ERROR statSync");
+                            console.log(err);
+                        }
+                    });
+                if (stat.isFile()) {
+                    item = items[i];
+                    break;
+                }
+            }
+            console.log("after is file");
+
+            sourcePath = directoryImages + "/" + item;
+            targetPath = directoryImages + "/" + elementId + "/" + item;
+            if (elementId === -1) elementId = 1;
+            if (!fileSystem.existsSync(directoryImages + "/" + elementId))
+                fileSystem.mkdir(directoryImages + "/" + elementId, function (error, data) {
+                    if (error) {
+                        console.log("ERROR mkdir");
+                        console.log(error);
+                        throw error;
+                    }
+                    // console.log(data);
+                });
+            removeFile(targetPath);
+            fileSystem.rename(sourcePath, targetPath, function (error, data) {
                 if (error) {
-                    console.log("ERROR mkdir");
+                    console.log("ERROR renameFile");
                     console.log(error);
                     throw error;
                 }
                 // console.log(data);
             });
-        removeFile(targetPath);
-        fileSystem.rename(sourcePath, targetPath, function (error, data) {
-            if (error) {
-                console.log("ERROR renameFile");
-                console.log(error);
-                throw error;
-            }
-            // console.log(data);
+            console.log("targetPath");
+            console.log(targetPath);
+            resolve(targetPath);
         });
-        console.log("targetPath");
-        console.log(targetPath);
-        return targetPath;
     });
 }
 
@@ -260,16 +262,8 @@ exports.createElement_Komputera = (newElementData) => {
             elementId = elemId;
             console.log("elemID");
             console.log("moveToUniqueDirectory RESULT");
-            moveToUniqueDirectory(elemId + 1)
+            return moveToUniqueDirectory(elemId + 1)
                 .then((path) => {
-                    console.log("RESULT path");
-                    console.log(path);
-
-                });
-            return "Hi";
-            /*
-                .then((path) => {
-                    /*
                     console.log("AFTER moveToUniqueDirectory");
                     const foto_path = path;
                     console.log("foto_path");
@@ -277,13 +271,11 @@ exports.createElement_Komputera = (newElementData) => {
                     const nazwa = newElementData.nazwa;
                     const opis = newElementData.opis;
                     console.log("Here your SQL insert into");
-                    */
-            /*
-            const sql = 'INSERT INTO Element_komputera (nazwa, opis, foto_path) VALUES (?, ?, ?)';
-            return db.promise().execute(sql, [nazwa, opis, foto_path]);
-            * /
-        })
-        */
+
+                    const sql = 'INSERT INTO Element_komputera (nazwa, opis, foto_path) VALUES (?, ?, ?)';
+                    return db.promise().execute(sql, [nazwa, opis, foto_path]);
+                })
+
         });
 }
 
