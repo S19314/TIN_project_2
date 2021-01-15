@@ -2,6 +2,7 @@ const db = require('../../config/mysql2/db');
 const elementSchema = require('../../model/joi/ElementKomputera');
 const fileSystem = require("fs");
 const { func } = require('joi');
+const e = require('express');
 const originPathPhoto = '../../uploads';
 const table_schema = 'tin-computer-state',
     table_name = 'Element_komputera';
@@ -187,7 +188,7 @@ moveToUniqueDirectory = (elementId) => {
             });
             console.log("targetPath");
             console.log(targetPath);
-            resolve(targetPath);
+            resolve("/uploads/" + elementId + "/" + item);
         });
     });
 }
