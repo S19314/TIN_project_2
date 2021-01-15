@@ -127,7 +127,8 @@ function removeFile(filePath) {
     }
 }
 
-function moveToUniqueDirectory(elementId) {
+// function moveToUniqueDirectory(elementId) {
+moveToUniqueDirectory = (elementId) => {
     console.log("START moveToUniqueDirectory");
     console.log("elementId");
     console.log(elementId);
@@ -142,11 +143,11 @@ function moveToUniqueDirectory(elementId) {
             console.log(err);
         }
 
-
-        for (var i = 0; i < items.length; i++) {
-            console.log(items[i]);
-        }
-
+        /*
+                for (var i = 0; i < items.length; i++) {
+                    console.log(items[i]);
+                }
+        */
         for (var i = 0; i < items.length; i++) {
             let stat = fileSystem
                 .statSync(directoryImages + "/" + items[i], function (err, data) {
@@ -183,12 +184,9 @@ function moveToUniqueDirectory(elementId) {
             }
             // console.log(data);
         });
-
-
         console.log("targetPath");
         console.log(targetPath);
         return targetPath;
-
     });
 }
 
@@ -197,8 +195,8 @@ updatePathFoto = (elemId, path) => {
     console.log("updateFoto START");
     const sql = `UPDATE Element_komputera set foto_path = ? where _id = ? ;`;
     console.log("updateFoto END");
-    return db.promise().execute(sql, [path, elemId])
-        .then(() => { });
+    return db.promise().execute(sql, [path, elemId]);
+    // .then(() => { });
 }
 
 getPathFoto = (elementId) => {
@@ -256,21 +254,36 @@ exports.createElement_Komputera = (newElementData) => {
     console.log("After validation of error");
 
 
-    let elementId, foto_path;
+    let elementId;
     return getAutoIncrement(table_schema, table_name)
-        .then(elemId => {
+        .then((elemId) => {
             elementId = elemId;
             console.log("elemID");
-            return moveToUniqueDirectory(elemId + 1);
-        }).then((path) => {
-            foto_path = path;
-            console.log("AFTER moveToUniqueDirectory");
-            console.log("foto_path");
-            console.log(foto_path);
-            const nazwa = newElementData.nazwa;
-            const opis = newElementData.opis;
+            console.log("moveToUniqueDirectory RESULT");
+            moveToUniqueDirectory(elemId + 1)
+                .then((path) => {
+                    console.log("RESULT path");
+                    console.log(path);
+
+                });
+            return "Hi";
+            /*
+                .then((path) => {
+                    /*
+                    console.log("AFTER moveToUniqueDirectory");
+                    const foto_path = path;
+                    console.log("foto_path");
+                    console.log(foto_path);
+                    const nazwa = newElementData.nazwa;
+                    const opis = newElementData.opis;
+                    console.log("Here your SQL insert into");
+                    */
+            /*
             const sql = 'INSERT INTO Element_komputera (nazwa, opis, foto_path) VALUES (?, ?, ?)';
             return db.promise().execute(sql, [nazwa, opis, foto_path]);
+            * /
+        })
+        */
         });
 }
 
