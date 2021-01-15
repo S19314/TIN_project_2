@@ -3,6 +3,8 @@ const elementSchema = require('../../model/joi/ElementKomputera');
 const fileSystem = require("fs");
 const { func } = require('joi');
 const originPathPhoto = '../../uploads';
+const table_schema = 'tin-computer-state',
+    table_name = 'Element_komputera';
 
 exports.getElements_Komputera = () => {
     return db.promise().query('SELECT * FROM Element_komputera')
@@ -226,9 +228,9 @@ getAutoIncrement = (table_schema, table_name) => {
         .then((results, fields) => {
             const firstRow = results[0][0];
             if (!firstRow) {
-                return 'none';
+                return 0;
             }
-            return firstRow.foto_path;
+            return firstRow.AUTO_INCREMENT;
         })
         .catch(err => {
             console.log(err);
@@ -252,54 +254,23 @@ exports.createElement_Komputera = (newElementData) => {
     // Тут добавить функцию, которая будет сохранять в файловую систему отправляемую фотографию
     // После закачки в файловую систему, в foto_path конкатанация с originPathPhoto И запись в БД
     console.log("After validation of error");
-    let foto_path = "none"; //path;
-    /*
-        a = 'tin-computer-state';
-        b = 'Element_komputera';
-     */
-
-    console.log("AFTER moveToUniqueDirectory");
-    console.log("foto_path");
-    console.log(foto_path);
-
-    const nazwa = newElementData.nazwa;
-    const opis = newElementData.opis;
-    /// Попробовать вытянуть фотку и созранить её тут.
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //const foto_path = newElementData.foto_path; // DOWN Ubrat'
-    // const foto_path = 'https://cdn.x-kom.pl/i/setup/images/prod/big/product-new-big,,2019/10/pr_2019_10_25_13_53_0_788_06.jpg';
-    const sql = 'INSERT INTO Element_komputera (nazwa, opis, foto_path) VALUES (?, ?, ?)';
-    let dbQueryResult,
-        elemId,
-        path;
-
-    updatePathFoto(elementId, targetPath)
 
 
-
-    return db.promise().execute(sql, [nazwa, opis, foto_path])
-        .then(result => {
-            dbQueryResult = result;
-            return getLastId_Element_Komputera()
-                .then(elementId => {
-                    elemId = elementId;
-                    console.log("BEFORE moveToUnique");
-                    return moveToUniqueDirectory(elemId)
-                        .then(pathFile => {
-                            path = pathFile;
-                            console.log("path in then");
-                            console.log(path);
-                            console.log("elemId Before updateFoto");
-                            console.log(elemId);
-                            /*
-                            return updatePathFoto(elemId, path)
-                                .then(updateQueryResult => {
-                                    console.log("Return");
-                                    return dbQueryResult;
-                                });
-                                */
-                        });
-                });
+    let elementId, foto_path;
+    return getAutoIncrement(table_schema, table_name)
+        .then(elemId => {
+            elementId = elemId;
+            console.log("elemID");
+            return moveToUniqueDirectory(elemId + 1);
+        }).then((path) => {
+            foto_path = path;
+            console.log("AFTER moveToUniqueDirectory");
+            console.log("foto_path");
+            console.log(foto_path);
+            const nazwa = newElementData.nazwa;
+            const opis = newElementData.opis;
+            const sql = 'INSERT INTO Element_komputera (nazwa, opis, foto_path) VALUES (?, ?, ?)';
+            return db.promise().execute(sql, [nazwa, opis, foto_path]);
         });
 }
 
