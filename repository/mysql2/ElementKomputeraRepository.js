@@ -117,6 +117,7 @@ function writeFotoIntoFyleSystem(foto) {
 
 }
 function removeFile(filePath) {
+    console.log("Remove file start");
     if (fileSystem.existsSync(filePath)) {
         fileSystem.unlinkSync(filePath, (err) => {
             if (err) console.log("error during unlink file");
@@ -125,62 +126,86 @@ function removeFile(filePath) {
 }
 
 function moveToUniqueDirectory(elementId) {
+    console.log("START moveToUniqueDirectory");
+    console.log("elementId");
+    console.log(elementId);
     const directoryImages = "public/uploads";
     let sourcePath,
         targetPath;
     let item;
-    fileSystem.readdir(directoryImages, function (err, items) {
+    return fileSystem.readdir(directoryImages, function (err, items) {
+        console.log("fileSystem.readdir(directoryImages, function (err, items) {");
         if (err) {
             console.log("error");
             console.log(err);
         }
-        /*
+
+
         for (var i = 0; i < items.length; i++) {
             console.log(items[i]);
         }
-        */
+
         for (var i = 0; i < items.length; i++) {
             let stat = fileSystem
                 .statSync(directoryImages + "/" + items[i], function (err, data) {
-                    if (err) console.log(err);
+                    if (err) {
+                        console.log("ERROR statSync");
+                        console.log(err);
+                    }
                 });
             if (stat.isFile()) {
                 item = items[i];
                 break;
             }
         }
+        console.log("after is file");
+
         sourcePath = directoryImages + "/" + item;
         targetPath = directoryImages + "/" + elementId + "/" + item;
         if (elementId === -1) elementId = 1;
         if (!fileSystem.existsSync(directoryImages + "/" + elementId))
             fileSystem.mkdir(directoryImages + "/" + elementId, function (error, data) {
-                if (error) throw error;
+                if (error) {
+                    console.log("ERROR mkdir");
+                    console.log(error);
+                    throw error;
+                }
                 // console.log(data);
             });
-        removeFile();
-        if (fileSystem.existsSync(targetPath)) {
-            fileSystem.unlinkSync(targetPath, (err) => {
-                if (err) console.log("error while unlink file");
-            });
-        }
+        removeFile(targetPath);
         fileSystem.rename(sourcePath, targetPath, function (error, data) {
-            if (error) throw error;
+            if (error) {
+                console.log("ERROR renameFile");
+                console.log(error);
+                throw error;
+            }
             // console.log(data);
         });
-        return targetPath;
+
+
+        console.log("targetPath");
+        console.log(targetPath);
+        return updatePathFoto(elementId, targetPath)
+        // return targetPath;
 
     });
 }
 
 
-updatePathFoto = (elementId, fotoPath) => {
+updatePathFoto = (elemId, path) => {
+    console.log("updateFoto START");
     const sql = `UPDATE Element_komputera set foto_path = ? where _id = ? ;`;
-    return db.promise().execute(sql, [fotoPath, elementId]);
+    console.log("updateFoto END");
+    return db.promise().execute(sql, [path, elemId])
+        .then(() => { });
 }
 
 getPathFoto = (elementId) => {
     const sql = `SELECT foto_path FROM Element_komputera  where _id = ? ;`;
-    return db.promise().execute(sql, [elementId]);
+    return db.promise().execute(sql, [elementId])
+        .then(foto_path => {
+            return foto_path;
+        });
 }
 /*
 function getPathToImage() {
@@ -213,23 +238,31 @@ exports.createElement_Komputera = (newElementData) => {
     // const foto_path = 'https://cdn.x-kom.pl/i/setup/images/prod/big/product-new-big,,2019/10/pr_2019_10_25_13_53_0_788_06.jpg';
     const sql = 'INSERT INTO Element_komputera (nazwa, opis, foto_path) VALUES (?, ?, ?)';
     let dbQueryResult,
-        elemId;
+        elemId,
+        path;
     return db.promise().execute(sql, [nazwa, opis, foto_path])
         .then(result => {
             dbQueryResult = result;
-            return getLastId_Element_Komputera();
-        })
-        .then(elementId => {
-            elemId = elementId;
-            return moveToUniqueDirectory(elementId);
-        })
-        .then(path => {
-            console.log("path in then");
-            console.log(path);
-            return updatePathFoto(elemId, path)
-        })
-        .then(updateQueryResult => {
-            return dbQueryResult;
+            return getLastId_Element_Komputera()
+                .then(elementId => {
+                    elemId = elementId;
+                    console.log("BEFORE moveToUnique");
+                    return moveToUniqueDirectory(elemId)
+                        .then(pathFile => {
+                            path = pathFile;
+                            console.log("path in then");
+                            console.log(path);
+                            console.log("elemId Before updateFoto");
+                            console.log(elemId);
+                            /*
+                            return updatePathFoto(elemId, path)
+                                .then(updateQueryResult => {
+                                    console.log("Return");
+                                    return dbQueryResult;
+                                });
+                                */
+                        });
+                });
         });
 }
 

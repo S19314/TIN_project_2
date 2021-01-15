@@ -47,3 +47,11 @@ Version 5.13:{
 	по id и останавливася с ошибкой. Но так как js-код  не был на прямую вклеин в html страницу, то инфо об exception'ов не отобрадалось в консоли.
 	И ошибка в JS-коде была[сравнишь по двум commit'aм].
 }
+Version 5.19:{
+	Изменю последовательность выполнения метода createElem in Repo: Create in FileSSystem image(id папки получит благодаря коду SQL[
+		SELECT AUTO_INCREMENT
+		FROM  INFORMATION_SCHEMA.TABLES
+		WHERE TABLE_SCHEMA = 'tin-computer-state'
+		AND   TABLE_NAME   = 'Element_komputera';
+	]), then add all info into DataBase and return query promise  sql-code insert into.	
+}
