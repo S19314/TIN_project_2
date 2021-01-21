@@ -28,12 +28,12 @@ exports.getElement_KomputeraById = (elementId) => {
         z_e_k.procent_Wykorzystanych_Zasobow, 
         z_e_k.aktualna_Szybkosc_Przekazania_Danych,
         z_e_k.typPolaczenia,
-        komp._id as komp_id, komp.model, komp.zaintstalowany_System_Operacyjny, komp.typ_Komputera, 		
+        komp._id as komp_id, komp.model, komp.zaintstalowany_System_Operacyjny, komp.typ_Komputera, 	
         komp.data_Stworzenia 
     FROM Element_komputera e 
-    left join Zestaw_Elementow_Komputera z_e_k on z_e_k._id = e._id
-    left join Komputer komp on z_e_k._id = komp._id
-    where e._id = ?`;
+    left join Zestaw_Elementow_Komputera z_e_k on z_e_k.element_id = e._id
+    left join Komputer komp on z_e_k.computer_id = komp._id
+    where e._id =  ?`;
     return db.promise().query(query, [elementId])
         .then((results, fields) => {
             const firstRow = results[0][0];
@@ -59,11 +59,11 @@ exports.getElement_KomputeraById = (elementId) => {
                         aktualna_Szybkosc_Przekazania_Danych: row.aktualna_Szybkosc_Przekazania_Danych,
                         typPolaczenia: row.typPolaczenia,
                         komputer: {
-                            _id: firstRow.komp_id, // row.komp_id,
-                            model: firstRow.model,//row.model,
-                            zaintstalowany_System_Operacyjny: firstRow.zaintstalowany_System_Operacyjny, // row.zaintstalowany_System_Operacyjny,
-                            typ_Komputera: firstRow.typ_Komputera, // row.typ_Komputera,
-                            data_Stworzenia: firstRow.data_Stworzenia, //row.data_Stworzenia
+                            _id: row.komp_id,// firstRow.komp_id, // row.komp_id,
+                            model: row.model,//row.model,
+                            zaintstalowany_System_Operacyjny: row.zaintstalowany_System_Operacyjny, // row.zaintstalowany_System_Operacyjny,
+                            typ_Komputera: row.typ_Komputera, // row.typ_Komputera,
+                            data_Stworzenia: row.data_Stworzenia, //row.data_Stworzenia
                         }
                     };
                     element_komputera.zestaw_elementow_komputera.push(zestaw_elementa_komputera);
@@ -167,8 +167,7 @@ moveToUniqueDirectory = (elementId) => {
             if (item === undefined) {
                 return "withoutPhoto";
             }
-            console.log("after is file");
-
+            // console.log("after is file");
             sourcePath = directoryImages + "/" + item;
             targetPath = directoryImages + "/" + elementId + "/" + item;
             if (elementId === -1) elementId = 1;
