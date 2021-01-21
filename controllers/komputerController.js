@@ -75,6 +75,13 @@ exports.showKomputerDetails = (req, res, next) => {
             return KomputerRepository.getKomputerById(komputerId);
         })
         .then(komputer => {
+            console.log("ShowKomputerDetails");
+            console.log("komputer");
+            console.log(komputer);
+            console.log("elementkomputer[0]");
+            console.log(komputer.zestaw_elementow_komputera[0].element_komputera);
+            console.log("elementkomputer[0]._id");
+            console.log(komputer.zestaw_elementow_komputera[0].element_komputera._id);
             res.render('pages/komputer/universal-form', {
                 allKomputers: allKomputers,
                 komputer: komputer,

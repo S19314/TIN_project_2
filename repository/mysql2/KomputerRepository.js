@@ -55,20 +55,20 @@ exports.getKomputers = () => {
 exports.getKomputerById = (computerId) => {
     const query = ` 
     SELECT komp._id as komp_id, 
-        komp.model,
-        komp.zaintstalowany_System_Operacyjny,
-        komp.data_Stworzenia,
-        komp.typ_Komputera,
-        e._id as element_id, e.nazwa, e.opis, e.foto_path,
-		z_e_k._id as z_e_k_id,
-        z_e_k.aktuakna_Temperatura, 
-        z_e_k.procent_Wykorzystanych_Zasobow, 
-        z_e_k.aktualna_Szybkosc_Przekazania_Danych,
-        z_e_k.typPolaczenia
-    FROM Komputer komp  
-    left join Zestaw_Elementow_Komputera z_e_k on z_e_k._id = komp._id
-    left join Element_komputera e on z_e_k._id = e._id
-    where komp._id = ?`;
+    komp.model,
+    komp.zaintstalowany_System_Operacyjny,
+    komp.data_Stworzenia,
+    komp.typ_Komputera,
+    e._id as element_id, e.nazwa, e.opis, e.foto_path,
+    z_e_k._id as z_e_k_id,
+    z_e_k.aktuakna_Temperatura, 
+    z_e_k.procent_Wykorzystanych_Zasobow, 
+    z_e_k.aktualna_Szybkosc_Przekazania_Danych,
+    z_e_k.typPolaczenia
+FROM Komputer komp  
+left join Zestaw_Elementow_Komputera z_e_k on z_e_k.computer_id = komp._id
+left join Element_komputera e on z_e_k.element_id = e._id
+where komp._id = ?`;
     return db.promise().query(query, [computerId])
         .then((results, fields) => {
             const firstRow = results[0][0];
@@ -99,10 +99,10 @@ exports.getKomputerById = (computerId) => {
                         aktualna_Szybkosc_Przekazania_Danych: row.aktualna_Szybkosc_Przekazania_Danych,
                         typPolaczenia: row.typPolaczenia,
                         element_komputera: {
-                            _id: firstRow.komp_id, // firstRow._id, 
-                            nazwa: firstRow.nazwa,
-                            opis: firstRow.opis,
-                            foto_path: firstRow.foto_Path // Изменил с foto_path на foto_Path
+                            _id: row.element_id,//firstRow.element_id,//komp_id, // firstRow._id, 
+                            nazwa: row.nazwa,
+                            opis: row.opis,
+                            foto_path: row.foto_Path // Изменил с foto_path на foto_Path
                         }
                     };
                     computer.zestaw_elementow_komputera.push(zestaw_elementa_komputera);
