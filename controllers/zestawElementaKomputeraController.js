@@ -150,6 +150,8 @@ exports.showZestawElementKomputerDetails = (req, res, next) => {
             return ZestawElementaKomputeraRepository.getZestawElementaKomputeraById(zestawId);
         })
         .then(z_e_k => {
+            console.log("ZestawElementaDetails");
+            console.log(z_e_k);
             res.render('pages/zestaw_elementa_i_komputera/form',
                 {
                     allZestaws: [],
@@ -202,6 +204,20 @@ exports.addZestawElementKomputer = (req, res, next) => {
         .then(result => {
             res.redirect('/zestaw-komputera-element');
         }).catch(err => {
+            /*
+                        ElementKomputeraRepository.getElements_Komputera()
+                            .then(elements => {
+                                allElems = elements;
+                                return KomputerRepository.getKomputers();
+                            })
+                            .then(komps => {
+                                allKomps = komps;
+                                return ZestawElementaKomputeraRepository.getZestawElementaKomputeraById(zestawId);
+                            })
+                            .then(z_e_k => {
+                            });
+                            */
+            // let newZestaw
             let allElements, allKomputers, allZestaws;
             ZestawElementaKomputeraRepository.getZestawyElementowKomputera()
                 .then(z_e_ks => {
@@ -214,6 +230,10 @@ exports.addZestawElementKomputer = (req, res, next) => {
                 })
                 .then(komps => {
                     allKomputers = komps;
+                    console.log("Before rendering: data for zestaw_elem_i_komp");
+                    console.log(data);
+                    console.log("err.details");
+                    console.log(err.details);
                     res.render('pages/zestaw_elementa_i_komputera/form', {
                         zestaw_elementa_i_komputera: data,
                         allZestaws: allZestaws,

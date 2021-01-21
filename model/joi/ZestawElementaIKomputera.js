@@ -3,6 +3,15 @@ const Joi = require('joi');
 const errMessages = (errors) => {
     errors.forEach(err => {
         switch (err.code) {
+            case "number.empty":
+                err.message = `Pole jest wymagane`;
+                break;
+            case "any.required":
+                err.message = `Pole jest wymagane`;
+                break;
+            case "number.base":
+                err.message = `Pole powinno zawierać tylko liczby`;
+                break;
             case "string.empty":
                 err.message = "Pole jest wymagane";
                 break;
@@ -28,9 +37,12 @@ const elementSchema = Joi.object({
         .optional()
         .allow(""),
     komputerId: Joi.number()
-        .required(),
+        .empty()
+        .required()
+        .error(errMessages),
     elementId: Joi.number()
-        .required(),
+        .required()
+        .error(errMessages),
     /* modelKomputera: Joi.string()
         .min(2)
         .max(60)
