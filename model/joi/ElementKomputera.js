@@ -39,7 +39,8 @@ const elementSchema = Joi.object({
         .error(errMessages),
     fotoFile: Joi.object().keys({//.string()
         //.allowTypes(['png', 'jpg'])
-        imagename: Joi.string().required()
+        imagename: Joi.string()
+            .required()
     }).error(errMessages)
 });
 

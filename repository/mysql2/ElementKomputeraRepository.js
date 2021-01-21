@@ -136,6 +136,9 @@ moveToUniqueDirectory = (elementId) => {
         console.log("elementId");
         console.log(elementId);
         const directoryImages = "public/uploads";
+        const no_image_available_File_Name = "no-image-available.jpg",
+            no_image_available_DirectoryNumber = "-1";
+
         let sourcePath,
             targetPath;
         let item;
@@ -151,6 +154,7 @@ moveToUniqueDirectory = (elementId) => {
                         console.log(items[i]);
                     }
             */
+            console.log("beforeFor");
             for (var i = 0; i < items.length; i++) {
                 let stat = fileSystem
                     .statSync(directoryImages + "/" + items[i], function (err, data) {
@@ -164,12 +168,20 @@ moveToUniqueDirectory = (elementId) => {
                     break;
                 }
             }
-            if (item === undefined) {
-                return "withoutPhoto";
-            }
-            // console.log("after is file");
+            console.log("afterFor");
+
+
+            console.log("after is file");
             sourcePath = directoryImages + "/" + item;
             targetPath = directoryImages + "/" + elementId + "/" + item;
+            if (item === undefined) {
+                console.log("fileSystem.readdir");
+                // return resolve("withoutPhoto");
+                sourcePath = directoryImages + "/" + no_image_available_DirectoryNumber + "/" + no_image_available_File_Name;
+                targetPath = directoryImages + "/" + elementId + "/" + no_image_available_File_Name;
+                item = no_image_available_File_Name;
+            }
+
             if (elementId === -1) elementId = 1;
             if (!fileSystem.existsSync(directoryImages + "/" + elementId))
                 fileSystem.mkdir(directoryImages + "/" + elementId, function (error, data) {
@@ -180,18 +192,29 @@ moveToUniqueDirectory = (elementId) => {
                     }
                     // console.log(data);
                 });
-            removeFile(targetPath);
-            fileSystem.rename(sourcePath, targetPath, function (error, data) {
-                if (error) {
-                    console.log("ERROR renameFile");
-                    console.log(error);
-                    throw error;
-                }
-                // console.log(data);
-            });
+            if (item === no_image_available_File_Name) {
+                fileSystem.copyFile(sourcePath, targetPath, function (error, data) {
+                    if (error) {
+                        console.log("ERROR copyFile");
+                        console.log(error);
+                        throw error;
+                    }
+                    // console.log(data);
+                });
+            } else {
+                removeFile(targetPath);
+                fileSystem.rename(sourcePath, targetPath, function (error, data) {
+                    if (error) {
+                        console.log("ERROR renameFile");
+                        console.log(error);
+                        throw error;
+                    }
+                    // console.log(data);
+                });
+            }
             console.log("targetPath");
             console.log(targetPath);
-            resolve("/uploads/" + elementId + "/" + item);
+            return resolve("/uploads/" + elementId + "/" + item);
         });
     });
 }
@@ -268,10 +291,11 @@ exports.createElement_Komputera = (newElementData) => {
     let elementId;
     return getAutoIncrement(table_schema, table_name)
         .then((elemId) => {
-            elementId = elemId;
+            elementId = elemId + 1;
             console.log("elemID");
+            console.log(elemId);
             console.log("moveToUniqueDirectory RESULT");
-            return moveToUniqueDirectory(elemId + 1)
+            return moveToUniqueDirectory(elementId)
                 .then((path) => {
                     console.log("AFTER moveToUniqueDirectory");
                     const foto_path = path;
