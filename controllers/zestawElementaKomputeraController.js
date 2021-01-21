@@ -197,7 +197,22 @@ exports.showAddZestawElementKomputerForm = (req, res, next) => {
             });
         });
 }
-
+function reBuildZestawForView(zestaw) {
+    if (zestaw === {}) return zestaw;
+    return {
+        '_id': zestaw._id,
+        'aktuakna_Temperatura': zestaw.aktualnaTemperatura === undefined ? '' : zestaw.aktualnaTemperatura,
+        'procent_Wykorzystanych_Zasobow': zestaw.procentWykorzystanychZasobow === undefined ? '' : zestaw.procentWykorzystanychZasobow,
+        'aktualna_Szybkosc_Przekazania_Danych': zestaw.aktualnaSzybkoscPrzekazaniaDanych === undefined ? '' : zestaw.aktualnaSzybkoscPrzekazaniaDanych,
+        'typPolaczenia': zestaw.typPolaczenia === undefined ? '' : zestaw.typPolaczenia,
+        'komputer': {
+            '_id': zestaw.komputerId === undefined ? '' : zestaw.komputerId  // ?
+        },
+        'element_komputera': {
+            '_id': zestaw.elementId === undefined ? '' : zestaw.elementId // ?
+        }
+    };
+}
 exports.addZestawElementKomputer = (req, res, next) => {
     const data = { ...req.body };
     ZestawElementaKomputeraRepository.createZestawElementaKomputera(data)
@@ -234,8 +249,11 @@ exports.addZestawElementKomputer = (req, res, next) => {
                     console.log(data);
                     console.log("err.details");
                     console.log(err.details);
+                    let newZestaw = reBuildZestawForView(data);
+                    console.log("Before rendering: newZestaw for zestaw_elem_i_komp");
+                    console.log(newZestaw);
                     res.render('pages/zestaw_elementa_i_komputera/form', {
-                        zestaw_elementa_i_komputera: data,
+                        zestaw_elementa_i_komputera: newZestaw,
                         allZestaws: allZestaws,
                         allKomputers: allKomputers,
                         allElements: allElements,

@@ -248,10 +248,12 @@
                 name="komputerId" id="model" required <%=(formMode=='showDetails' ) ? 'disabled' : '' %> >
                 <option value="" selected disabled>-- Model komputera --</option>
                 <% for ( let i=0; i < allKomputers.length; i++){ let komputer=allKomputers[i]; %>
-                    <option value="<%=komputer._id%>" label="<%= komputer.model %>" <%=(zestaw_elementa_i_komputera._id
-                        && komputer._id.toString()==zestaw_elementa_i_komputera.komputer._id.toString()) ? 'selected'
+                    <option value="<%=komputer._id%>" label="<%= komputer.model %>"
+                        <%=komputer._id.toString()==zestaw_elementa_i_komputera.komputer._id.toString() ? 'selected'
                         : '' %> >
                     </option>
+
+
                     <% } %>
             </select>
             <span id="errorModel" class="errors-text">
@@ -266,8 +268,8 @@
                 name="elementId" id="nazwaElementu" required <%=(formMode=='showDetails' ) ? 'disabled' : '' %>>
                 <option value="" selected disabled>-- Nazwa elementu -- </option>
                 <% for ( let i=0; i < allElements.length; i++){ let element=allElements[i]; %>
-                    <option value="<%=element._id%>" label="<%=element.nazwa %>" <%=(zestaw_elementa_i_komputera._id &&
-                        element._id.toString()==zestaw_elementa_i_komputera.element_komputera._id.toString())
+                    <option value="<%=element._id%>" label="<%=element.nazwa %>"
+                        <%=element._id.toString()==zestaw_elementa_i_komputera.element_komputera._id.toString()
                         ? 'selected' : '' %> >
 
                     </option>
