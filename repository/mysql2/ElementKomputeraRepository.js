@@ -118,6 +118,45 @@ function writeFotoIntoFyleSystem(foto) {
             });
 
         });
+}
+
+function getMaxFolderNumber() {
+    const directoryImages = "public/uploads";
+    return new Promise((resolve, reject) => {
+        fileSystem.readdir(directoryImages, function (err, items) {
+            console.log("fileSystem.readdir(directoryImages, function (err, items) {");
+            if (err) {
+                console.log("error");
+                console.log(err);
+            }
+
+            /*
+                    for (var i = 0; i < items.length; i++) {
+                        console.log(items[i]);
+                    }
+            */
+            let maxDirectoryNumber = 0;
+            for (var i = 0; i < items.length; i++) {
+                let stat = fileSystem
+                    .statSync(directoryImages + "/" + items[i], function (err, data) {
+                        if (err) {
+                            console.log("ERROR statSync");
+                            console.log(err);
+                        }
+                    });
+                if (stat.isDirectory()) {
+                    console.log("if (stat.isDirectory()) {");
+                    console.log("items[i]");
+                    console.log(items[i]);
+                    // stat.name; // Тупо, но шо делать
+                    let currentDirectoryNumber = parseInt(items[i], 10);
+                    if (currentDirectoryNumber > maxDirectoryNumber)
+                        maxDirectoryNumber = currentDirectoryNumber;
+                }
+            }
+            return resolve(maxDirectoryNumber);
+        });
+    });
 
 }
 function removeFile(filePath) {
@@ -289,26 +328,31 @@ exports.createElement_Komputera = (newElementData) => {
 
 
     let elementId;
+    // photoDirectoryNumber;
+
     return getAutoIncrement(table_schema, table_name)
         .then((elemId) => {
             elementId = elemId + 1;
             console.log("elemID");
             console.log(elemId);
             console.log("moveToUniqueDirectory RESULT");
-            return moveToUniqueDirectory(elementId)
-                .then((path) => {
-                    console.log("AFTER moveToUniqueDirectory");
-                    const foto_path = path;
-                    console.log("foto_path");
-                    console.log(foto_path);
-                    const nazwa = newElementData.nazwa;
-                    const opis = newElementData.opis;
-                    console.log("Here your SQL insert into");
+            return getMaxFolderNumber()
+                .then((photoDirectoryNumber) => {
+                    elementId = elementId > photoDirectoryNumber ? elementId : (photoDirectoryNumber + 1);
+                    return moveToUniqueDirectory(elementId)
+                        .then((path) => {
+                            console.log("AFTER moveToUniqueDirectory");
+                            const foto_path = path;
+                            console.log("foto_path");
+                            console.log(foto_path);
+                            const nazwa = newElementData.nazwa;
+                            const opis = newElementData.opis;
+                            console.log("Here your SQL insert into");
 
-                    const sql = 'INSERT INTO Element_komputera (nazwa, opis, foto_path) VALUES (?, ?, ?)';
-                    return db.promise().execute(sql, [nazwa, opis, foto_path]);
+                            const sql = 'INSERT INTO Element_komputera (nazwa, opis, foto_path) VALUES (?, ?, ?)';
+                            return db.promise().execute(sql, [nazwa, opis, foto_path]);
+                        })
                 })
-
         });
 }
 
