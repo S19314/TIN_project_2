@@ -167,6 +167,22 @@ function removeFile(filePath) {
         });
     }
 }
+function removeFiles(directoryPath) {
+    return new Promise((resolve, reject) => {
+        console.log("Remove fileS start");
+        fileSystem.readdir(directoryPath, (err, files) => {
+            if (err) throw err;
+            for (const file of files) {
+                //if (fileSystem.existsSync(path.join(directoryPath, file))) 
+                fileSystem.unlinkSync((directoryPath + "/" + file), (err) => {
+                    if (err) console.log("error during unlink file");
+                });
+            }
+            return resolve();
+        });
+
+    });
+}
 
 // function moveToUniqueDirectory(elementId) {
 moveToUniqueDirectory = (elementId, operationType) => {
@@ -245,15 +261,20 @@ moveToUniqueDirectory = (elementId, operationType) => {
                     // console.log(data);
                 });
             } else {
-                removeFile(targetPath);
-                fileSystem.rename(sourcePath, targetPath, function (error, data) {
-                    if (error) {
-                        console.log("ERROR renameFile");
-                        console.log(error);
-                        throw error;
-                    }
-                    // console.log(data);
-                });
+                console.log("removeFileS(targetPath); IN MOVEtTo uNIQUE");
+                console.log("targetPath");
+                console.log(directoryImages + "/" + elementId); // нУЖНО только директорий передавать, пускай всё чистит
+                removeFiles(directoryImages + "/" + elementId)
+                    .then(() => {
+                        fileSystem.rename(sourcePath, targetPath, function (error, data) {
+                            if (error) {
+                                console.log("ERROR renameFile");
+                                console.log(error);
+                                throw error;
+                            }
+                            // console.log(data);
+                        });
+                    });
             }
             console.log("targetPath");
             console.log(targetPath);
@@ -369,7 +390,20 @@ exports.updateElement_Komputera = (elementId, elementData) => {
     const nazwa = elementData.nazwa;
     const opis = elementData.opis;
 
-
+    // removeFile(filePath) 
+    /*
+    let pathFile;
+        return getPathFoto(elementId)
+        .then(path => {
+            console.log("Delete path");
+            console.log(path);
+            pathFile = path;
+        
+        })
+        .then(() => {
+            removeFile(pathFile);
+        });
+    */
     return moveToUniqueDirectory(elementId, EDIT_OPERATION_TYPE)
         .then(path => {
             //   const foto_path = elementData.foto_path; // DOWN Ubrat'
@@ -380,8 +414,19 @@ exports.updateElement_Komputera = (elementId, elementData) => {
                 const sql = `UPDATE Element_komputera set nazwa = ?, opis = ? where _id = ?`;
                 return db.promise().execute(sql, [nazwa, opis, elementId]);
             } else {
-                const sql = `UPDATE Element_komputera set nazwa = ?, opis = ?, foto_path = ? where _id = ?`;
-                return db.promise().execute(sql, [nazwa, opis, foto_path, elementId]);
+                let pathFile;
+                return getPathFoto(elementId)
+                    .then(pathForDelete => {
+                        console.log("Delete path");
+                        console.log(pathForDelete);
+                        pathFileForDelete = pathForDelete;
+                        const sql = `UPDATE Element_komputera set nazwa = ?, opis = ?, foto_path = ? where _id = ?`;
+                        return db.promise().execute(sql, [nazwa, opis, foto_path, elementId]);
+                    })
+                    .then(() => {
+                        removeFile(pathFileForDelete);
+                    });
+
             }
         });
 
@@ -404,7 +449,4 @@ exports.deleteElement_Komputera = (elementId) => {
         .then(() => {
             removeFile(pathFile);
         });
-
-
-
 };
