@@ -7,7 +7,7 @@ const { path } = require('../../app');
 const originPathPhoto = '../../uploads';
 const table_schema = 'tin-computer-state',
     table_name = 'Element_komputera';
-
+const EDIT_OPERATION_TYPE = 'EDIT';
 exports.getElements_Komputera = () => {
     return db.promise().query('SELECT * FROM Element_komputera')
         .then((results, fields) => {
@@ -169,7 +169,7 @@ function removeFile(filePath) {
 }
 
 // function moveToUniqueDirectory(elementId) {
-moveToUniqueDirectory = (elementId) => {
+moveToUniqueDirectory = (elementId, operationType) => {
     return new Promise((resolve, reject) => {
         console.log("START moveToUniqueDirectory");
         console.log("elementId");
@@ -214,6 +214,10 @@ moveToUniqueDirectory = (elementId) => {
             sourcePath = directoryImages + "/" + item;
             targetPath = directoryImages + "/" + elementId + "/" + item;
             if (item === undefined) {
+                if (operationType === EDIT_OPERATION_TYPE) {
+                    console.log("return resolve(FOTO_NO_CHANGE);");
+                    return resolve("FOTO_NO_CHANGE");
+                }
                 console.log("fileSystem.readdir");
                 // return resolve("withoutPhoto");
                 sourcePath = directoryImages + "/" + no_image_available_DirectoryNumber + "/" + no_image_available_File_Name;
@@ -364,13 +368,23 @@ exports.updateElement_Komputera = (elementId, elementData) => {
 
     const nazwa = elementData.nazwa;
     const opis = elementData.opis;
-    return moveToUniqueDirectory(elementId)
+
+
+    return moveToUniqueDirectory(elementId, EDIT_OPERATION_TYPE)
         .then(path => {
             //   const foto_path = elementData.foto_path; // DOWN Ubrat'
             const foto_path = path; // 'https://cdn.x-kom.pl/i/setup/images/prod/big/product-new-big,,2019/10/pr_2019_10_25_13_53_0_788_06.jpg';
-            const sql = `UPDATE Element_komputera set nazwa = ?, opis = ?, foto_path = ? where _id = ?`;
-            return db.promise().execute(sql, [nazwa, opis, foto_path, elementId]);
+            console.log("AFTER MOveToUniqueDirectory");
+            console.log(foto_path);
+            if (foto_path === "FOTO_NO_CHANGE") {
+                const sql = `UPDATE Element_komputera set nazwa = ?, opis = ? where _id = ?`;
+                return db.promise().execute(sql, [nazwa, opis, elementId]);
+            } else {
+                const sql = `UPDATE Element_komputera set nazwa = ?, opis = ?, foto_path = ? where _id = ?`;
+                return db.promise().execute(sql, [nazwa, opis, foto_path, elementId]);
+            }
         });
+
 };
 
 exports.deleteElement_Komputera = (elementId) => {
