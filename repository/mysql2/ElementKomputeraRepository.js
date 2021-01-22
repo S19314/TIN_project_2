@@ -437,9 +437,6 @@ exports.deleteElement_Komputera = (elementId) => {
     const sql2 = 'DELETE FROM Element_komputera where _id = ?';
     let pathFile;
     return db.promise().execute(sql1, [elementId])
-        .then(() => {
-            return getPathFoto(elementId);
-        })
         .then(path => {
             console.log("Delete path");
             console.log(path);
@@ -447,6 +444,6 @@ exports.deleteElement_Komputera = (elementId) => {
             return db.promise().execute(sql2, [elementId])
         })
         .then(() => {
-            removeFile(pathFile);
+            removeFiles("public/uploads/" + elementId);
         });
 };
