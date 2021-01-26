@@ -170,10 +170,12 @@ function removeFile(filePath) {
 function removeFiles(directoryPath) {
     return new Promise((resolve, reject) => {
         console.log("Remove fileS start");
+        console.log(directoryPath);
         fileSystem.readdir(directoryPath, (err, files) => {
             if (err) throw err;
             for (const file of files) {
                 //if (fileSystem.existsSync(path.join(directoryPath, file))) 
+                console.log(directoryPath + "/" + file);
                 fileSystem.unlinkSync((directoryPath + "/" + file), (err) => {
                     if (err) console.log("error during unlink file");
                 });
@@ -432,15 +434,13 @@ exports.updateElement_Komputera = (elementId, elementData) => {
 
 };
 
+
+
 exports.deleteElement_Komputera = (elementId) => {
     const sql1 = 'DELETE FROM Zestaw_Elementow_Komputera where element_id = ?';
     const sql2 = 'DELETE FROM Element_komputera where _id = ?';
-    let pathFile;
     return db.promise().execute(sql1, [elementId])
-        .then(path => {
-            console.log("Delete path");
-            console.log(path);
-            pathFile = path;
+        .then(() => {
             return db.promise().execute(sql2, [elementId])
         })
         .then(() => {

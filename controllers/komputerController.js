@@ -22,6 +22,7 @@ exports.showKomputerList = (req, res, next) => {
         })
 
 }
+
 exports.showAddKomputerForm = (req, res, next) => {
     let allKomputers;
     KomputerRepository.getKomputers()
@@ -75,6 +76,7 @@ exports.showKomputerDetails = (req, res, next) => {
             return KomputerRepository.getKomputerById(komputerId);
         })
         .then(komputer => {
+            /*
             console.log("ShowKomputerDetails");
             console.log("komputer");
             console.log(komputer);
@@ -82,6 +84,7 @@ exports.showKomputerDetails = (req, res, next) => {
             console.log(komputer.zestaw_elementow_komputera[0].element_komputera);
             console.log("elementkomputer[0]._id");
             console.log(komputer.zestaw_elementow_komputera[0].element_komputera._id);
+            */
             res.render('pages/komputer/universal-form', {
                 allKomputers: allKomputers,
                 komputer: komputer,
