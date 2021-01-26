@@ -233,7 +233,8 @@ exports.addZestawElementKomputer = (req, res, next) => {
                     allKomputers = komps;
 
                     let newZestaw = reBuildZestawForView(data);
-
+                    console.log("Show validationErrors");
+                    console.log(err.details);
                     res.render('pages/zestaw_elementa_i_komputera/form', {
                         zestaw_elementa_i_komputera: newZestaw,
                         allZestaws: allZestaws,

@@ -366,6 +366,9 @@ exports.createElement_Komputera = (newElementData) => {
             return getMaxFolderNumber()
                 .then((photoDirectoryNumber) => {
                     elementId = elementId > photoDirectoryNumber ? elementId : (photoDirectoryNumber + 1);
+
+                    console.log("moveToUniqueDirectory(elementId)");
+                    console.log(elementId);
                     return moveToUniqueDirectory(elementId)
                         .then((path) => {
                             console.log("AFTER moveToUniqueDirectory");

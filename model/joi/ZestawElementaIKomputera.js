@@ -12,6 +12,15 @@ const errMessages = (errors) => {
             case "number.base":
                 err.message = `Pole powinno zawierać tylko liczby`;
                 break;
+            case "number.unsafe":
+                err.message = `Pole powinno zawierać liczbe od 0 do ${Number.MAX_SAFE_INTEGER}`;
+                break;
+            case "number.max":
+                err.message = `Pole powinno zawierać co najwyżej ${err.local.limit} znaki`;
+                break;
+            case "number.min":
+                err.message = `Pole powinno zawierać co najwyżej liczbe ${err.local.limit}`;
+                break;
             case "string.empty":
                 err.message = "Pole jest wymagane";
                 break;
@@ -56,12 +65,18 @@ const elementSchema = Joi.object({
         */
     aktualnaTemperatura: Joi.number()
         .required()
+        .min(0)
+        .max(Number.MAX_SAFE_INTEGER)
         .error(errMessages),
     procentWykorzystanychZasobow: Joi.number()
         .required()
+        .min(0)
+        .max(100)
         .error(errMessages),
     aktualnaSzybkoscPrzekazaniaDanych: Joi.number()
         .required()
+        .min(0)
+        .max(Number.MAX_SAFE_INTEGER)
         .error(errMessages),
     typPolaczenia: Joi.string()
         .min(2)
@@ -69,6 +84,7 @@ const elementSchema = Joi.object({
         .required()
         .error(errMessages)
 });
+
 
 
 module.exports = elementSchema;
