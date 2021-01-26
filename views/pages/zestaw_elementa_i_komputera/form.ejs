@@ -173,34 +173,25 @@
                     errorAktualnaTemperatura.innerText = "Pole jest wymagane";
                 }
 
-                if (!checkRequired(modelInput.value)) {
-                    valid = false;
-                    modelInput.classList.add("error-input");
-                    errorModel.innerText = "Pole jest wymagane";
-                } else if (!checkTextLengthRange(modelInput.value, 2, 60)) {
-                    valid = false;
-                    modelInput.classList.add("error-input");
-                    errorModel.innerText = "Pole powinno zawierać od 2 do 60 znaków";
-                }
 
                 if (!checkRequired(procentWykorzystanychZasobowInput.value)) {
                     valid = false;
                     procentWykorzystanychZasobowInput.classList.add("error-input");
                     errorProcentWykorzystanychZasobow.innerText = "Pole jest wymagane";
-                } else if (!checkTextLengthRange(procentWykorzystanychZasobowInput.value, 2, 60)) {
+                } else if (!checkNumberRange(procentWykorzystanychZasobowInput.value, 0, 100)) {
                     valid = false;
                     procentWykorzystanychZasobowInput.classList.add("error-input");
-                    errorProcentWykorzystanychZasobow.innerText = "Pole powinno zawierać od 2 do 60 znaków";
+                    errorProcentWykorzystanychZasobow.innerText = "Pole powinno zawierać liczba od 0 do 100 ";
                 }
                 /*  Изменить на проверку число ли это */
                 if (!checkRequired(aktualnaTemperaturaInput.value)) {
                     valid = false;
                     aktualnaTemperaturaInput.classList.add("error-input");
                     errorAktualnaTemperatura.innerText = "Pole jest wymagane";
-                } else if (!checkTextLengthRange(aktualnaTemperaturaInput.value, 2, 60)) {
+                } else if (!checkNumberRange(aktualnaTemperaturaInput.value, 0, Number.MAX_SAFE_INTEGER)) {
                     valid = false;
                     aktualnaTemperaturaInput.classList.add("error-input");
-                    errorAktualnaTemperatura.innerText = "Pole powinno zawierać od 2 do 60 znaków";
+                    errorAktualnaTemperatura.innerText = `Pole powinno zawierać liczba od 0 do ${Number.MAX_SAFE_INTEGER}`;
                 }
 
 
@@ -208,10 +199,10 @@
                     valid = false;
                     aktualnaSzybkoscPrzekazaniaDanychInput.classList.add("error-input");
                     errorAktualnaSzybkoscPrzekazaniaDanych.innerText = "Pole jest wymagane";
-                } else if (!checkTextLengthRange(aktualnaSzybkoscPrzekazaniaDanychInput.value, 2, 60)) {
+                } else if (!checkNumberRange(aktualnaSzybkoscPrzekazaniaDanychInput.value, 0, Number.MAX_SAFE_INTEGER)) {
                     valid = false;
                     errorAktualnaSzybkoscPrzekazaniaDanych.classList.add("error-input");
-                    errorAktualnaSzybkoscPrzekazaniaDanych.innerText = "Pole powinno zawierać od 2 do 60 znaków";
+                    errorAktualnaSzybkoscPrzekazaniaDanych.innerText = `Pole powinno zawierać liczba od 0 do ${Number.MAX_SAFE_INTEGER}`;
                 }
 
                 if (!checkRequired(typPoloczeniaInput.value)) {
@@ -239,6 +230,7 @@
 
         <form class="form" method="post" action="<%=formAction%>" novalidate>
             <!-- onsubmit="return validateForm();"> -->
+
             <input type="hidden" name="_id" value="<%= zestaw_elementa_i_komputera._id %>">
             <label for="model">Model komputera:<abbr title="required" aria-label="required">*</abbr></label>
             <!-- Здесь нужно ищменить name="model" на name="komputerId" ?? Изменяю-->
