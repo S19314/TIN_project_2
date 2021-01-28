@@ -48,12 +48,12 @@ const elementSchema = Joi.object({
     data_Stworzenia: Joi.string()
         .required()
         .error(errMessages)
-    /* ,
+    /*,
 
-    data_Stworzenia: Joi.string()//date() //string() ?
-        .format('yyyy-mm-dd')// .format('YYYY-MM-DD')
-        .required()
-        .error(errMessages)
+data_Stworzenia: Joi.string()//date() //string() ?
+    .format('yyyy-mm-dd')// .format('YYYY-MM-DD')
+    .required()
+    .error(errMessages)
 */
 });
 

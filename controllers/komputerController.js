@@ -48,10 +48,26 @@ exports.addKomputer = (req, res, next) => {
             res.redirect('/komputers');
         })
         .catch(err => {
+            console.log("Controller addComputer\n err:");
+            console.log(err);
+            console.log("for");
+            // / *
+            for (let i = 0; i < err.details.length; i++) {
+                console.log("err.details[i]");
+                console.log(err.details[i]);
+            }
+
+            // * /
             KomputerRepository.getKomputers()
                 .then(allKomputers => {
                     let newKomputerDataLikeInDB = { 'zestaw_elementow_komputera': [], ...newKomputerData };
-                    newKomputerDataLikeInDB.data_Stworzenia = dateNormalization(newKomputerDataLikeInDB.data_Stworzenia); // dateAsString);
+                    console.log("newKomputerDataLikeInDB");
+                    console.log(newKomputerDataLikeInDB);
+                    let resultDate = (newKomputerDataLikeInDB.data_Stworzenia ? (newKomputerDataLikeInDB.data_Stworzenia.includes('T') ? newKomputerDataLikeInDB.data_Stworzenia.toISOString().split('T')[0] : newKomputerDataLikeInDB.data_Stworzenia) : '');
+                    console.log("resultDate");
+                    console.log(resultDate);
+
+                    //                    newKomputerDataLikeInDB.data_Stworzenia = dateNormalization(newKomputerDataLikeInDB.data_Stworzenia); // dateAsString);
                     res.render('pages/komputer/universal-form', {
                         komputer: newKomputerDataLikeInDB,
                         allKomputers: allKomputers,

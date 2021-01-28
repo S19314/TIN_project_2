@@ -154,7 +154,7 @@
                 if (!checkRequired(typKomputeraInput.value)) {
                     valid = false;
                     typKomputeraInput.classList.add("error-input");
-                    errorTypKomputera.innerText = "Pole jest wymagane CLIENT SIDE";
+                    errorTypKomputera.innerText = "Pole jest wymagane";
                 } else if (!checkTextLengthRange(typKomputeraInput.value, 2, 60)) {
                     valid = false;
                     typKomputeraInput.classList.add("error-input");
@@ -165,7 +165,12 @@
                     valid = false;
                     dataStworzeniaInput.classList.add("error-input");
                     errorDataStworzenia.innerText = "Pole jest wymagane";
+                } else if (!checkDate(dataStworzeniaInput.value)) {
+                    valid = false;
+                    dataStworzeniaInput.classList.add("error-input");
+                    errorDataStworzenia.innerText = "Pole powinno zawierać datę w formacie yyyy-MM-dd (np. 2000-01-24)";
                 } else {
+
                     //  DOWN
                     let normalizationDataStworzeniaInput = new Date(dataStworzeniaInput.value);
                     normalizationDataStworzeniaInput.setDate(normalizationDataStworzeniaInput.getDate() + 1);
@@ -193,11 +198,7 @@
                     if (day.length < 2) day = '0' + day;
                     const tommorowString = [year, month, day].join('-');
 
-                    if (!checkDate(dataStworzeniaInput.value)) {
-                        valid = false;
-                        dataStworzeniaInput.classList.add("error-input");
-                        errorDataStworzenia.innerText = "Pole powinno zawierać datę w formacie MM-dd-yyyy (np. 2000-01-24)";
-                    } else if (checkDateIfAfter(dataStworzeniaInput.value, tommorowString)) {
+                    if (checkDateIfAfter(dataStworzeniaInput.value, tommorowString)) {
                         valid = false;
                         dataStworzeniaInput.classList.add("error-input");
                         errorDataStworzenia.innerText = "Data nie może być z przyszłości";
@@ -285,7 +286,7 @@
             <input type="text"
                 class="<%= validationErrors.find(komp => komp.path.includes('data_Stworzenia')) ? 'error-input' : '' %>"
                 name="data_Stworzenia" id="dataStworzeniaInput" placeholder="yyyy-mm-dd"
-                value="<%=komputer.data_Stworzenia ? komputer.data_Stworzenia.toISOString().split('T')[0] : '' %>"
+                value="<%= komputer.data_Stworzenia ? (komputer.data_Stworzenia.includes('T') ? komputer.data_Stworzenia.toISOString().split('T')[0] : komputer.data_Stworzenia) : ''  %>"
                 <%=(formMode=='showDetails' ) ? 'disabled' : '' %>>
             <span id="errorDataStworzenia" class="errors-text">
                 <% if (validationErrors.find(komp=> komp.path.includes('data_Stworzenia'))) { %>

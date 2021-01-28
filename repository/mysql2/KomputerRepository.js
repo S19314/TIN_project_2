@@ -1,7 +1,40 @@
-const { date } = require('joi');
+const { date, func } = require('joi');
 const db = require('../../config/mysql2/db');
 const komputerSchema = require('../../model/joi/Komputer');
 
+
+function checkRequired(value) {
+    let err = {
+        details: [{
+            path: ['data_Stworzenia'],
+            message: 'Pole jest wymagane.'
+        }]
+    };
+
+    if (!value) {
+        return err;
+    }
+    value = value.toString().trim();
+    if (value === "") {
+        return err;
+    }
+    return {};
+}
+function checkDate(value) {
+
+    let err = {
+        details: [{
+            path: ['data_Stworzenia'],
+            message: 'Pole powinno zawierać datę w formacie yyyy-MM-dd (np. 2000-01-24)'
+        }]
+    };
+    if (!value) {
+        return false;
+    }
+    const pattern = /(\d{4})-(\d{2})-(\d{2})/;
+    if (pattern.test(value)) return {};
+    return err;
+}
 function checkDateIfAfter(value, compareTo) {
 
     let err = {
@@ -40,6 +73,46 @@ function convertDateIntoStringLikeInView(date) {
     return dateAsString;
 }
 
+
+function validateDate(updateData_Stworzenia) {
+    let tommorowDate = convertDateIntoStringLikeInView(createTommorowDate());
+
+    let errorDate = checkRequired(updateData_Stworzenia);
+    if (errorDate === {}) {
+        errorDate = checkDate(updateData_Stworzenia);
+    } else if (errorDate === {}) {
+        //  DOWN
+        let normalizationDataStworzeniaInput = new Date(dataStworzeniaInput.value);
+        normalizationDataStworzeniaInput.setDate(normalizationDataStworzeniaInput.getDate() + 1);
+        console.log("Normalization date");
+        console.log(normalizationDataStworzeniaInput);
+        console.log("NormalizationDate\nDate:");
+        console.log(normalizationDataStworzeniaInput);
+        console.log("dataStworzeniaInput\nBEFORE:");
+        console.log(dataStworzeniaInput.value);
+
+        dataStworzeniaInput.value = convertDateIntoStringLikeInView(normalizationDataStworzeniaInput);
+        console.log("dataStworzeniaInput\nAFTER:");
+        console.log(dataStworzeniaInput.value);
+        //  UP
+
+        let nowDate = new Date();
+        let tommorowDate = new Date();
+        tommorowDate.setDate(nowDate.getDate() + 1);
+
+        let month = '' + (tommorowDate.getMonth() + 1),
+            day = '' + tommorowDate.getDate(),
+            year = tommorowDate.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+        const tommorowString = [year, month, day].join('-');
+
+        errorDate = checkDateIfAfter(dataStworzeniaInput.value, tommorowString);  // if === {}
+    }
+    return errorDate;
+
+}
 exports.getKomputers = () => {
     return db.promise().query('SELECT * FROM Komputer')
         .then((results, fields) => {
@@ -117,21 +190,34 @@ where komp._id = ?`;
 };
 
 exports.createKomputer = (newKomputerData) => {
+    console.log("createKomputer input");
+
     const validationResult = komputerSchema.validate(newKomputerData, { abortEarly: false });
+    // Лишь на мгновение 
     if (validationResult.error) {
+        console.log("validationResult.error");
+        console.log(validationResult.error);
         return Promise.reject(validationResult.error);
     }
 
-    let tommorowDate = convertDateIntoStringLikeInView(createTommorowDate());
+    console.log("after JOI validation");
+    // let tommorowDate = convertDateIntoStringLikeInView(createTommorowDate());
 
-    let updateData_Stworzenia = convertDateIntoStringLikeInView(newKomputerData.data_Stworzenia);
-    let dataError = checkDateIfAfter(updateData_Stworzenia, tommorowDate);
-
+    //     let updateData_Stworzenia = convertDateIntoStringLikeInView(newKomputerData.data_Stworzenia);
+    // let dataError = checkDateIfAfter(updateData_Stworzenia, tommorowDate);
+    // let dataError = validateDate(updateData_Stworzenia);
+    console.log("BEFORE validateDate");
+    let dataError = validateDate(newKomputerData.data_Stworzenia);
     // if (dataError) {
+    console.log("BEFORE AFTERR");
     if (dataError.hasOwnProperty('details')) {
+        console.log("dataError.hasOwnProperty('details') true");
         return Promise.reject(dataError);
     } else {
+        console.log("dataError.hasOwnProperty('details') FALSE");
         // normalization
+        console.log("Start INSERT INtO db");
+        let updateData_Stworzenia = convertDateIntoStringLikeInView(newKomputerData.data_Stworzenia);
         let updateData_Stworzenia_Date = new Date(updateData_Stworzenia);
 
         const model = newKomputerData.model;
