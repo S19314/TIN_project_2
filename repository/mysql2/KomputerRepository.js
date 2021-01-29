@@ -42,12 +42,6 @@ function getDayFromISOStringDate(value) {
 }
 function checkDateRange(value) {
 
-    let err = {
-        details: [{
-            path: ['data_Stworzenia'],
-            message: 'Pole powinno zawierać datę w formacie yyyy-MM-dd (np. 2000-01-24)'
-        }]
-    };
     let arrayParametrs = value.split("-");
     let checkYear = parseInt(arrayParametrs[0], 10),
         checkMonth = parseInt(arrayParametrs[1], 10) - 1, //// МИНУС ОДИН
@@ -126,6 +120,7 @@ console.log(myMinYear.getFullYear());
 console.log(nowDate.getDate());
 console.log(nowDate.getMonth());
 */
+    console.log("return {};")
     return {};
 }
 function checkDateIfAfter(value, compareTo) {
@@ -146,11 +141,21 @@ function checkDateIfAfter(value, compareTo) {
     }
     const valueDate = new Date(value);
     // valueDate = valueDate.setDate(value);
+    console.log("value");
+    console.log(value);
+    console.log("compareTo");
+    console.log(compareTo);
+    console.log("valueDate.toISOString()");
+    console.log(valueDate.toISOString());
     const compareToDate = new Date(compareTo);
+    console.log("compareToDate.toISOString()");
+    console.log(compareToDate.toISOString());
     // compareToDate = compareToDate.setDate(compareTo);
     if (compareToDate.getTime() <= valueDate.getTime()) { // Верно ли сравнивает? Мб сравнивает часы в сутках ( от 0 до 23 )
+        console.log("compareToDate.getTime() <= valueDate.getTime()) TRUE");
         return err;
     }
+    console.log("compareToDate.getTime() <= valueDate.getTime()) false");
     return {};
 }
 
@@ -166,6 +171,18 @@ function convertDateIntoStringLikeInView(date) {
     return dateAsString;
 }
 
+function convertDateFromViewToDataBaseType(updateData_Stworzenia) {
+    let arrayParameters = updateData_Stworzenia.split('-');
+
+
+    let month = '' + (parseInt(arrayParameters[1], 10) - 1),
+        day = '' + arrayParameters[2],
+        year = arrayParameters[0];
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    return [year, month, day].join('-');
+}
 
 function validateDate(updateData_Stworzenia) {
     let tommorowDate = convertDateIntoStringLikeInView(createTommorowDate());
@@ -186,12 +203,23 @@ function validateDate(updateData_Stworzenia) {
     if (!errorDate.hasOwnProperty('details')) {
         // Date.    max i min yearlet validDate = "2021-01-01"
         errorDate = checkDateRange(updateData_Stworzenia);
+        console.log("errorDate = checkDateRange(updateData_Stworzenia);");
+        console.log(errorDate);
     }
 
     if (!errorDate.hasOwnProperty('details')) {
         //  DOWN
+        /*
+        console.log("Start check if dateFromFuture");
         let arrayParameters = updateData_Stworzenia.split('-');
-        let normalizationDataStworzeniaInput = arrayParameters[0] + "-" + (parseInt(arrayParameters[1], 10) - 1) + "-" + arrayParameters[2];
+        console.log("after split");
+        */
+        let normalizationDataStworzeniaInput = convertDateFromViewToDataBaseType(updateData_Stworzenia); // arrayParameters[0] + "-" + (parseInt(arrayParameters[1], 10) - 1) + "-" + arrayParameters[2];
+
+        console.log("after normalization");
+        console.log("normalizationDataStworzeniaInput");
+        console.log(normalizationDataStworzeniaInput);
+
         /* 29.01.2021
         let normalizationDataStworzeniaInput = new Date(updateData_Stworzenia);
         normalizationDataStworzeniaInput.setMonth(normalizationDataStworzeniaInput.getMonth() - 1);
@@ -221,8 +249,17 @@ function validateDate(updateData_Stworzenia) {
         if (month.length < 2) month = '0' + month;
         if (day.length < 2) day = '0' + day;
         const tommorowString = [year, month, day].join('-');
-
-        errorDate = checkDateIfAfter(normalizationDataStworzeniaInput, tommorowString);  // if === {}
+        console.log("create tommorow Date");
+        console.log("before checkDateIfAfter");
+        console.log("normalizationDataStworzeniaInput");
+        console.log(normalizationDataStworzeniaInput);
+        console.log("tommorowString");
+        console.log(tommorowString);
+        // errorDate = checkDateIfAfter(normalizationDataStworzeniaInput, tommorowString);  // if === {}
+        errorDate = checkDateIfAfter(updateData_Stworzenia, tommorowString);  // if === {}
+        console.log("after checkDateIfAfter");
+        console.log("errorDate");
+        console.log(errorDate);
     }
     return errorDate;
 
@@ -308,20 +345,26 @@ exports.createKomputer = (newKomputerData) => {
     const validationResult = komputerSchema.validate(newKomputerData, { abortEarly: false });
     let dataError = validateDate(newKomputerData.data_Stworzenia);
     // Лишь на мгновение 
+    console.log("dataError");
+    console.log(dataError);
     if (validationResult.error) {
+        console.log("validationResult.error true");
         /*
         console.log("validationResult.error");
         console.log(validationResult.error);
         */
-        if (dataError != {}) {
+        if (dataError.hasOwnProperty('details')) {
+            console.log("if (dataError != {}) { TRUE");
             for (dataErr of dataError.details)
                 validationResult.error.details.push(dataErr);
         }
         return Promise.reject(validationResult.error);
-    } else if (dataError != {}) {
+    } else if (dataError.hasOwnProperty('details')) {
+        console.log("validationResult.error false");
+
         return Promise.reject(dataError);
     }
-
+    console.log("after creating validationResult");
 
     // let tommorowDate = convertDateIntoStringLikeInView(createTommorowDate());
 
