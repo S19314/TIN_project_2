@@ -42,6 +42,21 @@ function getDayFromISOStringDate(value) {
 }
 function checkDateRange(value) {
 
+    value = value.trim();
+    console.log("value");
+    console.log(value);
+    console.log("value.length");
+    console.log(value.length);
+    if (value.length < 10) {
+        return {
+            details: [{
+                path: ['data_Stworzenia'],
+                message: `Wpisany mięsiąc i dzień muszę składać się z dwóch liczb. Naprzykład: 12, 01 (a nie 1).`
+            }]
+        };
+    }
+
+
     let arrayParametrs = value.split("-");
     let checkYear = parseInt(arrayParametrs[0], 10),
         checkMonth = parseInt(arrayParametrs[1], 10) - 1, //// МИНУС ОДИН
@@ -345,46 +360,18 @@ exports.createKomputer = (newKomputerData) => {
     const validationResult = komputerSchema.validate(newKomputerData, { abortEarly: false });
     let dataError = validateDate(newKomputerData.data_Stworzenia);
     // Лишь на мгновение 
-    console.log("dataError");
-    console.log(dataError);
     if (validationResult.error) {
-        console.log("validationResult.error true");
-        /*
-        console.log("validationResult.error");
-        console.log(validationResult.error);
-        */
+
         if (dataError.hasOwnProperty('details')) {
-            console.log("if (dataError != {}) { TRUE");
+
             for (dataErr of dataError.details)
                 validationResult.error.details.push(dataErr);
         }
         return Promise.reject(validationResult.error);
     } else if (dataError.hasOwnProperty('details')) {
-        console.log("validationResult.error false");
-
         return Promise.reject(dataError);
     }
-    console.log("after creating validationResult");
 
-    // let tommorowDate = convertDateIntoStringLikeInView(createTommorowDate());
-
-    //     let updateData_Stworzenia = convertDateIntoStringLikeInView(newKomputerData.data_Stworzenia);
-    // let dataError = checkDateIfAfter(updateData_Stworzenia, tommorowDate);
-    // let dataError = validateDate(updateData_Stworzenia);
-    /*
-    console.log("BEFORE validateDate");
-    let dataError = validateDate(newKomputerData.data_Stworzenia);
-    // if (dataError) {
-    console.log("AFTERR validateDate");
-    */
-    /*
-     if (dataError.hasOwnProperty('details')) {
-         console.log("dataError.hasOwnProperty('details') true");
-         return Promise.reject(dataError);
-     } else {
-         */
-
-    // normalization
 
     let updateData_Stworzenia = convertDateIntoStringLikeInView(newKomputerData.data_Stworzenia);
     let updateData_Stworzenia_Date = new Date(updateData_Stworzenia);
@@ -405,10 +392,36 @@ exports.createKomputer = (newKomputerData) => {
 }
 
 exports.updateKomputer = (komputerId, komputerData) => {
+    console.log("Start update");
+    /*
     const validationResult = komputerSchema.validate(komputerData, { abortEarly: false });
     if (validationResult.error) {
         return Promise.reject(validationResult.error);
     }
+    */
+    const validationResult = komputerSchema.validate(komputerData, { abortEarly: false });
+    let dataError = validateDate(komputerData.data_Stworzenia);
+    console.log("After validation")
+
+    if (validationResult.error) {
+        console.log("    if (validationResult.error) { TRUE");
+        if (dataError.hasOwnProperty('details')) {
+            console.log("    dataError.hasOwnProperty('details')) TRUE");
+            for (dataErr of dataError.details)
+                validationResult.error.details.push(dataErr);
+        }
+        return Promise.reject(validationResult.error);
+    } else if (dataError.hasOwnProperty('details')) {
+        console.log("    if (validationResult.error) { FALSE");
+        console.log("dataError");
+        console.log(dataError);
+        return Promise.reject(dataError);
+    }
+
+    let updateData_Stworzenia = convertDateIntoStringLikeInView(komputerData.data_Stworzenia);
+    let updateData_Stworzenia_Date = new Date(updateData_Stworzenia);
+    /*
+
     let tommorowDate = convertDateIntoStringLikeInView(createTommorowDate());
     let updateData_Stworzenia = convertDateIntoStringLikeInView(komputerData.data_Stworzenia);
     let dataError = checkDateIfAfter(updateData_Stworzenia, tommorowDate);
@@ -422,28 +435,28 @@ exports.updateKomputer = (komputerId, komputerData) => {
     if (dataError.hasOwnProperty('details')) {
         return Promise.reject(dataError);
     } else {
+*/
+    const model = komputerData.model;
+    const zaintstalowany_System_Operacyjny = komputerData.zaintstalowany_System_Operacyjny;
+    const typ_Komputera = komputerData.typ_Komputera;
+    const data_Stworzenia = updateData_Stworzenia_Date;//  updateData_Stworzenia; // komputerData.data_Stworzenia;
 
-        const model = komputerData.model;
-        const zaintstalowany_System_Operacyjny = komputerData.zaintstalowany_System_Operacyjny;
-        const typ_Komputera = komputerData.typ_Komputera;
-        const data_Stworzenia = updateData_Stworzenia; // komputerData.data_Stworzenia;
-
-        const sql = `UPDATE Komputer 
+    const sql = `UPDATE Komputer 
                 set model = ?,
                 zaintstalowany_System_Operacyjny = ?,
                 typ_Komputera = ?,
                 data_Stworzenia = ?
                 where _id = ?`;
-        return db.promise().execute(
-            sql,
-            [model, zaintstalowany_System_Operacyjny, typ_Komputera, data_Stworzenia, komputerId]
-        ).catch(err => {
-            return Promise.reject(err);
-        });
+    return db.promise().execute(
+        sql,
+        [model, zaintstalowany_System_Operacyjny, typ_Komputera, data_Stworzenia, komputerId]
+    ).catch(err => {
+        return Promise.reject(err);
+    });
 
 
-    }
-};
+}
+// };
 
 exports.deleteKomputer = (computerId) => {
     const sql1 = 'DELETE FROM Zestaw_Elementow_Komputera where computer_id = ?';

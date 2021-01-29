@@ -140,6 +140,7 @@ exports.showEditKomputerForm = (req, res, next) => {
             if (komputer.data_Stworzenia instanceof Date) {
                 komputer.data_Stworzenia = komputer.data_Stworzenia.toISOString();
             }
+
             res.render('pages/komputer/universal-form', {
                 allKomputers: allKomputers,
                 komputer: komputer,
@@ -176,7 +177,14 @@ exports.updateKomputer = (req, res, next) => {
                     let newKomputerData = { 'zestaw_elementow_komputera': [], ...komputerData };
                     // let dateAsString = newKomputerData.data_Stworzenia; // check
                     // И в create/update пересмотреть.
-                    newKomputerData.data_Stworzenia = dateNormalization(newKomputerData.data_Stworzenia); // dateAsString);
+                    console.log("showEditKomputerForm");
+                    console.log("komputer");
+                    console.log(newKomputerData);
+                    if (newKomputerData.data_Stworzenia instanceof Date) {
+                        newKomputerData.data_Stworzenia = komputer.data_Stworzenia.toISOString();
+                    }
+                    // 29.01.2021
+                    // newKomputerData.data_Stworzenia = dateNormalization(newKomputerData.data_Stworzenia); // dateAsString); 
                     res.render('pages/komputer/universal-form', {
                         komputer: newKomputerData,
                         allKomputers: allKomps,
