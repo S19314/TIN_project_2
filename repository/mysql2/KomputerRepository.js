@@ -29,7 +29,7 @@ function checkDate(value) {
         }]
     };
     if (!value) {
-        return false;
+        return {};
     }
     const pattern = /(\d{4})-(\d{2})-(\d{2})/;
     if (pattern.test(value)) return {};
@@ -78,22 +78,34 @@ function validateDate(updateData_Stworzenia) {
     let tommorowDate = convertDateIntoStringLikeInView(createTommorowDate());
 
     let errorDate = checkRequired(updateData_Stworzenia);
-    if (errorDate === {}) {
+    /*
+        console.log("checkRequired");
+        console.log(errorDate);
+        */
+    if (!errorDate.hasOwnProperty('details')) {
         errorDate = checkDate(updateData_Stworzenia);
-    } else if (errorDate === {}) {
+        /*
+          console.log("checkDate");
+          console.log(errorDate);
+          */
+    }
+    if (!errorDate.hasOwnProperty('details')) {
         //  DOWN
         let normalizationDataStworzeniaInput = new Date(dataStworzeniaInput.value);
         normalizationDataStworzeniaInput.setDate(normalizationDataStworzeniaInput.getDate() + 1);
+        /*
         console.log("Normalization date");
         console.log(normalizationDataStworzeniaInput);
         console.log("NormalizationDate\nDate:");
         console.log(normalizationDataStworzeniaInput);
         console.log("dataStworzeniaInput\nBEFORE:");
         console.log(dataStworzeniaInput.value);
-
+*/
         dataStworzeniaInput.value = convertDateIntoStringLikeInView(normalizationDataStworzeniaInput);
-        console.log("dataStworzeniaInput\nAFTER:");
-        console.log(dataStworzeniaInput.value);
+        /*
+              console.log("dataStworzeniaInput\nAFTER:");
+              console.log(dataStworzeniaInput.value);
+              */
         //  UP
 
         let nowDate = new Date();
@@ -190,50 +202,63 @@ where komp._id = ?`;
 };
 
 exports.createKomputer = (newKomputerData) => {
-    console.log("createKomputer input");
+
 
     const validationResult = komputerSchema.validate(newKomputerData, { abortEarly: false });
+    let dataError = validateDate(newKomputerData.data_Stworzenia);
     // Лишь на мгновение 
     if (validationResult.error) {
+        /*
         console.log("validationResult.error");
         console.log(validationResult.error);
+        */
+        if (dataError != {}) {
+            for (dataErr of dataError.details)
+                validationResult.error.details.push(dataErr);
+        }
         return Promise.reject(validationResult.error);
+    } else if (dataError != {}) {
+        return Promise.reject(dataError);
     }
 
-    console.log("after JOI validation");
+
     // let tommorowDate = convertDateIntoStringLikeInView(createTommorowDate());
 
     //     let updateData_Stworzenia = convertDateIntoStringLikeInView(newKomputerData.data_Stworzenia);
     // let dataError = checkDateIfAfter(updateData_Stworzenia, tommorowDate);
     // let dataError = validateDate(updateData_Stworzenia);
+    /*
     console.log("BEFORE validateDate");
     let dataError = validateDate(newKomputerData.data_Stworzenia);
     // if (dataError) {
-    console.log("BEFORE AFTERR");
-    if (dataError.hasOwnProperty('details')) {
-        console.log("dataError.hasOwnProperty('details') true");
-        return Promise.reject(dataError);
-    } else {
-        console.log("dataError.hasOwnProperty('details') FALSE");
-        // normalization
-        console.log("Start INSERT INtO db");
-        let updateData_Stworzenia = convertDateIntoStringLikeInView(newKomputerData.data_Stworzenia);
-        let updateData_Stworzenia_Date = new Date(updateData_Stworzenia);
+    console.log("AFTERR validateDate");
+    */
+    /*
+     if (dataError.hasOwnProperty('details')) {
+         console.log("dataError.hasOwnProperty('details') true");
+         return Promise.reject(dataError);
+     } else {
+         */
 
-        const model = newKomputerData.model;
-        const zaintstalowany_System_Operacyjny = newKomputerData.zaintstalowany_System_Operacyjny;
-        const typ_Komputera = newKomputerData.typ_Komputera;
-        const data_Stworzenia = updateData_Stworzenia_Date;// newKomputerData.data_Stworzenia.toISOString().split('T')[0]; // ТУТ ДОБАВИЛ
-        const sql = 'INSERT INTO Komputer (model, zaintstalowany_System_Operacyjny, typ_Komputera, data_Stworzenia) VALUES (?, ?, ?, ?)';
-        console.log("Before send SQL");
-        return db.promise().execute(
-            sql,
-            [model, zaintstalowany_System_Operacyjny, typ_Komputera, data_Stworzenia]
-        ).catch(err => {
-            return Promise.reject(err);
-        });
-    }
-};
+    // normalization
+
+    let updateData_Stworzenia = convertDateIntoStringLikeInView(newKomputerData.data_Stworzenia);
+    let updateData_Stworzenia_Date = new Date(updateData_Stworzenia);
+
+    const model = newKomputerData.model;
+    const zaintstalowany_System_Operacyjny = newKomputerData.zaintstalowany_System_Operacyjny;
+    const typ_Komputera = newKomputerData.typ_Komputera;
+    const data_Stworzenia = updateData_Stworzenia_Date;// newKomputerData.data_Stworzenia.toISOString().split('T')[0]; // ТУТ ДОБАВИЛ
+    const sql = 'INSERT INTO Komputer (model, zaintstalowany_System_Operacyjny, typ_Komputera, data_Stworzenia) VALUES (?, ?, ?, ?)';
+    console.log("Before send SQL");
+    return db.promise().execute(
+        sql,
+        [model, zaintstalowany_System_Operacyjny, typ_Komputera, data_Stworzenia]
+    ).catch(err => {
+        return Promise.reject(err);
+    });
+    // }
+}
 
 exports.updateKomputer = (komputerId, komputerData) => {
     const validationResult = komputerSchema.validate(komputerData, { abortEarly: false });

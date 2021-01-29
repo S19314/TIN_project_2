@@ -48,6 +48,7 @@ exports.addKomputer = (req, res, next) => {
             res.redirect('/komputers');
         })
         .catch(err => {
+            /*
             console.log("Controller addComputer\n err:");
             console.log(err);
             console.log("for");
@@ -56,17 +57,20 @@ exports.addKomputer = (req, res, next) => {
                 console.log("err.details[i]");
                 console.log(err.details[i]);
             }
-
+            */
             // * /
             KomputerRepository.getKomputers()
                 .then(allKomputers => {
                     let newKomputerDataLikeInDB = { 'zestaw_elementow_komputera': [], ...newKomputerData };
+                    /*
                     console.log("newKomputerDataLikeInDB");
                     console.log(newKomputerDataLikeInDB);
+                    */
                     let resultDate = (newKomputerDataLikeInDB.data_Stworzenia ? (newKomputerDataLikeInDB.data_Stworzenia.includes('T') ? newKomputerDataLikeInDB.data_Stworzenia.toISOString().split('T')[0] : newKomputerDataLikeInDB.data_Stworzenia) : '');
+                    /*
                     console.log("resultDate");
                     console.log(resultDate);
-
+                    */
                     //                    newKomputerDataLikeInDB.data_Stworzenia = dateNormalization(newKomputerDataLikeInDB.data_Stworzenia); // dateAsString);
                     res.render('pages/komputer/universal-form', {
                         komputer: newKomputerDataLikeInDB,
@@ -92,15 +96,23 @@ exports.showKomputerDetails = (req, res, next) => {
             return KomputerRepository.getKomputerById(komputerId);
         })
         .then(komputer => {
-            /*
+
             console.log("ShowKomputerDetails");
             console.log("komputer");
             console.log(komputer);
+            if (komputer.data_Stworzenia instanceof Date) {
+                komputer.data_Stworzenia = komputer.data_Stworzenia.toISOString();
+                console.log("data_Stworzenia typu Date")
+
+            } else {
+                console.log("data_Stworzenia NIE JEST typu Date")
+            }
+            /*
             console.log("elementkomputer[0]");
             console.log(komputer.zestaw_elementow_komputera[0].element_komputera);
             console.log("elementkomputer[0]._id");
             console.log(komputer.zestaw_elementow_komputera[0].element_komputera._id);
-            */
+             */
             res.render('pages/komputer/universal-form', {
                 allKomputers: allKomputers,
                 komputer: komputer,
@@ -125,6 +137,9 @@ exports.showEditKomputerForm = (req, res, next) => {
             return KomputerRepository.getKomputerById(komputerId);
         })
         .then(komputer => {
+            if (komputer.data_Stworzenia instanceof Date) {
+                komputer.data_Stworzenia = komputer.data_Stworzenia.toISOString();
+            }
             res.render('pages/komputer/universal-form', {
                 allKomputers: allKomputers,
                 komputer: komputer,
