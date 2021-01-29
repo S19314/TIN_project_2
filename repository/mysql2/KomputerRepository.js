@@ -35,6 +35,99 @@ function checkDate(value) {
     if (pattern.test(value)) return {};
     return err;
 }
+
+function getDayFromISOStringDate(value) {
+    let datePart = value.split('T')[0];
+    return datePart.split('-')[2];
+}
+function checkDateRange(value) {
+
+    let err = {
+        details: [{
+            path: ['data_Stworzenia'],
+            message: 'Pole powinno zawierać datę w formacie yyyy-MM-dd (np. 2000-01-24)'
+        }]
+    };
+    let arrayParametrs = value.split("-");
+    let checkYear = parseInt(arrayParametrs[0], 10),
+        checkMonth = parseInt(arrayParametrs[1], 10) - 1, //// МИНУС ОДИН
+        checkDay = parseInt(arrayParametrs[2], 10);
+
+    let maxDate = new Date(8640000000000000);
+    let myMinDate = new Date("1900-01-01");
+    if (!(checkYear >= myMinDate.getFullYear() && checkYear < maxDate.getFullYear())) {
+        return {
+            details: [{
+                path: ['data_Stworzenia'],
+                message: `Rok stworzenia muszę być mniejszy od ${maxDate.getFullYear()} i większy od ${myMinDate.getFullYear()}`
+            }]
+        };
+    }
+    if (!(checkMonth >= 0 && checkMonth <= 11)) {
+        return {
+            details: [{
+                path: ['data_Stworzenia'],
+                message: `Miesiąc stworzenia muszę być mniejszy od 13 i większy od 0`
+            }]
+        };
+    }
+    /*
+    let inputValue = checkYear + "-" + checkMonth + "-01";
+    let inputDate = new Date(inputValue);
+    */
+
+    var firstDayDate = new Date(checkYear, checkMonth, 2);
+    var lastDayDate = new Date(checkYear, checkMonth + 1, 1);
+    console.log("checkYear");
+    console.log(checkYear);
+    console.log("checkMonth");
+    console.log(checkMonth);
+    console.log("firstDayDate");
+    console.log(firstDayDate.toISOString());
+    console.log(new Date(checkYear, checkMonth, 2).toISOString());
+    console.log("lastDayDate");
+    console.log(lastDayDate.toISOString());
+    console.log(new Date(checkYear, checkMonth + 1, 1).toISOString());
+
+    /*
+        var firstDay = new Date(checkYear, checkMonth, 2).getDate();
+        var lastDay = new Date(checkYear, checkMonth + 1, 1).getDate();
+        */
+    var firstDay = getDayFromISOStringDate(firstDayDate.toISOString()); // firstDayDate.getDate();
+    var lastDay = getDayFromISOStringDate(lastDayDate.toISOString());//lastDayDate.getDate();
+    console.log("firstDay");
+    console.log(firstDay);
+    console.log("lastDay");
+    console.log(lastDay);
+    console.log("firstDayDate.toDateString()");
+    console.log(firstDayDate.toDateString());
+    console.log("lastDayDate.toDateString()");
+    console.log(lastDayDate.toDateString());
+    if (!(checkDay >= firstDay && checkDay <= lastDay)) {
+        return {
+            details: [{
+                path: ['data_Stworzenia'],
+                message: `Dzień stworzenia muszę być mniejszy od ${lastDay} i większy od 0`
+            }]
+        };
+    }
+
+
+    /*
+console.log(maxYear.toISOString());
+console.log(maxYear.getFullYear());
+console.log("minYear");
+console.log(minYear.toISOString());
+console.log("myminYear");
+console.log(myMinYear.toISOString());
+console.log("only year myminYear");
+console.log(myMinYear.getFullYear());
+
+console.log(nowDate.getDate());
+console.log(nowDate.getMonth());
+*/
+    return {};
+}
 function checkDateIfAfter(value, compareTo) {
 
     let err = {
@@ -89,11 +182,20 @@ function validateDate(updateData_Stworzenia) {
           console.log(errorDate);
           */
     }
+
+    if (!errorDate.hasOwnProperty('details')) {
+        // Date.    max i min yearlet validDate = "2021-01-01"
+        errorDate = checkDateRange(updateData_Stworzenia);
+    }
+
     if (!errorDate.hasOwnProperty('details')) {
         //  DOWN
-        let normalizationDataStworzeniaInput = new Date(dataStworzeniaInput.value);
-        normalizationDataStworzeniaInput.setDate(normalizationDataStworzeniaInput.getDate() + 1);
-        /*
+        let arrayParameters = updateData_Stworzenia.split('-');
+        let normalizationDataStworzeniaInput = arrayParameters[0] + "-" + (parseInt(arrayParameters[1], 10) - 1) + "-" + arrayParameters[2];
+        /* 29.01.2021
+        let normalizationDataStworzeniaInput = new Date(updateData_Stworzenia);
+        normalizationDataStworzeniaInput.setMonth(normalizationDataStworzeniaInput.getMonth() - 1);
+        */ /*
         console.log("Normalization date");
         console.log(normalizationDataStworzeniaInput);
         console.log("NormalizationDate\nDate:");
@@ -101,7 +203,7 @@ function validateDate(updateData_Stworzenia) {
         console.log("dataStworzeniaInput\nBEFORE:");
         console.log(dataStworzeniaInput.value);
 */
-        dataStworzeniaInput.value = convertDateIntoStringLikeInView(normalizationDataStworzeniaInput);
+        // normalizationDataStworzeniaInput = convertDateIntoStringLikeInView(normalizationDataStworzeniaInput);
         /*
               console.log("dataStworzeniaInput\nAFTER:");
               console.log(dataStworzeniaInput.value);
@@ -120,7 +222,7 @@ function validateDate(updateData_Stworzenia) {
         if (day.length < 2) day = '0' + day;
         const tommorowString = [year, month, day].join('-');
 
-        errorDate = checkDateIfAfter(dataStworzeniaInput.value, tommorowString);  // if === {}
+        errorDate = checkDateIfAfter(normalizationDataStworzeniaInput, tommorowString);  // if === {}
     }
     return errorDate;
 
@@ -202,7 +304,6 @@ where komp._id = ?`;
 };
 
 exports.createKomputer = (newKomputerData) => {
-
 
     const validationResult = komputerSchema.validate(newKomputerData, { abortEarly: false });
     let dataError = validateDate(newKomputerData.data_Stworzenia);
